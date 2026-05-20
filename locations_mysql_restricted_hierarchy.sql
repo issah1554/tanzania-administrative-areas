@@ -1,5353 +1,3963 @@
--- ------------------------------------------------------------
--- Tanzania locations table + seed data
--- Single table hierarchy: region -> district -> ward
--- Regions are restricted to parent_id IS NULL
--- Districts and wards are restricted to parent_id IS NOT NULL
--- ------------------------------------------------------------
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: May 20, 2026 at 02:27 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.1.25
 
-SET FOREIGN_KEY_CHECKS = 0;
-DROP TABLE IF EXISTS locations;
-SET FOREIGN_KEY_CHECKS = 1;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
 
-CREATE TABLE locations (
-    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
-    name VARCHAR(255) NOT NULL,
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
-    parent_id BIGINT UNSIGNED NULL,
+--
+-- Database: `test`
+--
 
-    type ENUM('region', 'district', 'ward') NOT NULL,
+-- --------------------------------------------------------
 
-    latitude DECIMAL(10, 7) NULL,
-    longitude DECIMAL(10, 7) NULL,
+--
+-- Table structure for table `locations`
+--
 
-    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
-        ON UPDATE CURRENT_TIMESTAMP,
-
-    CONSTRAINT fk_locations_parent
-        FOREIGN KEY (parent_id)
-        REFERENCES locations(id)
-        ON DELETE CASCADE,
-
-    CONSTRAINT chk_locations_hierarchy
-        CHECK (
-            (type = 'region' AND parent_id IS NULL)
-            OR
-            (type IN ('district', 'ward') AND parent_id IS NOT NULL)
-        )
+CREATE TABLE `locations` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `parent_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `type` enum('region','district','ward') NOT NULL,
+  `latitude` decimal(10,7) DEFAULT NULL,
+  `longitude` decimal(10,7) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-
--- ============================================================
--- REGION: Dodoma
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Dodoma', NULL, 'region');
-
-SET @region_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kondoa', @region_1, 'district');
-
-SET @district_1_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Bumbuta', @district_1_1, 'ward'),
-('Pahi', @district_1_1, 'ward'),
-('Haubi', @district_1_1, 'ward'),
-('Kalamba', @district_1_1, 'ward'),
-('Kwadelo', @district_1_1, 'ward'),
-('Masange', @district_1_1, 'ward'),
-('Kikilo', @district_1_1, 'ward'),
-('Bereko', @district_1_1, 'ward'),
-('Kisese', @district_1_1, 'ward'),
-('Kikore', @district_1_1, 'ward'),
-('Serya', @district_1_1, 'ward'),
-('Kilimani', @district_1_1, 'ward'),
-('Chemchem', @district_1_1, 'ward'),
-('Hondo mairo', @district_1_1, 'ward'),
-('Bolisa', @district_1_1, 'ward'),
-('Kinyasi', @district_1_1, 'ward'),
-('Salanka', @district_1_1, 'ward'),
-('Itololo', @district_1_1, 'ward'),
-('Itaswi', @district_1_1, 'ward'),
-('Suruke', @district_1_1, 'ward'),
-('Kingale', @district_1_1, 'ward'),
-('Kondoa mjini', @district_1_1, 'ward'),
-('Kolo', @district_1_1, 'ward'),
-('Changaa', @district_1_1, 'ward'),
-('Thawi', @district_1_1, 'ward'),
-('Mnenia', @district_1_1, 'ward'),
-('Soera', @district_1_1, 'ward'),
-('Busi', @district_1_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mpwapwa', @region_1, 'district');
-
-SET @district_1_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Mazae', @district_1_2, 'ward'),
-('Vingh''awe', @district_1_2, 'ward'),
-('Matomondo', @district_1_2, 'ward'),
-('Kimagai', @district_1_2, 'ward'),
-('Kibakwe', @district_1_2, 'ward'),
-('Lumuma', @district_1_2, 'ward'),
-('Luhundwa', @district_1_2, 'ward'),
-('Massa', @district_1_2, 'ward'),
-('Ipera', @district_1_2, 'ward'),
-('Rudi', @district_1_2, 'ward'),
-('Mlunduzi', @district_1_2, 'ward'),
-('Wotta', @district_1_2, 'ward'),
-('Mima', @district_1_2, 'ward'),
-('Berege', @district_1_2, 'ward'),
-('Chunyu', @district_1_2, 'ward'),
-('Mbuga', @district_1_2, 'ward'),
-('Godegode', @district_1_2, 'ward'),
-('Mpwapwa', @district_1_2, 'ward'),
-('Lupeta', @district_1_2, 'ward'),
-('Gulwe', @district_1_2, 'ward'),
-('Nghambi', @district_1_2, 'ward'),
-('Chitemo', @district_1_2, 'ward'),
-('Iwondo', @district_1_2, 'ward'),
-('Kingiti', @district_1_2, 'ward'),
-('Lufu', @district_1_2, 'ward'),
-('Pwaga', @district_1_2, 'ward'),
-('Galigali', @district_1_2, 'ward'),
-('Mtera', @district_1_2, 'ward'),
-('Chipogoro', @district_1_2, 'ward'),
-('Malolo', @district_1_2, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kongwa', @region_1, 'district');
-
-SET @district_1_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kongwa', @district_1_3, 'ward'),
-('Sejeli', @district_1_3, 'ward'),
-('Hogoro', @district_1_3, 'ward'),
-('Zoissa', @district_1_3, 'ward'),
-('Mkoka', @district_1_3, 'ward'),
-('Njoge', @district_1_3, 'ward'),
-('Mtanana', @district_1_3, 'ward'),
-('Pandambili', @district_1_3, 'ward'),
-('Mlali', @district_1_3, 'ward'),
-('Iduo', @district_1_3, 'ward'),
-('Sagara', @district_1_3, 'ward'),
-('Kibaigwa', @district_1_3, 'ward'),
-('Ugogoni', @district_1_3, 'ward'),
-('Chamkoroma', @district_1_3, 'ward'),
-('Makawa', @district_1_3, 'ward'),
-('Chitego', @district_1_3, 'ward'),
-('Matongoro', @district_1_3, 'ward'),
-('Ngomai', @district_1_3, 'ward'),
-('Songambele', @district_1_3, 'ward'),
-('Chiwe', @district_1_3, 'ward'),
-('Lenjulu', @district_1_3, 'ward'),
-('Nghumbi', @district_1_3, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Chamwino', @region_1, 'district');
-
-SET @district_1_4 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Haneti', @district_1_4, 'ward'),
-('Segala', @district_1_4, 'ward'),
-('Itiso', @district_1_4, 'ward'),
-('Dabalo', @district_1_4, 'ward'),
-('Membe', @district_1_4, 'ward'),
-('Msanga', @district_1_4, 'ward'),
-('Chilonwa', @district_1_4, 'ward'),
-('Buigiri', @district_1_4, 'ward'),
-('Majeleko', @district_1_4, 'ward'),
-('Manchali', @district_1_4, 'ward'),
-('Ikowa', @district_1_4, 'ward'),
-('Msamalo', @district_1_4, 'ward'),
-('Igandu', @district_1_4, 'ward'),
-('Muungano', @district_1_4, 'ward'),
-('Mvumi Makulu', @district_1_4, 'ward'),
-('Handali', @district_1_4, 'ward'),
-('Mvumi Mission', @district_1_4, 'ward'),
-('Idifu', @district_1_4, 'ward'),
-('Makang''wa', @district_1_4, 'ward'),
-('Iringamvumi', @district_1_4, 'ward'),
-('Manzase', @district_1_4, 'ward'),
-('Fufu', @district_1_4, 'ward'),
-('Mlowa Bwawani', @district_1_4, 'ward'),
-('Mpwayungu', @district_1_4, 'ward'),
-('Nghambaku', @district_1_4, 'ward'),
-('Chinugulu', @district_1_4, 'ward'),
-('Manda', @district_1_4, 'ward'),
-('Huzi', @district_1_4, 'ward'),
-('Loje', @district_1_4, 'ward'),
-('Chiboli', @district_1_4, 'ward'),
-('Nhinhi', @district_1_4, 'ward'),
-('Zajilwa', @district_1_4, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Dodoma Urban', @region_1, 'district');
-
-SET @district_1_5 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Viwandani', @district_1_5, 'ward'),
-('Uhuru', @district_1_5, 'ward'),
-('Chamwino', @district_1_5, 'ward'),
-('Kiwanja cha ndege', @district_1_5, 'ward'),
-('Makole', @district_1_5, 'ward'),
-('Miyuji', @district_1_5, 'ward'),
-('Msalato', @district_1_5, 'ward'),
-('Makutupora', @district_1_5, 'ward'),
-('Chihanga', @district_1_5, 'ward'),
-('Hombolo', @district_1_5, 'ward'),
-('Ipala', @district_1_5, 'ward'),
-('Nzuguni', @district_1_5, 'ward'),
-('Dom-Makulu', @district_1_5, 'ward'),
-('Mtumba', @district_1_5, 'ward'),
-('Kikombo', @district_1_5, 'ward'),
-('Ngh''ongh''onha', @district_1_5, 'ward'),
-('Mpunguzi', @district_1_5, 'ward'),
-('Tambukareli', @district_1_5, 'ward'),
-('Kilimani', @district_1_5, 'ward'),
-('Kikuyu Kusini', @district_1_5, 'ward'),
-('Kikuyu Kaskazini', @district_1_5, 'ward'),
-('Mkonze', @district_1_5, 'ward'),
-('Mbabala', @district_1_5, 'ward'),
-('Zuzu', @district_1_5, 'ward'),
-('Hazina', @district_1_5, 'ward'),
-('Madukani', @district_1_5, 'ward'),
-('Majengo', @district_1_5, 'ward'),
-('Kizota', @district_1_5, 'ward'),
-('Nala', @district_1_5, 'ward'),
-('Mbalawala', @district_1_5, 'ward'),
-('Ntyuka', @district_1_5, 'ward'),
-('Chigongwe', @district_1_5, 'ward'),
-('Chang''ombe', @district_1_5, 'ward'),
-('Iyumbu', @district_1_5, 'ward'),
-('Chahwa', @district_1_5, 'ward'),
-('Mnadani', @district_1_5, 'ward'),
-('Ipagala', @district_1_5, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Bahi', @region_1, 'district');
-
-SET @district_1_6 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Makanda', @district_1_6, 'ward'),
-('Lamaiti', @district_1_6, 'ward'),
-('Babayu', @district_1_6, 'ward'),
-('Zanka', @district_1_6, 'ward'),
-('Msisi', @district_1_6, 'ward'),
-('Mundemu', @district_1_6, 'ward'),
-('Bahi', @district_1_6, 'ward'),
-('Mpamantwa', @district_1_6, 'ward'),
-('Ibihwa', @district_1_6, 'ward'),
-('Ilindi', @district_1_6, 'ward'),
-('Kigwe', @district_1_6, 'ward'),
-('Chikola', @district_1_6, 'ward'),
-('Chipanga', @district_1_6, 'ward'),
-('Chali', @district_1_6, 'ward'),
-('Nondwa', @district_1_6, 'ward'),
-('Mpalanga', @district_1_6, 'ward'),
-('Ibugule', @district_1_6, 'ward'),
-('Chibelela', @district_1_6, 'ward'),
-('Mwitikira', @district_1_6, 'ward'),
-('Mtitaa', @district_1_6, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Chemba', @region_1, 'district');
-
-SET @district_1_7 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Makorongo', @district_1_7, 'ward'),
-('Ovada', @district_1_7, 'ward'),
-('Msaada', @district_1_7, 'ward'),
-('Kimaha', @district_1_7, 'ward'),
-('Churuku', @district_1_7, 'ward'),
-('Songoro', @district_1_7, 'ward'),
-('Mondo', @district_1_7, 'ward'),
-('Dalai', @district_1_7, 'ward'),
-('Mrijo', @district_1_7, 'ward'),
-('Chandama', @district_1_7, 'ward'),
-('Goima', @district_1_7, 'ward'),
-('Chemba', @district_1_7, 'ward'),
-('Paranga', @district_1_7, 'ward'),
-('Gwandi', @district_1_7, 'ward'),
-('Farkwa', @district_1_7, 'ward'),
-('Mpendo', @district_1_7, 'ward'),
-('Sanzawa', @district_1_7, 'ward'),
-('Kwamtoro', @district_1_7, 'ward'),
-('Lalta', @district_1_7, 'ward'),
-('Jangalo', @district_1_7, 'ward');
-
-
--- ============================================================
--- REGION: Arusha
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Arusha', NULL, 'region');
-
-SET @region_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Monduli', @region_2, 'district');
-
-SET @district_2_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Engaruka', @district_2_1, 'ward'),
-('Monduli juu', @district_2_1, 'ward'),
-('Engutoto', @district_2_1, 'ward'),
-('Monduli Mjini', @district_2_1, 'ward'),
-('Moita', @district_2_1, 'ward'),
-('Sepeko', @district_2_1, 'ward'),
-('Lolkisale', @district_2_1, 'ward'),
-('Makuyuni', @district_2_1, 'ward'),
-('Esilalei', @district_2_1, 'ward'),
-('Mto wa Mbu', @district_2_1, 'ward'),
-('Lepurko', @district_2_1, 'ward'),
-('Meserani', @district_2_1, 'ward'),
-('Mswakini', @district_2_1, 'ward'),
-('Majengo', @district_2_1, 'ward'),
-('Selela', @district_2_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Meru', @region_2, 'district');
-
-SET @district_2_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Ngarenanyuki', @district_2_2, 'ward'),
-('Leguruki', @district_2_2, 'ward'),
-('King''ori', @district_2_2, 'ward'),
-('Maji ya chai', @district_2_2, 'ward'),
-('Kikatiti', @district_2_2, 'ward'),
-('Maroroni', @district_2_2, 'ward'),
-('Makiba', @district_2_2, 'ward'),
-('Mbuguni', @district_2_2, 'ward'),
-('Kikwe', @district_2_2, 'ward'),
-('Usariver', @district_2_2, 'ward'),
-('Nkoaranga', @district_2_2, 'ward'),
-('Poli', @district_2_2, 'ward'),
-('Seela Sing''isi', @district_2_2, 'ward'),
-('Akheri', @district_2_2, 'ward'),
-('Nkoanrua', @district_2_2, 'ward'),
-('Songoro', @district_2_2, 'ward'),
-('Nkoarisambu', @district_2_2, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Arusha Urban', @region_2, 'district');
-
-SET @district_2_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kati', @district_2_3, 'ward'),
-('Kaloleni', @district_2_3, 'ward'),
-('Sekei', @district_2_3, 'ward'),
-('Kimandolu', @district_2_3, 'ward'),
-('Baraa', @district_2_3, 'ward'),
-('Oloirieni', @district_2_3, 'ward'),
-('Themi', @district_2_3, 'ward'),
-('Lemara', @district_2_3, 'ward'),
-('Terrat', @district_2_3, 'ward'),
-('Sokoni I', @district_2_3, 'ward'),
-('Daraja Mbili', @district_2_3, 'ward'),
-('Unga Ltd', @district_2_3, 'ward'),
-('Sombetini', @district_2_3, 'ward'),
-('Ngarenaro', @district_2_3, 'ward'),
-('Levolosi', @district_2_3, 'ward'),
-('Engutoto', @district_2_3, 'ward'),
-('Elerai', @district_2_3, 'ward'),
-('Olasiti', @district_2_3, 'ward'),
-('Moshono', @district_2_3, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Karatu', @region_2, 'district');
-
-SET @district_2_4 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Karatu', @district_2_4, 'ward'),
-('Endamarariek', @district_2_4, 'ward'),
-('Buger', @district_2_4, 'ward'),
-('Endabash', @district_2_4, 'ward'),
-('Kansay', @district_2_4, 'ward'),
-('Baray', @district_2_4, 'ward'),
-('Mang''ola', @district_2_4, 'ward'),
-('Daa', @district_2_4, 'ward'),
-('Oldean', @district_2_4, 'ward'),
-('Qurus', @district_2_4, 'ward'),
-('Ganako', @district_2_4, 'ward'),
-('Rhotia', @district_2_4, 'ward'),
-('Mbulumbulu', @district_2_4, 'ward'),
-('Endamaghang', @district_2_4, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Ngorongoro', @region_2, 'district');
-
-SET @district_2_5 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Orgosorok', @district_2_5, 'ward'),
-('Digodigo', @district_2_5, 'ward'),
-('Oldonyo Sambu', @district_2_5, 'ward'),
-('Pinyinyi', @district_2_5, 'ward'),
-('Sale', @district_2_5, 'ward'),
-('Malambo', @district_2_5, 'ward'),
-('Naiyobi', @district_2_5, 'ward'),
-('Nainokanoka', @district_2_5, 'ward'),
-('Olbalbal', @district_2_5, 'ward'),
-('Ngorongoro', @district_2_5, 'ward'),
-('Endulen', @district_2_5, 'ward'),
-('Kakesio', @district_2_5, 'ward'),
-('Arash', @district_2_5, 'ward'),
-('Soitsambu', @district_2_5, 'ward'),
-('Engusero Sambu', @district_2_5, 'ward'),
-('Oloirien', @district_2_5, 'ward'),
-('Samunge', @district_2_5, 'ward'),
-('Alailelai', @district_2_5, 'ward'),
-('Maalon', @district_2_5, 'ward'),
-('Ololosokwan', @district_2_5, 'ward'),
-('Oloipiri', @district_2_5, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Arusha', @region_2, 'district');
-
-SET @district_2_6 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Olkokola', @district_2_6, 'ward'),
-('Ilkiding''a', @district_2_6, 'ward'),
-('Bangata', @district_2_6, 'ward'),
-('Sokon II', @district_2_6, 'ward'),
-('Oltoroto', @district_2_6, 'ward'),
-('Moivo', @district_2_6, 'ward'),
-('Kiranyi', @district_2_6, 'ward'),
-('Kimnyaki', @district_2_6, 'ward'),
-('Oltrumet', @district_2_6, 'ward'),
-('Mwandeti', @district_2_6, 'ward'),
-('Mussa', @district_2_6, 'ward'),
-('Kisongo', @district_2_6, 'ward'),
-('Mateves', @district_2_6, 'ward'),
-('Oljoro', @district_2_6, 'ward'),
-('Bwawani', @district_2_6, 'ward'),
-('Nduruma', @district_2_6, 'ward'),
-('Mlangarini', @district_2_6, 'ward'),
-('Sambasha', @district_2_6, 'ward'),
-('Olorieni', @district_2_6, 'ward'),
-('Olmotonyi', @district_2_6, 'ward'),
-('Oldonyosambu', @district_2_6, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Longido', @region_2, 'district');
-
-SET @district_2_7 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kitumbeine', @district_2_7, 'ward'),
-('Engikaret', @district_2_7, 'ward'),
-('Eleng''ata Dapash', @district_2_7, 'ward'),
-('Ilorienito', @district_2_7, 'ward'),
-('Gelai Meirugoi', @district_2_7, 'ward'),
-('Gelai lumbwa', @district_2_7, 'ward'),
-('Matale', @district_2_7, 'ward'),
-('Engarenaibor', @district_2_7, 'ward'),
-('Mundarara', @district_2_7, 'ward'),
-('Kimokouwa', @district_2_7, 'ward'),
-('Namanga', @district_2_7, 'ward'),
-('Orbomba', @district_2_7, 'ward'),
-('Longido', @district_2_7, 'ward'),
-('Tingatinga', @district_2_7, 'ward'),
-('Olmolog', @district_2_7, 'ward'),
-('Kamwanga', @district_2_7, 'ward');
-
-
--- ============================================================
--- REGION: Kilimanjaro
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kilimanjaro', NULL, 'region');
-
-SET @region_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Rombo', @region_3, 'district');
-
-SET @district_3_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Mamsera', @district_3_1, 'ward'),
-('Mahida', @district_3_1, 'ward'),
-('Mengwe', @district_3_1, 'ward'),
-('Keni Mengeni', @district_3_1, 'ward'),
-('Aleni', @district_3_1, 'ward'),
-('Shimbi', @district_3_1, 'ward'),
-('Makiidi', @district_3_1, 'ward'),
-('Kelamfua Mokala', @district_3_1, 'ward'),
-('Ushiri Ikuini', @district_3_1, 'ward'),
-('Mrao Keryo', @district_3_1, 'ward'),
-('Kirwa Keni', @district_3_1, 'ward'),
-('Katangara Mrere', @district_3_1, 'ward'),
-('Kisale Msaranga', @district_3_1, 'ward'),
-('Olele', @district_3_1, 'ward'),
-('Kirongo Samanga', @district_3_1, 'ward'),
-('Kitirima Kingachi', @district_3_1, 'ward'),
-('Ubetu Kahe', @district_3_1, 'ward'),
-('Nanjara Reha', @district_3_1, 'ward'),
-('Tarakea Motamburu', @district_3_1, 'ward'),
-('Motamburu Kitendeni', @district_3_1, 'ward'),
-('Marangu Kitowo', @district_3_1, 'ward'),
-('Ngoyoni', @district_3_1, 'ward'),
-('Manda', @district_3_1, 'ward'),
-('Holili', @district_3_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mwanga', @region_3, 'district');
-
-SET @district_3_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kileo', @district_3_2, 'ward'),
-('Mwanga', @district_3_2, 'ward'),
-('Msangeni', @district_3_2, 'ward'),
-('Kifula', @district_3_2, 'ward'),
-('Kighare', @district_3_2, 'ward'),
-('Kirongwe', @district_3_2, 'ward'),
-('Kwakoa', @district_3_2, 'ward'),
-('Lembeni', @district_3_2, 'ward'),
-('Jipe', @district_3_2, 'ward'),
-('Mwaniko', @district_3_2, 'ward'),
-('Chomvu', @district_3_2, 'ward'),
-('Ngujini', @district_3_2, 'ward'),
-('Kirya', @district_3_2, 'ward'),
-('Kilomeni', @district_3_2, 'ward'),
-('Shighatini', @district_3_2, 'ward'),
-('Lang''ata', @district_3_2, 'ward'),
-('Mgagao', @district_3_2, 'ward'),
-('Toloha', @district_3_2, 'ward'),
-('Kigoningoni', @district_3_2, 'ward'),
-('Kivisini', @district_3_2, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Same', @region_3, 'district');
-
-SET @district_3_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Same', @district_3_3, 'ward'),
-('Ruvu', @district_3_3, 'ward'),
-('Njoro', @district_3_3, 'ward'),
-('Kisiwani', @district_3_3, 'ward'),
-('Msindo', @district_3_3, 'ward'),
-('Mshewa', @district_3_3, 'ward'),
-('Mhezi', @district_3_3, 'ward'),
-('Mwembe', @district_3_3, 'ward'),
-('Vudee', @district_3_3, 'ward'),
-('Vuje', @district_3_3, 'ward'),
-('Bombo', @district_3_3, 'ward'),
-('Mtii', @district_3_3, 'ward'),
-('Maore', @district_3_3, 'ward'),
-('Ndungu', @district_3_3, 'ward'),
-('Kihurio', @district_3_3, 'ward'),
-('Bendera', @district_3_3, 'ward'),
-('Myamba', @district_3_3, 'ward'),
-('Mpinji', @district_3_3, 'ward'),
-('Bwambo', @district_3_3, 'ward'),
-('Vunta', @district_3_3, 'ward'),
-('Chome', @district_3_3, 'ward'),
-('Suji', @district_3_3, 'ward'),
-('Makanya', @district_3_3, 'ward'),
-('Hedaru', @district_3_3, 'ward'),
-('Kirangare', @district_3_3, 'ward'),
-('Kisima', @district_3_3, 'ward'),
-('Stesheni', @district_3_3, 'ward'),
-('Vumari', @district_3_3, 'ward'),
-('Mabilioni', @district_3_3, 'ward'),
-('Kalemawe', @district_3_3, 'ward'),
-('Lugulu', @district_3_3, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Moshi', @region_3, 'district');
-
-SET @district_3_4 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Mwika Kusini', @district_3_4, 'ward'),
-('MwikaKaskazini', @district_3_4, 'ward'),
-('Mamba Kaskazini', @district_3_4, 'ward'),
-('Mamba Kusini', @district_3_4, 'ward'),
-('Marangu Mashariki', @district_3_4, 'ward'),
-('Marangu Magharibi', @district_3_4, 'ward'),
-('Makuyuni', @district_3_4, 'ward'),
-('Kilema Kaskazini', @district_3_4, 'ward'),
-('Kilema Kusini', @district_3_4, 'ward'),
-('KiruaVunjo Mashariki', @district_3_4, 'ward'),
-('KiruaVunjo Magharibi', @district_3_4, 'ward'),
-('Kahe', @district_3_4, 'ward'),
-('Kahe Mashariki', @district_3_4, 'ward'),
-('Old Moshi Mashariki', @district_3_4, 'ward'),
-('Old Moshi Magharibi', @district_3_4, 'ward'),
-('Mbokomu', @district_3_4, 'ward'),
-('Uru Mashariki', @district_3_4, 'ward'),
-('Uru Shimbwe', @district_3_4, 'ward'),
-('Uru Kusini', @district_3_4, 'ward'),
-('Uru Kaskazini', @district_3_4, 'ward'),
-('Mabogini', @district_3_4, 'ward'),
-('Arusha Chini', @district_3_4, 'ward'),
-('Kibosho Mashariki', @district_3_4, 'ward'),
-('Kibosho Kati', @district_3_4, 'ward'),
-('Kibosho Magharibi', @district_3_4, 'ward'),
-('Kindi', @district_3_4, 'ward'),
-('KiruaVunjo Kusini', @district_3_4, 'ward'),
-('Kirima', @district_3_4, 'ward'),
-('Okaoni', @district_3_4, 'ward'),
-('Kimochi', @district_3_4, 'ward'),
-('Kilema Kati', @district_3_4, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Hai', @region_3, 'district');
-
-SET @district_3_5 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Machame Mashariki', @district_3_5, 'ward'),
-('Machame Kusini', @district_3_5, 'ward'),
-('Machame Kaskazini', @district_3_5, 'ward'),
-('Machame Magharibi', @district_3_5, 'ward'),
-('Machame Uroki', @district_3_5, 'ward'),
-('Masama Mashariki', @district_3_5, 'ward'),
-('Masama Magharibi', @district_3_5, 'ward'),
-('Masama Kusini', @district_3_5, 'ward'),
-('Masama Rundugai', @district_3_5, 'ward'),
-('Hai Mjini', @district_3_5, 'ward'),
-('Masama Kati', @district_3_5, 'ward'),
-('Machame Weruweru', @district_3_5, 'ward'),
-('KIA', @district_3_5, 'ward'),
-('Machame Narumu', @district_3_5, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Moshi Urban', @region_3, 'district');
-
-SET @district_3_6 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kilimanjaro', @district_3_6, 'ward'),
-('Njoro', @district_3_6, 'ward'),
-('Mji Mpya', @district_3_6, 'ward'),
-('Majengo', @district_3_6, 'ward'),
-('Mawenzi', @district_3_6, 'ward'),
-('Rau', @district_3_6, 'ward'),
-('Korongoni', @district_3_6, 'ward'),
-('Kiusa', @district_3_6, 'ward'),
-('Bondeni', @district_3_6, 'ward'),
-('Pasua', @district_3_6, 'ward'),
-('Kaloleni', @district_3_6, 'ward'),
-('Kiboriloni', @district_3_6, 'ward'),
-('Msaranga', @district_3_6, 'ward'),
-('Karanga', @district_3_6, 'ward'),
-('Longuo B', @district_3_6, 'ward'),
-('Miembeni', @district_3_6, 'ward'),
-('Mfumuni', @district_3_6, 'ward'),
-('Soweto', @district_3_6, 'ward'),
-('Boma Mbuzi', @district_3_6, 'ward'),
-('Ng''ambo', @district_3_6, 'ward'),
-('Shirimatunda', @district_3_6, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Siha', @region_3, 'district');
-
-SET @district_3_7 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Ndumeti', @district_3_7, 'ward'),
-('Ngarenairobi', @district_3_7, 'ward'),
-('Gararagua', @district_3_7, 'ward'),
-('Sanya Juu', @district_3_7, 'ward'),
-('Biriri', @district_3_7, 'ward'),
-('Makiwaru', @district_3_7, 'ward'),
-('Nasai', @district_3_7, 'ward'),
-('Livishi', @district_3_7, 'ward'),
-('Ivaeny', @district_3_7, 'ward'),
-('Kashisha', @district_3_7, 'ward'),
-('Karansi', @district_3_7, 'ward'),
-('Olkolili', @district_3_7, 'ward');
-
-
--- ============================================================
--- REGION: Tanga
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Tanga', NULL, 'region');
-
-SET @region_4 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Lushoto', @region_4, 'district');
-
-SET @district_4_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Lushoto', @district_4_1, 'ward'),
-('Gare', @district_4_1, 'ward'),
-('Kwai', @district_4_1, 'ward'),
-('Ubiri', @district_4_1, 'ward'),
-('Soni', @district_4_1, 'ward'),
-('Vuga', @district_4_1, 'ward'),
-('Mponde', @district_4_1, 'ward'),
-('Mamba', @district_4_1, 'ward'),
-('Mbuzii', @district_4_1, 'ward'),
-('Tamota', @district_4_1, 'ward'),
-('Bumbuli', @district_4_1, 'ward'),
-('Funta', @district_4_1, 'ward'),
-('Mayo', @district_4_1, 'ward'),
-('Baga', @district_4_1, 'ward'),
-('Milingano', @district_4_1, 'ward'),
-('Mgwashi', @district_4_1, 'ward'),
-('Mtae', @district_4_1, 'ward'),
-('Sunga', @district_4_1, 'ward'),
-('Rangwi', @district_4_1, 'ward'),
-('Mnazi', @district_4_1, 'ward'),
-('Lunguza', @district_4_1, 'ward'),
-('Mbaramo', @district_4_1, 'ward'),
-('Mng''aro', @district_4_1, 'ward'),
-('Mlalo', @district_4_1, 'ward'),
-('Mwangoi', @district_4_1, 'ward'),
-('Shume', @district_4_1, 'ward'),
-('Malindi', @district_4_1, 'ward'),
-('Hemtoye', @district_4_1, 'ward'),
-('Malibwi', @district_4_1, 'ward'),
-('Mlola', @district_4_1, 'ward'),
-('Makanya', @district_4_1, 'ward'),
-('Ngwelo', @district_4_1, 'ward'),
-('Kilole', @district_4_1, 'ward'),
-('Kwekanga', @district_4_1, 'ward'),
-('Lukozi', @district_4_1, 'ward'),
-('Manolo', @district_4_1, 'ward'),
-('Dule "M"', @district_4_1, 'ward'),
-('Kwemshasha', @district_4_1, 'ward'),
-('Nkongoi', @district_4_1, 'ward'),
-('Dule "B"', @district_4_1, 'ward'),
-('Maheza ngulu', @district_4_1, 'ward'),
-('Usambara', @district_4_1, 'ward'),
-('Ngulwi', @district_4_1, 'ward'),
-('Kwemashai', @district_4_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Korogwe', @region_4, 'district');
-
-SET @district_4_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Mashewa', @district_4_2, 'ward'),
-('Kizara', @district_4_2, 'ward'),
-('Magoma', @district_4_2, 'ward'),
-('Kerenge', @district_4_2, 'ward'),
-('Kwagunda', @district_4_2, 'ward'),
-('Mnyuzi', @district_4_2, 'ward'),
-('Vugiri', @district_4_2, 'ward'),
-('Dindira', @district_4_2, 'ward'),
-('Bungu', @district_4_2, 'ward'),
-('Lutindi', @district_4_2, 'ward'),
-('Makuyuni', @district_4_2, 'ward'),
-('Chekelei', @district_4_2, 'ward'),
-('Mombo', @district_4_2, 'ward'),
-('Mkalamo', @district_4_2, 'ward'),
-('Mkomazi', @district_4_2, 'ward'),
-('Kwashemshi', @district_4_2, 'ward'),
-('Mpale', @district_4_2, 'ward'),
-('Mswaha', @district_4_2, 'ward'),
-('Magamba Kwalukonge', @district_4_2, 'ward'),
-('Mazinde', @district_4_2, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Muheza', @region_4, 'district');
-
-SET @district_4_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Misozwe', @district_4_3, 'ward'),
-('Pande Darajani', @district_4_3, 'ward'),
-('Ngomeni', @district_4_3, 'ward'),
-('Kigombe', @district_4_3, 'ward'),
-('Lusanga', @district_4_3, 'ward'),
-('Kicheba', @district_4_3, 'ward'),
-('Magoroto', @district_4_3, 'ward'),
-('Magila', @district_4_3, 'ward'),
-('Mbaramo', @district_4_3, 'ward'),
-('Majengo', @district_4_3, 'ward'),
-('Masuguru', @district_4_3, 'ward'),
-('Tingeni', @district_4_3, 'ward'),
-('Kilulu', @district_4_3, 'ward'),
-('Mkuzi', @district_4_3, 'ward'),
-('Mtindiro', @district_4_3, 'ward'),
-('Kwafungo', @district_4_3, 'ward'),
-('Songa', @district_4_3, 'ward'),
-('Bwembwera', @district_4_3, 'ward'),
-('Potwe', @district_4_3, 'ward'),
-('Nkumba', @district_4_3, 'ward'),
-('Kisiwani', @district_4_3, 'ward'),
-('Misalai', @district_4_3, 'ward'),
-('Zirai', @district_4_3, 'ward'),
-('Mbomole', @district_4_3, 'ward'),
-('Amani', @district_4_3, 'ward'),
-('Tongwe', @district_4_3, 'ward'),
-('Mhamba', @district_4_3, 'ward'),
-('Kwakifua', @district_4_3, 'ward'),
-('Kwemkabala', @district_4_3, 'ward'),
-('Genge', @district_4_3, 'ward'),
-('Tanganyika', @district_4_3, 'ward'),
-('Mpapayu', @district_4_3, 'ward'),
-('Mlingano', @district_4_3, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Tanga Urban', @region_4, 'district');
-
-SET @district_4_4 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Central', @district_4_4, 'ward'),
-('Majengo', @district_4_4, 'ward'),
-('Nguvumali', @district_4_4, 'ward'),
-('Chumbageni', @district_4_4, 'ward'),
-('Ngamiani Kaskazini', @district_4_4, 'ward'),
-('Ngamiani Kati', @district_4_4, 'ward'),
-('Ngamiani Kusini', @district_4_4, 'ward'),
-('Usagara', @district_4_4, 'ward'),
-('Makorora', @district_4_4, 'ward'),
-('Mzingani', @district_4_4, 'ward'),
-('Msambweni', @district_4_4, 'ward'),
-('Mwanzange', @district_4_4, 'ward'),
-('Tangasisi', @district_4_4, 'ward'),
-('Mabawa', @district_4_4, 'ward'),
-('Tongoni', @district_4_4, 'ward'),
-('Marungu', @district_4_4, 'ward'),
-('Pongwe', @district_4_4, 'ward'),
-('Maweni', @district_4_4, 'ward'),
-('Duga', @district_4_4, 'ward'),
-('Mzizima', @district_4_4, 'ward'),
-('Mabokweni', @district_4_4, 'ward'),
-('Kirare', @district_4_4, 'ward'),
-('Kiomoni', @district_4_4, 'ward'),
-('Chongoleani', @district_4_4, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Pangani', @region_4, 'district');
-
-SET @district_4_5 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Pangani Mashariki', @district_4_5, 'ward'),
-('Pangani Magharibi', @district_4_5, 'ward'),
-('Bweni', @district_4_5, 'ward'),
-('Madanga', @district_4_5, 'ward'),
-('Kimang''a', @district_4_5, 'ward'),
-('Bushiri', @district_4_5, 'ward'),
-('Mwera', @district_4_5, 'ward'),
-('Tungamaa', @district_4_5, 'ward'),
-('Kipumbwi', @district_4_5, 'ward'),
-('Mikunguni', @district_4_5, 'ward'),
-('Ubangaa', @district_4_5, 'ward'),
-('Mkwaja', @district_4_5, 'ward'),
-('Mkalamo', @district_4_5, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Handeni', @region_4, 'district');
-
-SET @district_4_6 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Segera', @district_4_6, 'ward'),
-('Ndolwa', @district_4_6, 'ward'),
-('Mazingara', @district_4_6, 'ward'),
-('Kwamsisi', @district_4_6, 'ward'),
-('Kwasunga', @district_4_6, 'ward'),
-('Kwaluguru', @district_4_6, 'ward'),
-('Kang''ata', @district_4_6, 'ward'),
-('Kwamkonje', @district_4_6, 'ward'),
-('Kwachaga', @district_4_6, 'ward'),
-('Sindeni', @district_4_6, 'ward'),
-('Misima', @district_4_6, 'ward'),
-('Kiva', @district_4_6, 'ward'),
-('Kabuku', @district_4_6, 'ward'),
-('Kwamatuku', @district_4_6, 'ward'),
-('Kwedizinga', @district_4_6, 'ward'),
-('Mgambo', @district_4_6, 'ward'),
-('Komkonga', @district_4_6, 'ward'),
-('Mkata', @district_4_6, 'ward'),
-('Kabuku ndani', @district_4_6, 'ward'),
-('Kwamgwe', @district_4_6, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kilindi', @region_4, 'district');
-
-SET @district_4_7 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Lwande', @district_4_7, 'ward'),
-('Kikunde', @district_4_7, 'ward'),
-('Songe', @district_4_7, 'ward'),
-('Pagwi', @district_4_7, 'ward'),
-('Masagalu', @district_4_7, 'ward'),
-('Kimbe', @district_4_7, 'ward'),
-('Kilindi', @district_4_7, 'ward'),
-('Negero', @district_4_7, 'ward'),
-('Mkindi', @district_4_7, 'ward'),
-('Mvungwe', @district_4_7, 'ward'),
-('Kwediboma', @district_4_7, 'ward'),
-('Saunyi', @district_4_7, 'ward'),
-('Jaila', @district_4_7, 'ward'),
-('Msanja', @district_4_7, 'ward'),
-('Kisangasa', @district_4_7, 'ward'),
-('Mabalanga', @district_4_7, 'ward'),
-('Kibirashi', @district_4_7, 'ward'),
-('Kilwa', @district_4_7, 'ward'),
-('Tunguli', @district_4_7, 'ward'),
-('Kwekivu', @district_4_7, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mkinga', @region_4, 'district');
-
-SET @district_4_8 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Mwakijembe', @district_4_8, 'ward'),
-('Mkinga', @district_4_8, 'ward'),
-('Duga', @district_4_8, 'ward'),
-('Moa', @district_4_8, 'ward'),
-('Manza', @district_4_8, 'ward'),
-('Kwale', @district_4_8, 'ward'),
-('Mtimbwani', @district_4_8, 'ward'),
-('Gombero', @district_4_8, 'ward'),
-('Mhinduro', @district_4_8, 'ward'),
-('Maramba', @district_4_8, 'ward'),
-('Kigongoi', @district_4_8, 'ward'),
-('Daluni', @district_4_8, 'ward'),
-('Bosha', @district_4_8, 'ward'),
-('Mapatano', @district_4_8, 'ward'),
-('Bwiti', @district_4_8, 'ward'),
-('Mnyenzani', @district_4_8, 'ward'),
-('Doda', @district_4_8, 'ward'),
-('Boma', @district_4_8, 'ward'),
-('Parungu Kasera', @district_4_8, 'ward'),
-('Mayomboni', @district_4_8, 'ward'),
-('Sigaya', @district_4_8, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Korogwe Township Authority', @region_4, 'district');
-
-SET @district_4_9 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Ngombezi', @district_4_9, 'ward'),
-('Mtonga', @district_4_9, 'ward'),
-('Magunga', @district_4_9, 'ward'),
-('Kwamndolwa', @district_4_9, 'ward'),
-('Old Korogwe', @district_4_9, 'ward'),
-('Manundu', @district_4_9, 'ward'),
-('Kilole', @district_4_9, 'ward'),
-('Kwamsisi', @district_4_9, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Handeni Mji', @region_4, 'district');
-
-SET @district_4_10 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Malezi', @district_4_10, 'ward'),
-('Kwenjugo', @district_4_10, 'ward'),
-('Mabanda', @district_4_10, 'ward'),
-('Konje', @district_4_10, 'ward'),
-('Mlimani', @district_4_10, 'ward'),
-('Msasa', @district_4_10, 'ward'),
-('Kideleko', @district_4_10, 'ward'),
-('Kwamagome', @district_4_10, 'ward'),
-('Vibaoni', @district_4_10, 'ward'),
-('Chanika', @district_4_10, 'ward'),
-('Mdoe', @district_4_10, 'ward'),
-('Kwediyamba', @district_4_10, 'ward');
-
-
--- ============================================================
--- REGION: Morogoro
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Morogoro', NULL, 'region');
-
-SET @region_5 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kilosa', @region_5, 'district');
-
-SET @district_5_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Mabula', @district_5_1, 'ward'),
-('Maguha', @district_5_1, 'ward'),
-('Berega', @district_5_1, 'ward'),
-('Magubike', @district_5_1, 'ward'),
-('Mamboya', @district_5_1, 'ward'),
-('Dumila', @district_5_1, 'ward'),
-('Magole', @district_5_1, 'ward'),
-('Msowero', @district_5_1, 'ward'),
-('Rudewa', @district_5_1, 'ward'),
-('Chanzulu', @district_5_1, 'ward'),
-('Kimamba ''A''', @district_5_1, 'ward'),
-('Kimamba '' B ''', @district_5_1, 'ward'),
-('Mbumi', @district_5_1, 'ward'),
-('Mkwatani', @district_5_1, 'ward'),
-('Magomeni', @district_5_1, 'ward'),
-('Kasiki', @district_5_1, 'ward'),
-('Mabwerebwere', @district_5_1, 'ward'),
-('Kilangali', @district_5_1, 'ward'),
-('Mikumi', @district_5_1, 'ward'),
-('Ruhembe', @district_5_1, 'ward'),
-('Kidodi', @district_5_1, 'ward'),
-('Vidunda', @district_5_1, 'ward'),
-('Malolo', @district_5_1, 'ward'),
-('Kisanga', @district_5_1, 'ward'),
-('Uleling''ombe', @district_5_1, 'ward'),
-('Ulaya', @district_5_1, 'ward'),
-('Zombo', @district_5_1, 'ward'),
-('Lumuma', @district_5_1, 'ward'),
-('Masanze', @district_5_1, 'ward'),
-('Lumbiji', @district_5_1, 'ward'),
-('Kitete', @district_5_1, 'ward'),
-('Madoto', @district_5_1, 'ward'),
-('Tindiga', @district_5_1, 'ward'),
-('Ruaha', @district_5_1, 'ward'),
-('Kidete', @district_5_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Morogoro', @region_5, 'district');
-
-SET @district_5_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kasanga', @district_5_2, 'ward'),
-('Kolero', @district_5_2, 'ward'),
-('Mvuha', @district_5_2, 'ward'),
-('Selembala', @district_5_2, 'ward'),
-('Bwaki la Chini', @district_5_2, 'ward'),
-('Bwakila Juu', @district_5_2, 'ward'),
-('Kisaki', @district_5_2, 'ward'),
-('Mngazi', @district_5_2, 'ward'),
-('Singisa', @district_5_2, 'ward'),
-('Mkambarani', @district_5_2, 'ward'),
-('Mikese', @district_5_2, 'ward'),
-('Kidugalo', @district_5_2, 'ward'),
-('Mkulazi', @district_5_2, 'ward'),
-('Ngerengere', @district_5_2, 'ward'),
-('Tununguo', @district_5_2, 'ward'),
-('Kiroka', @district_5_2, 'ward'),
-('Mkuyuni', @district_5_2, 'ward'),
-('Tegetero', @district_5_2, 'ward'),
-('Kibogwa', @district_5_2, 'ward'),
-('Kibungo Juu', @district_5_2, 'ward'),
-('Kisemu', @district_5_2, 'ward'),
-('Lundi', @district_5_2, 'ward'),
-('Mtombozi', @district_5_2, 'ward'),
-('Tawa', @district_5_2, 'ward'),
-('Matuli', @district_5_2, 'ward'),
-('Gwata', @district_5_2, 'ward'),
-('Konde', @district_5_2, 'ward'),
-('Bungu', @district_5_2, 'ward'),
-('Kinole', @district_5_2, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kilombero', @region_5, 'district');
-
-SET @district_5_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kidatu', @district_5_3, 'ward'),
-('Sanje', @district_5_3, 'ward'),
-('Mkula', @district_5_3, 'ward'),
-('Mang''ula', @district_5_3, 'ward'),
-('Kisawasawa', @district_5_3, 'ward'),
-('Kiberege', @district_5_3, 'ward'),
-('Kibaoni', @district_5_3, 'ward'),
-('Ifakara', @district_5_3, 'ward'),
-('Lumemo', @district_5_3, 'ward'),
-('Idete', @district_5_3, 'ward'),
-('Mbingu', @district_5_3, 'ward'),
-('Mofu', @district_5_3, 'ward'),
-('Mchombe', @district_5_3, 'ward'),
-('Chisano', @district_5_3, 'ward'),
-('Mlimba', @district_5_3, 'ward'),
-('Utengule', @district_5_3, 'ward'),
-('Masagati', @district_5_3, 'ward'),
-('Uchindile', @district_5_3, 'ward'),
-('Chita', @district_5_3, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Ulanga', @region_5, 'district');
-
-SET @district_5_4 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Minepa', @district_5_4, 'ward'),
-('Lupiro', @district_5_4, 'ward'),
-('Kichangani', @district_5_4, 'ward'),
-('Msogezi', @district_5_4, 'ward'),
-('Vigoi', @district_5_4, 'ward'),
-('Mahenge', @district_5_4, 'ward'),
-('Isongo', @district_5_4, 'ward'),
-('Ruaha', @district_5_4, 'ward'),
-('Chirombola', @district_5_4, 'ward'),
-('Sali', @district_5_4, 'ward'),
-('Euga', @district_5_4, 'ward'),
-('Mwaya', @district_5_4, 'ward'),
-('Lukande', @district_5_4, 'ward'),
-('Mbuga', @district_5_4, 'ward'),
-('Ilonga', @district_5_4, 'ward'),
-('Kilosa kwa Mpepo', @district_5_4, 'ward'),
-('Ngoheranga', @district_5_4, 'ward'),
-('Biro', @district_5_4, 'ward'),
-('Malinyi', @district_5_4, 'ward'),
-('Sofi', @district_5_4, 'ward'),
-('Usangule', @district_5_4, 'ward'),
-('Mtimbira', @district_5_4, 'ward'),
-('Itete', @district_5_4, 'ward'),
-('Iragua', @district_5_4, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Morogoro Urban', @region_5, 'district');
-
-SET @district_5_5 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Sabasaba', @district_5_5, 'ward'),
-('Uwanja wa Taifa', @district_5_5, 'ward'),
-('Kiwanja Cha Ndege', @district_5_5, 'ward'),
-('Mji Mpya', @district_5_5, 'ward'),
-('Kingo', @district_5_5, 'ward'),
-('Mji Mkuu', @district_5_5, 'ward'),
-('Sultan Area', @district_5_5, 'ward'),
-('Mafiga', @district_5_5, 'ward'),
-('Mazimbu', @district_5_5, 'ward'),
-('Mwembesongo', @district_5_5, 'ward'),
-('Kichangani', @district_5_5, 'ward'),
-('Kilakala', @district_5_5, 'ward'),
-('Boma', @district_5_5, 'ward'),
-('Mlimani', @district_5_5, 'ward'),
-('Mbuyuni', @district_5_5, 'ward'),
-('Kingolwira', @district_5_5, 'ward'),
-('Bigwa', @district_5_5, 'ward'),
-('Mzinga', @district_5_5, 'ward'),
-('Kihonda', @district_5_5, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mvomero', @region_5, 'district');
-
-SET @district_5_6 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Mvomero', @district_5_6, 'ward'),
-('Hembeti', @district_5_6, 'ward'),
-('Maskati', @district_5_6, 'ward'),
-('Kibati', @district_5_6, 'ward'),
-('Sungaji', @district_5_6, 'ward'),
-('Mhonda', @district_5_6, 'ward'),
-('Diongoya', @district_5_6, 'ward'),
-('Mtibwa', @district_5_6, 'ward'),
-('Kanga', @district_5_6, 'ward'),
-('Bunduki', @district_5_6, 'ward'),
-('Kikeo', @district_5_6, 'ward'),
-('Langali', @district_5_6, 'ward'),
-('Tchenzema', @district_5_6, 'ward'),
-('Mzumbe', @district_5_6, 'ward'),
-('Mlali', @district_5_6, 'ward'),
-('Doma', @district_5_6, 'ward'),
-('Melela', @district_5_6, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Gairo', @region_5, 'district');
-
-SET @district_5_7 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Chakwale', @district_5_7, 'ward'),
-('Iyogwe', @district_5_7, 'ward'),
-('Idibo', @district_5_7, 'ward'),
-('Kibedya', @district_5_7, 'ward'),
-('Msingisi', @district_5_7, 'ward'),
-('Gairo', @district_5_7, 'ward'),
-('Rubeho', @district_5_7, 'ward'),
-('Mandege', @district_5_7, 'ward'),
-('Chagongwe', @district_5_7, 'ward'),
-('Chanjale', @district_5_7, 'ward'),
-('Nongwe', @district_5_7, 'ward');
-
-
--- ============================================================
--- REGION: Pwani
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Pwani', NULL, 'region');
-
-SET @region_6 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Bagamoyo', @region_6, 'district');
-
-SET @district_6_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kiwangwa', @district_6_1, 'ward'),
-('Msata', @district_6_1, 'ward'),
-('Miono', @district_6_1, 'ward'),
-('Mkange', @district_6_1, 'ward'),
-('Magomeni', @district_6_1, 'ward'),
-('Dunda', @district_6_1, 'ward'),
-('Kiromo', @district_6_1, 'ward'),
-('Zinga', @district_6_1, 'ward'),
-('Yombo', @district_6_1, 'ward'),
-('Vigwaza', @district_6_1, 'ward'),
-('Talawanda', @district_6_1, 'ward'),
-('Bwilingu', @district_6_1, 'ward'),
-('Lugoba', @district_6_1, 'ward'),
-('Ubenazomozi', @district_6_1, 'ward'),
-('Kibindu', @district_6_1, 'ward'),
-('Fukayose', @district_6_1, 'ward'),
-('Kerege', @district_6_1, 'ward'),
-('Pera', @district_6_1, 'ward'),
-('Msoga', @district_6_1, 'ward'),
-('Kimange', @district_6_1, 'ward'),
-('Mandera', @district_6_1, 'ward'),
-('Mbwewe', @district_6_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kibaha', @region_6, 'district');
-
-SET @district_6_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Gwata', @district_6_2, 'ward'),
-('Dutumi', @district_6_2, 'ward'),
-('Magindu', @district_6_2, 'ward'),
-('Soga', @district_6_2, 'ward'),
-('Kikongo', @district_6_2, 'ward'),
-('Ruvu', @district_6_2, 'ward'),
-('Mlandizi', @district_6_2, 'ward'),
-('Kwala', @district_6_2, 'ward'),
-('Kilangalanga', @district_6_2, 'ward'),
-('Janga', @district_6_2, 'ward'),
-('Bokomnemela', @district_6_2, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kisarawe', @region_6, 'district');
-
-SET @district_6_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kisarawe', @district_6_3, 'ward'),
-('Msimbu', @district_6_3, 'ward'),
-('Masaki', @district_6_3, 'ward'),
-('Kibuta', @district_6_3, 'ward'),
-('Marumbo', @district_6_3, 'ward'),
-('Maneromango', @district_6_3, 'ward'),
-('Msanga', @district_6_3, 'ward'),
-('Marui', @district_6_3, 'ward'),
-('Cholesamvula', @district_6_3, 'ward'),
-('Vikumbulu', @district_6_3, 'ward'),
-('Mafizi', @district_6_3, 'ward'),
-('Kurui', @district_6_3, 'ward'),
-('Mzenga', @district_6_3, 'ward'),
-('Vihingo', @district_6_3, 'ward'),
-('Kiluvya', @district_6_3, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mkuranga', @region_6, 'district');
-
-SET @district_6_4 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Mkuranga', @district_6_4, 'ward'),
-('Tambani', @district_6_4, 'ward'),
-('Vikindu', @district_6_4, 'ward'),
-('Mbezi', @district_6_4, 'ward'),
-('Shungubweni', @district_6_4, 'ward'),
-('Kisiju', @district_6_4, 'ward'),
-('Magawa', @district_6_4, 'ward'),
-('Kitomondo', @district_6_4, 'ward'),
-('Lukanga', @district_6_4, 'ward'),
-('Nyamato', @district_6_4, 'ward'),
-('Kimanzichana', @district_6_4, 'ward'),
-('Mkamba', @district_6_4, 'ward'),
-('Panzuo', @district_6_4, 'ward'),
-('Bupu', @district_6_4, 'ward'),
-('Mwarusembe', @district_6_4, 'ward'),
-('Vianzi', @district_6_4, 'ward'),
-('Njia nne', @district_6_4, 'ward'),
-('Kiparang''anda', @district_6_4, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Rufiji', @region_6, 'district');
-
-SET @district_6_5 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Ikwiriri', @district_6_5, 'ward'),
-('Mgomba', @district_6_5, 'ward'),
-('Umwe', @district_6_5, 'ward'),
-('Utete', @district_6_5, 'ward'),
-('Mkongo', @district_6_5, 'ward'),
-('Ngorongo', @district_6_5, 'ward'),
-('Mwaseni', @district_6_5, 'ward'),
-('Kibiti', @district_6_5, 'ward'),
-('Bungu', @district_6_5, 'ward'),
-('Mahege', @district_6_5, 'ward'),
-('Mchukwi', @district_6_5, 'ward'),
-('Chumbi', @district_6_5, 'ward'),
-('Mbwara', @district_6_5, 'ward'),
-('Mtunda', @district_6_5, 'ward'),
-('Ruaruke', @district_6_5, 'ward'),
-('Salale', @district_6_5, 'ward'),
-('Mbuchi', @district_6_5, 'ward'),
-('Kiongoroni', @district_6_5, 'ward'),
-('Maparoni', @district_6_5, 'ward'),
-('Chemchem', @district_6_5, 'ward'),
-('Ngarambe', @district_6_5, 'ward'),
-('Dimani', @district_6_5, 'ward'),
-('Mtawanya', @district_6_5, 'ward'),
-('Mjawa', @district_6_5, 'ward'),
-('Mlanzi', @district_6_5, 'ward'),
-('Mwambao', @district_6_5, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mafia', @region_6, 'district');
-
-SET @district_6_6 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kanga', @district_6_6, 'ward'),
-('Kirongwe', @district_6_6, 'ward'),
-('Baleni', @district_6_6, 'ward'),
-('Ndagoni', @district_6_6, 'ward'),
-('Kilindoni', @district_6_6, 'ward'),
-('Miburani', @district_6_6, 'ward'),
-('Kiegeani', @district_6_6, 'ward'),
-('Jibondo', @district_6_6, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kibaha Urban', @region_6, 'district');
-
-SET @district_6_7 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Pangani', @district_6_7, 'ward'),
-('Mailimoja', @district_6_7, 'ward'),
-('Tumbi', @district_6_7, 'ward'),
-('Picha ya Ndege', @district_6_7, 'ward'),
-('Mkuza', @district_6_7, 'ward'),
-('Kibaha', @district_6_7, 'ward'),
-('Msangani', @district_6_7, 'ward'),
-('Kongowe', @district_6_7, 'ward'),
-('Misugusugu', @district_6_7, 'ward'),
-('Visiga', @district_6_7, 'ward'),
-('Mbwawa', @district_6_7, 'ward');
-
-
--- ============================================================
--- REGION: Dar-es-salaam
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Dar-es-salaam', NULL, 'region');
-
-SET @region_7 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kinondoni', @region_7, 'district');
-
-SET @district_7_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Magomeni', @district_7_1, 'ward'),
-('Makurumla', @district_7_1, 'ward'),
-('Ndugumbi', @district_7_1, 'ward'),
-('Tandale', @district_7_1, 'ward'),
-('Mwananyamala', @district_7_1, 'ward'),
-('Msasani', @district_7_1, 'ward'),
-('Kinondoni', @district_7_1, 'ward'),
-('Mzimuni', @district_7_1, 'ward'),
-('Kigogo', @district_7_1, 'ward'),
-('Mabibo', @district_7_1, 'ward'),
-('Manzese', @district_7_1, 'ward'),
-('Ubungo', @district_7_1, 'ward'),
-('Kibamba', @district_7_1, 'ward'),
-('Goba', @district_7_1, 'ward'),
-('Kawe', @district_7_1, 'ward'),
-('Kunduchi', @district_7_1, 'ward'),
-('Mbweni', @district_7_1, 'ward'),
-('Bunju', @district_7_1, 'ward'),
-('Makuburi', @district_7_1, 'ward'),
-('Mburahati', @district_7_1, 'ward'),
-('Makumbusho', @district_7_1, 'ward'),
-('Sinza', @district_7_1, 'ward'),
-('Kijitonyama', @district_7_1, 'ward'),
-('Kimara', @district_7_1, 'ward'),
-('Mikocheni', @district_7_1, 'ward'),
-('Mbezi', @district_7_1, 'ward'),
-('Hananasifu', @district_7_1, 'ward'),
-('Saranga', @district_7_1, 'ward'),
-('Kwembe', @district_7_1, 'ward'),
-('Msigani', @district_7_1, 'ward'),
-('Mbezi Juu', @district_7_1, 'ward'),
-('Makongo', @district_7_1, 'ward'),
-('Mabwepande', @district_7_1, 'ward'),
-('Wazo', @district_7_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Ilala', @region_7, 'district');
-
-SET @district_7_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Ukonga', @district_7_2, 'ward'),
-('Pugu', @district_7_2, 'ward'),
-('Msongola', @district_7_2, 'ward'),
-('Tabata', @district_7_2, 'ward'),
-('Kinyerezi', @district_7_2, 'ward'),
-('Ilala', @district_7_2, 'ward'),
-('Mchikichini', @district_7_2, 'ward'),
-('Vingunguti', @district_7_2, 'ward'),
-('Kipawa', @district_7_2, 'ward'),
-('Buguruni', @district_7_2, 'ward'),
-('Kariakoo', @district_7_2, 'ward'),
-('Jangwani', @district_7_2, 'ward'),
-('Gerezani', @district_7_2, 'ward'),
-('Kisutu', @district_7_2, 'ward'),
-('Mchafukoge', @district_7_2, 'ward'),
-('Upanga Mashariki', @district_7_2, 'ward'),
-('Upanga Magharibi', @district_7_2, 'ward'),
-('Kivukoni', @district_7_2, 'ward'),
-('Kiwalani', @district_7_2, 'ward'),
-('Segerea', @district_7_2, 'ward'),
-('Kitunda', @district_7_2, 'ward'),
-('Chanika', @district_7_2, 'ward'),
-('Kivule', @district_7_2, 'ward'),
-('Gongolamboto', @district_7_2, 'ward'),
-('Majohe', @district_7_2, 'ward'),
-('Kimanga', @district_7_2, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Temeke', @region_7, 'district');
-
-SET @district_7_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kigamboni', @district_7_3, 'ward'),
-('Vijibweni', @district_7_3, 'ward'),
-('Kibada', @district_7_3, 'ward'),
-('Kisarawe II', @district_7_3, 'ward'),
-('Somangila', @district_7_3, 'ward'),
-('Kimbiji', @district_7_3, 'ward'),
-('Mbagala', @district_7_3, 'ward'),
-('Chamazi', @district_7_3, 'ward'),
-('Yombo Vituka', @district_7_3, 'ward'),
-('Charambe', @district_7_3, 'ward'),
-('Toangoma', @district_7_3, 'ward'),
-('Miburani', @district_7_3, 'ward'),
-('Temeke', @district_7_3, 'ward'),
-('Mtoni', @district_7_3, 'ward'),
-('Keko', @district_7_3, 'ward'),
-('Kurasini', @district_7_3, 'ward'),
-('Azimio', @district_7_3, 'ward'),
-('Tandika', @district_7_3, 'ward'),
-('Sandali', @district_7_3, 'ward'),
-('Chang''ombe', @district_7_3, 'ward'),
-('Mbagala Kuu', @district_7_3, 'ward'),
-('Makangarawe', @district_7_3, 'ward'),
-('Pemba Mnazi', @district_7_3, 'ward'),
-('Mjimwema', @district_7_3, 'ward'),
-('Tungi', @district_7_3, 'ward'),
-('Kijichi', @district_7_3, 'ward'),
-('Mianzini', @district_7_3, 'ward'),
-('Kiburugwa', @district_7_3, 'ward'),
-('Buza', @district_7_3, 'ward'),
-('Kilakala', @district_7_3, 'ward');
-
-
--- ============================================================
--- REGION: Lindi
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Lindi', NULL, 'region');
-
-SET @region_8 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kilwa', @region_8, 'district');
-
-SET @district_8_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Tingi', @district_8_1, 'ward'),
-('Miteja', @district_8_1, 'ward'),
-('Mingumbi', @district_8_1, 'ward'),
-('Kinjumbi', @district_8_1, 'ward'),
-('Chumo', @district_8_1, 'ward'),
-('Kipatimu', @district_8_1, 'ward'),
-('Kandawale', @district_8_1, 'ward'),
-('Njinjo', @district_8_1, 'ward'),
-('Mitole', @district_8_1, 'ward'),
-('Miguruwe', @district_8_1, 'ward'),
-('Likawage', @district_8_1, 'ward'),
-('Nanjirinji', @district_8_1, 'ward'),
-('Kirnjernje', @district_8_1, 'ward'),
-('Mandawa', @district_8_1, 'ward'),
-('Lihimalyao', @district_8_1, 'ward'),
-('Pande', @district_8_1, 'ward'),
-('Kikole', @district_8_1, 'ward'),
-('Kivinjesingino', @district_8_1, 'ward'),
-('Songosongo', @district_8_1, 'ward'),
-('Masoko', @district_8_1, 'ward'),
-('Kibata', @district_8_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Lindi', @region_8, 'district');
-
-SET @district_8_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Mipingo', @district_8_2, 'ward'),
-('Kitomanga', @district_8_2, 'ward'),
-('Mchinga', @district_8_2, 'ward'),
-('Kilolambwani', @district_8_2, 'ward'),
-('Kilangala', @district_8_2, 'ward'),
-('Kiwalala', @district_8_2, 'ward'),
-('Navanga', @district_8_2, 'ward'),
-('Mnolela', @district_8_2, 'ward'),
-('Sudi', @district_8_2, 'ward'),
-('Nachunyu', @district_8_2, 'ward'),
-('Mtama', @district_8_2, 'ward'),
-('Nyangao', @district_8_2, 'ward'),
-('Namupa', @district_8_2, 'ward'),
-('Nyengedi', @district_8_2, 'ward'),
-('Mtua', @district_8_2, 'ward'),
-('Nahukahuka', @district_8_2, 'ward'),
-('Nyangamara', @district_8_2, 'ward'),
-('Mandwanga', @district_8_2, 'ward'),
-('Mnara', @district_8_2, 'ward'),
-('Chiponda', @district_8_2, 'ward'),
-('Pangatena', @district_8_2, 'ward'),
-('Longa', @district_8_2, 'ward'),
-('Rutamba', @district_8_2, 'ward'),
-('Milola', @district_8_2, 'ward'),
-('Kiwawa', @district_8_2, 'ward'),
-('Mtumbya', @district_8_2, 'ward'),
-('Matimba', @district_8_2, 'ward'),
-('Nangaru', @district_8_2, 'ward'),
-('Majengo', @district_8_2, 'ward'),
-('Namangale', @district_8_2, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Nachingwea', @region_8, 'district');
-
-SET @district_8_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Nambambo', @district_8_3, 'ward'),
-('Kilimanihewa', @district_8_3, 'ward'),
-('Ruponda', @district_8_3, 'ward'),
-('Minero Miembeni', @district_8_3, 'ward'),
-('Namapwia', @district_8_3, 'ward'),
-('Kipara Mnero', @district_8_3, 'ward'),
-('Lionja', @district_8_3, 'ward'),
-('Namikango', @district_8_3, 'ward'),
-('Nditi', @district_8_3, 'ward'),
-('Kilima Rondo', @district_8_3, 'ward'),
-('Mbondo', @district_8_3, 'ward'),
-('Kiegei', @district_8_3, 'ward'),
-('Mkoka', @district_8_3, 'ward'),
-('Chiola', @district_8_3, 'ward'),
-('Mpiruka', @district_8_3, 'ward'),
-('Nangowe', @district_8_3, 'ward'),
-('Mkotokuyana', @district_8_3, 'ward'),
-('Naipanga', @district_8_3, 'ward'),
-('Stesheni', @district_8_3, 'ward'),
-('Naipingo', @district_8_3, 'ward'),
-('Mtua', @district_8_3, 'ward'),
-('Minerongongo', @district_8_3, 'ward'),
-('Matekwe', @district_8_3, 'ward'),
-('Marambo', @district_8_3, 'ward'),
-('Namatula', @district_8_3, 'ward'),
-('Ndomoni', @district_8_3, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Liwale', @region_8, 'district');
-
-SET @district_8_4 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Liwale Mjini', @district_8_4, 'ward'),
-('Mihumo', @district_8_4, 'ward'),
-('Ngongowele', @district_8_4, 'ward'),
-('Mlembwe', @district_8_4, 'ward'),
-('Makata', @district_8_4, 'ward'),
-('Barikiwa', @district_8_4, 'ward'),
-('Mkutano', @district_8_4, 'ward'),
-('Mbaya', @district_8_4, 'ward'),
-('Kimambi', @district_8_4, 'ward'),
-('Kiangara', @district_8_4, 'ward'),
-('Kibutuka', @district_8_4, 'ward'),
-('Nangano', @district_8_4, 'ward'),
-('Mpigamiti', @district_8_4, 'ward'),
-('Mirui', @district_8_4, 'ward'),
-('Liwale ''B''', @district_8_4, 'ward'),
-('Mangirikiti', @district_8_4, 'ward'),
-('Nangando', @district_8_4, 'ward'),
-('Likongowele', @district_8_4, 'ward'),
-('Kichonda', @district_8_4, 'ward'),
-('Lilombe', @district_8_4, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Ruangwa', @region_8, 'district');
-
-SET @district_8_5 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Ruangwa', @district_8_5, 'ward'),
-('Mbekenyera', @district_8_5, 'ward'),
-('Nkowe', @district_8_5, 'ward'),
-('Malolo', @district_8_5, 'ward'),
-('Luchelegwa', @district_8_5, 'ward'),
-('Chienjele', @district_8_5, 'ward'),
-('Namichiga', @district_8_5, 'ward'),
-('Narung''ombe', @district_8_5, 'ward'),
-('Makanjiro', @district_8_5, 'ward'),
-('Likunja', @district_8_5, 'ward'),
-('Mnacho', @district_8_5, 'ward'),
-('Mandawa', @district_8_5, 'ward'),
-('Nambilanje', @district_8_5, 'ward'),
-('Chunyu', @district_8_5, 'ward'),
-('Mandarawe', @district_8_5, 'ward'),
-('Nachingwea', @district_8_5, 'ward'),
-('Matambarale', @district_8_5, 'ward'),
-('Chibula', @district_8_5, 'ward'),
-('Nandagala', @district_8_5, 'ward'),
-('Nanganga', @district_8_5, 'ward'),
-('Chinongwe', @district_8_5, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Lindi Urban', @region_8, 'district');
-
-SET @district_8_6 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Ndoro', @district_8_6, 'ward'),
-('Makonde', @district_8_6, 'ward'),
-('Mikumbi', @district_8_6, 'ward'),
-('Mitandi', @district_8_6, 'ward'),
-('Rahaleo', @district_8_6, 'ward'),
-('Mwenge', @district_8_6, 'ward'),
-('Matopeni', @district_8_6, 'ward'),
-('Wailes', @district_8_6, 'ward'),
-('Nachingwea', @district_8_6, 'ward'),
-('Rasbura', @district_8_6, 'ward'),
-('Mtanda', @district_8_6, 'ward'),
-('Jamhuri', @district_8_6, 'ward'),
-('Msinjahili', @district_8_6, 'ward'),
-('Mingoyo', @district_8_6, 'ward'),
-('Ng''apa', @district_8_6, 'ward'),
-('Tandangongoro', @district_8_6, 'ward'),
-('Chikonji', @district_8_6, 'ward'),
-('Mbanja', @district_8_6, 'ward');
-
-
--- ============================================================
--- REGION: Mtwara
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mtwara', NULL, 'region');
-
-SET @region_9 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mtwara', @region_9, 'district');
-
-SET @district_9_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Madimba', @district_9_1, 'ward'),
-('Ziwani', @district_9_1, 'ward'),
-('Nanguruwe', @district_9_1, 'ward'),
-('Mahurunga', @district_9_1, 'ward'),
-('Kitaya', @district_9_1, 'ward'),
-('Kiromba', @district_9_1, 'ward'),
-('Njengwa', @district_9_1, 'ward'),
-('Nitekela', @district_9_1, 'ward'),
-('Nanyamba', @district_9_1, 'ward'),
-('Mtiniko', @district_9_1, 'ward'),
-('Dihimba', @district_9_1, 'ward'),
-('Mnima', @district_9_1, 'ward'),
-('Kitere', @district_9_1, 'ward'),
-('Ndumbwe', @district_9_1, 'ward'),
-('Mayanga', @district_9_1, 'ward'),
-('Naumbu', @district_9_1, 'ward'),
-('Chawi', @district_9_1, 'ward'),
-('Namtumbuka', @district_9_1, 'ward'),
-('Libobe', @district_9_1, 'ward'),
-('Mpapura', @district_9_1, 'ward'),
-('Muungano', @district_9_1, 'ward'),
-('Mbawala', @district_9_1, 'ward'),
-('Msanga Mkuu', @district_9_1, 'ward'),
-('Tangazo', @district_9_1, 'ward'),
-('Kiyanga', @district_9_1, 'ward'),
-('Milango Minne', @district_9_1, 'ward'),
-('Mbembaleo', @district_9_1, 'ward'),
-('Mtimbwilimbwi', @district_9_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Newala', @region_9, 'district');
-
-SET @district_9_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Luchindu', @district_9_2, 'ward'),
-('Makote', @district_9_2, 'ward'),
-('Nanguruwe', @district_9_2, 'ward'),
-('Mkunya', @district_9_2, 'ward'),
-('Mcholi I', @district_9_2, 'ward'),
-('Namiyonga', @district_9_2, 'ward'),
-('Mnekachi', @district_9_2, 'ward'),
-('Chitekete', @district_9_2, 'ward'),
-('Mnyambe', @district_9_2, 'ward'),
-('Chilangala', @district_9_2, 'ward'),
-('Mkoma II', @district_9_2, 'ward'),
-('Kitangari', @district_9_2, 'ward'),
-('Malatu', @district_9_2, 'ward'),
-('Mchemo', @district_9_2, 'ward'),
-('Mtopwa', @district_9_2, 'ward'),
-('Chiwonga', @district_9_2, 'ward'),
-('Maputi', @district_9_2, 'ward'),
-('Makukwe', @district_9_2, 'ward'),
-('Mkwedu', @district_9_2, 'ward'),
-('Mcholi II', @district_9_2, 'ward'),
-('Mtonya', @district_9_2, 'ward'),
-('Makonga', @district_9_2, 'ward'),
-('Nakahako', @district_9_2, 'ward'),
-('Chihangu', @district_9_2, 'ward'),
-('Nambali', @district_9_2, 'ward'),
-('Nandwahi', @district_9_2, 'ward'),
-('Mtunguru', @district_9_2, 'ward'),
-('Mdimba MpeleMpele', @district_9_2, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Masasi', @region_9, 'district');
-
-SET @district_9_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Namatutwe', @district_9_3, 'ward'),
-('Namajani', @district_9_3, 'ward'),
-('Mlingula', @district_9_3, 'ward'),
-('Chiwale', @district_9_3, 'ward'),
-('Lukuledi', @district_9_3, 'ward'),
-('Mpanyani', @district_9_3, 'ward'),
-('Chigugu', @district_9_3, 'ward'),
-('Mwena', @district_9_3, 'ward'),
-('Nanganga', @district_9_3, 'ward'),
-('Chiwata', @district_9_3, 'ward'),
-('Mkundi', @district_9_3, 'ward'),
-('Mkululu', @district_9_3, 'ward'),
-('Nanjota', @district_9_3, 'ward'),
-('Chiungutwa', @district_9_3, 'ward'),
-('Mbuyuni', @district_9_3, 'ward'),
-('Lipumburu', @district_9_3, 'ward'),
-('Sindano', @district_9_3, 'ward'),
-('Namalenga', @district_9_3, 'ward'),
-('Mchauru', @district_9_3, 'ward'),
-('Mnavira', @district_9_3, 'ward'),
-('Chikolopola', @district_9_3, 'ward'),
-('Lulindi', @district_9_3, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Tandahimba', @region_9, 'district');
-
-SET @district_9_4 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Tandahimba', @district_9_4, 'ward'),
-('Kitama', @district_9_4, 'ward'),
-('Michenjele', @district_9_4, 'ward'),
-('Mihambwe', @district_9_4, 'ward'),
-('Mkoreha', @district_9_4, 'ward'),
-('Maundo', @district_9_4, 'ward'),
-('Naputa', @district_9_4, 'ward'),
-('Namikupa', @district_9_4, 'ward'),
-('Mnyawa', @district_9_4, 'ward'),
-('Mkundi', @district_9_4, 'ward'),
-('Lukokoda', @district_9_4, 'ward'),
-('Mahuta', @district_9_4, 'ward'),
-('Nanhyanga', @district_9_4, 'ward'),
-('Chingungwe', @district_9_4, 'ward'),
-('Mdimba Mnyoma', @district_9_4, 'ward'),
-('Milongodi', @district_9_4, 'ward'),
-('Lyenje', @district_9_4, 'ward'),
-('Chaume', @district_9_4, 'ward'),
-('Mkonjowano', @district_9_4, 'ward'),
-('Luagala', @district_9_4, 'ward'),
-('Ngunja', @district_9_4, 'ward'),
-('Mkwiti', @district_9_4, 'ward'),
-('Litehu', @district_9_4, 'ward'),
-('Nambahu', @district_9_4, 'ward'),
-('Miuta', @district_9_4, 'ward'),
-('Kwanyama', @district_9_4, 'ward'),
-('Mchichira', @district_9_4, 'ward'),
-('Chikongola', @district_9_4, 'ward'),
-('Dinduma', @district_9_4, 'ward'),
-('Mdumbwe', @district_9_4, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mtwara Urban', @region_9, 'district');
-
-SET @district_9_5 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Majengo', @district_9_5, 'ward'),
-('Chikongola', @district_9_5, 'ward'),
-('Likombe', @district_9_5, 'ward'),
-('Railway', @district_9_5, 'ward'),
-('Shangani', @district_9_5, 'ward'),
-('Vigaeni', @district_9_5, 'ward'),
-('Chuno', @district_9_5, 'ward'),
-('Jangwani', @district_9_5, 'ward'),
-('Kisungule', @district_9_5, 'ward'),
-('Mitengo', @district_9_5, 'ward'),
-('Mtonya', @district_9_5, 'ward'),
-('Ufukoni', @district_9_5, 'ward'),
-('Magengeni', @district_9_5, 'ward'),
-('Rahaleo', @district_9_5, 'ward'),
-('Naliendele', @district_9_5, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Nanyumbu', @region_9, 'district');
-
-SET @district_9_6 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Mangaka', @district_9_6, 'ward'),
-('Nangomba', @district_9_6, 'ward'),
-('Lumesule', @district_9_6, 'ward'),
-('Likokona', @district_9_6, 'ward'),
-('Sengenya', @district_9_6, 'ward'),
-('Mnanje', @district_9_6, 'ward'),
-('Mikangaula', @district_9_6, 'ward'),
-('Maratani', @district_9_6, 'ward'),
-('Nandete', @district_9_6, 'ward'),
-('Mkonona', @district_9_6, 'ward'),
-('Nanyumbu', @district_9_6, 'ward'),
-('Masuguru', @district_9_6, 'ward'),
-('Chipuputa', @district_9_6, 'ward'),
-('Napacho', @district_9_6, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Masasi  Township Authority', @region_9, 'district');
-
-SET @district_9_7 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Mwenge Mtapika', @district_9_7, 'ward'),
-('Temeke', @district_9_7, 'ward'),
-('Mkuti', @district_9_7, 'ward'),
-('Mpindimbi', @district_9_7, 'ward'),
-('Nyasa', @district_9_7, 'ward'),
-('Marika', @district_9_7, 'ward'),
-('Mkomaindo', @district_9_7, 'ward'),
-('Mtandi', @district_9_7, 'ward'),
-('Jida', @district_9_7, 'ward'),
-('Migongo', @district_9_7, 'ward'),
-('Mwenge', @district_9_7, 'ward'),
-('Sululu', @district_9_7, 'ward');
-
-
--- ============================================================
--- REGION: Ruvuma
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Ruvuma', NULL, 'region');
-
-SET @region_10 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Tunduru', @region_10, 'district');
-
-SET @district_10_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kalulu', @district_10_1, 'ward'),
-('Ligunga', @district_10_1, 'ward'),
-('Mlingoti  Mashariki', @district_10_1, 'ward'),
-('Mindu', @district_10_1, 'ward'),
-('Ngapa', @district_10_1, 'ward'),
-('Nakapanya', @district_10_1, 'ward'),
-('Muhuwesi', @district_10_1, 'ward'),
-('Tuwemacho', @district_10_1, 'ward'),
-('Ligoma', @district_10_1, 'ward'),
-('Misechela', @district_10_1, 'ward'),
-('Namasakata', @district_10_1, 'ward'),
-('Mtina', @district_10_1, 'ward'),
-('Mchesi', @district_10_1, 'ward'),
-('Lukumbule', @district_10_1, 'ward'),
-('Nalasi-Magharibi', @district_10_1, 'ward'),
-('Mchoteka', @district_10_1, 'ward'),
-('Marumba', @district_10_1, 'ward'),
-('Mbesa', @district_10_1, 'ward'),
-('Mlingoti  Magharibi', @district_10_1, 'ward'),
-('Kidodoma', @district_10_1, 'ward'),
-('Nandembo', @district_10_1, 'ward'),
-('Nampungu', @district_10_1, 'ward'),
-('Matemanga', @district_10_1, 'ward'),
-('Namwinyu', @district_10_1, 'ward'),
-('Mbati', @district_10_1, 'ward'),
-('Nalasi Mashariki', @district_10_1, 'ward'),
-('Mchuluka', @district_10_1, 'ward'),
-('Namiungo', @district_10_1, 'ward'),
-('Jakika', @district_10_1, 'ward'),
-('Masonya', @district_10_1, 'ward'),
-('Sisikwasisi', @district_10_1, 'ward'),
-('Mchangani', @district_10_1, 'ward'),
-('Majengo', @district_10_1, 'ward'),
-('Nanjoka', @district_10_1, 'ward'),
-('Nakayaya', @district_10_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Songea', @region_10, 'district');
-
-SET @district_10_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Wino', @district_10_2, 'ward'),
-('Ndongosi', @district_10_2, 'ward'),
-('Matumbi', @district_10_2, 'ward'),
-('Mpandangino', @district_10_2, 'ward'),
-('Gumbiro', @district_10_2, 'ward'),
-('Mpitimbi', @district_10_2, 'ward'),
-('Muhuruku', @district_10_2, 'ward'),
-('Magagura', @district_10_2, 'ward'),
-('Litisha', @district_10_2, 'ward'),
-('Kilagano', @district_10_2, 'ward'),
-('Maposeni', @district_10_2, 'ward'),
-('Peramiho', @district_10_2, 'ward'),
-('Mahanje', @district_10_2, 'ward'),
-('Matimira', @district_10_2, 'ward'),
-('Mtyangimbole', @district_10_2, 'ward'),
-('Mkongotema', @district_10_2, 'ward'),
-('Mbinga Mhalule', @district_10_2, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mbinga', @region_10, 'district');
-
-SET @district_10_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Ruanda', @district_10_3, 'ward'),
-('Litumbandyosi', @district_10_3, 'ward'),
-('Kigonsera', @district_10_3, 'ward'),
-('Kihangi Mahuka', @district_10_3, 'ward'),
-('Utiri', @district_10_3, 'ward'),
-('Mbinga Mjini', @district_10_3, 'ward'),
-('Kilimani', @district_10_3, 'ward'),
-('Mbangamao', @district_10_3, 'ward'),
-('Kihungu', @district_10_3, 'ward'),
-('Kikolo', @district_10_3, 'ward'),
-('Kambarage', @district_10_3, 'ward'),
-('Mapera', @district_10_3, 'ward'),
-('Kipapa', @district_10_3, 'ward'),
-('Kipololo', @district_10_3, 'ward'),
-('Nyoni', @district_10_3, 'ward'),
-('Luwaita', @district_10_3, 'ward'),
-('Maguu', @district_10_3, 'ward'),
-('Kitumbalomo', @district_10_3, 'ward'),
-('Mkako', @district_10_3, 'ward'),
-('Mikalanga', @district_10_3, 'ward'),
-('Langiro', @district_10_3, 'ward'),
-('Mbuji', @district_10_3, 'ward'),
-('Litembo', @district_10_3, 'ward'),
-('Ngima', @district_10_3, 'ward'),
-('Myangayanga', @district_10_3, 'ward'),
-('Mkumbi', @district_10_3, 'ward'),
-('Linda', @district_10_3, 'ward'),
-('Matiri', @district_10_3, 'ward'),
-('Ukata', @district_10_3, 'ward'),
-('Kitanda', @district_10_3, 'ward'),
-('Kitura', @district_10_3, 'ward'),
-('Namswea', @district_10_3, 'ward'),
-('Mpepai', @district_10_3, 'ward'),
-('Mpapa', @district_10_3, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Songea Urban', @region_10, 'district');
-
-SET @district_10_4 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Mjini', @district_10_4, 'ward'),
-('Majengo', @district_10_4, 'ward'),
-('Misufini', @district_10_4, 'ward'),
-('Mfaranyaki', @district_10_4, 'ward'),
-('Lizaboni', @district_10_4, 'ward'),
-('Matarawe', @district_10_4, 'ward'),
-('Bombambili', @district_10_4, 'ward'),
-('Matogoro', @district_10_4, 'ward'),
-('Ruvuma', @district_10_4, 'ward'),
-('Subira', @district_10_4, 'ward'),
-('Ruhuwiko', @district_10_4, 'ward'),
-('Mshangano', @district_10_4, 'ward'),
-('Mletele', @district_10_4, 'ward'),
-('Seedfarm', @district_10_4, 'ward'),
-('Tanga', @district_10_4, 'ward'),
-('Msamala', @district_10_4, 'ward'),
-('Mwengemshindo', @district_10_4, 'ward'),
-('Mjimwema', @district_10_4, 'ward'),
-('Mateka', @district_10_4, 'ward'),
-('Ndilimalitembo', @district_10_4, 'ward'),
-('Lilambo', @district_10_4, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Namtumbo', @region_10, 'district');
-
-SET @district_10_5 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Rwinga', @district_10_5, 'ward'),
-('Mkongo', @district_10_5, 'ward'),
-('Ligera', @district_10_5, 'ward'),
-('Lusewa', @district_10_5, 'ward'),
-('Magazini', @district_10_5, 'ward'),
-('Msindo', @district_10_5, 'ward'),
-('Luchili', @district_10_5, 'ward'),
-('Namabengo', @district_10_5, 'ward'),
-('Kitanda', @district_10_5, 'ward'),
-('Luegu', @district_10_5, 'ward'),
-('Namtumbo', @district_10_5, 'ward'),
-('Mgombasi', @district_10_5, 'ward'),
-('Litola', @district_10_5, 'ward'),
-('Likuyuseka', @district_10_5, 'ward'),
-('Mputa', @district_10_5, 'ward'),
-('Hanga', @district_10_5, 'ward'),
-('Limamu', @district_10_5, 'ward'),
-('Mchomoro', @district_10_5, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Nyasa', @region_10, 'district');
-
-SET @district_10_6 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Liparamba', @district_10_6, 'ward'),
-('Tingi', @district_10_6, 'ward'),
-('Chiwanda', @district_10_6, 'ward'),
-('Mtipwili', @district_10_6, 'ward'),
-('Kingerikiti', @district_10_6, 'ward'),
-('Luhangarasi', @district_10_6, 'ward'),
-('Kilosa', @district_10_6, 'ward'),
-('Mbambabay', @district_10_6, 'ward'),
-('Lipingo', @district_10_6, 'ward'),
-('Liuli', @district_10_6, 'ward'),
-('Kihagara', @district_10_6, 'ward'),
-('Ngumbo', @district_10_6, 'ward'),
-('Liwundi', @district_10_6, 'ward'),
-('Mbaha', @district_10_6, 'ward'),
-('Lituhi', @district_10_6, 'ward');
-
-
--- ============================================================
--- REGION: Iringa
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Iringa', NULL, 'region');
-
-SET @region_11 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Iringa', @region_11, 'district');
-
-SET @district_11_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kalenga', @district_11_1, 'ward'),
-('Kiwere', @district_11_1, 'ward'),
-('Nzihi', @district_11_1, 'ward'),
-('Ulanda', @district_11_1, 'ward'),
-('Mseke', @district_11_1, 'ward'),
-('Maguliwa', @district_11_1, 'ward'),
-('Mgama', @district_11_1, 'ward'),
-('Ifunda', @district_11_1, 'ward'),
-('Lumuli', @district_11_1, 'ward'),
-('Maboga', @district_11_1, 'ward'),
-('Wasa', @district_11_1, 'ward'),
-('Mahuninga', @district_11_1, 'ward'),
-('Idodi', @district_11_1, 'ward'),
-('Mlowa', @district_11_1, 'ward'),
-('Itunundu', @district_11_1, 'ward'),
-('Ilolo Mpya', @district_11_1, 'ward'),
-('Nduli', @district_11_1, 'ward'),
-('Kihorogota', @district_11_1, 'ward'),
-('Izazi', @district_11_1, 'ward'),
-('Malenga Makali', @district_11_1, 'ward'),
-('Nyang''oro', @district_11_1, 'ward'),
-('Luhota', @district_11_1, 'ward'),
-('Lyamgungwe', @district_11_1, 'ward'),
-('Mlenge', @district_11_1, 'ward'),
-('Migoli', @district_11_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mufindi', @region_11, 'district');
-
-SET @district_11_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kiyowela', @district_11_2, 'ward'),
-('Makungu', @district_11_2, 'ward'),
-('Mninga', @district_11_2, 'ward'),
-('Kasanga', @district_11_2, 'ward'),
-('Igowole', @district_11_2, 'ward'),
-('Mtambula', @district_11_2, 'ward'),
-('Itandula', @district_11_2, 'ward'),
-('Mbalamaziwa', @district_11_2, 'ward'),
-('Idunda', @district_11_2, 'ward'),
-('Malangali', @district_11_2, 'ward'),
-('Nyololo', @district_11_2, 'ward'),
-('Ihowanza', @district_11_2, 'ward'),
-('Ikweha', @district_11_2, 'ward'),
-('Sadani', @district_11_2, 'ward'),
-('Igombavanu', @district_11_2, 'ward'),
-('Bumilayinga', @district_11_2, 'ward'),
-('Mtwango', @district_11_2, 'ward'),
-('Isalavanu', @district_11_2, 'ward'),
-('Rungemba', @district_11_2, 'ward'),
-('Ifwagi', @district_11_2, 'ward'),
-('Mdabulo', @district_11_2, 'ward'),
-('Ihalimba', @district_11_2, 'ward'),
-('Kibengu', @district_11_2, 'ward'),
-('Mapanda', @district_11_2, 'ward'),
-('Mpanga', @district_11_2, 'ward'),
-('Ihanu', @district_11_2, 'ward'),
-('Luhanga', @district_11_2, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Iringa Urban', @region_11, 'district');
-
-SET @district_11_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kihesa', @district_11_3, 'ward'),
-('Mtwivila', @district_11_3, 'ward'),
-('Gangilonga', @district_11_3, 'ward'),
-('Kitanzini', @district_11_3, 'ward'),
-('Ruaha', @district_11_3, 'ward'),
-('Mshindo', @district_11_3, 'ward'),
-('Mivinjeni', @district_11_3, 'ward'),
-('Mlandege', @district_11_3, 'ward'),
-('Mwangata', @district_11_3, 'ward'),
-('Kwakilosa', @district_11_3, 'ward'),
-('Makorongoni', @district_11_3, 'ward'),
-('Ilala', @district_11_3, 'ward'),
-('Mkwawa', @district_11_3, 'ward'),
-('Kitwiru', @district_11_3, 'ward'),
-('Isakalilo', @district_11_3, 'ward'),
-('Nduli', @district_11_3, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kilolo', @region_11, 'district');
-
-SET @district_11_4 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Image', @district_11_4, 'ward'),
-('Irole', @district_11_4, 'ward'),
-('Ilula', @district_11_4, 'ward'),
-('Uhambingeto', @district_11_4, 'ward'),
-('Udekwa', @district_11_4, 'ward'),
-('Mahenge', @district_11_4, 'ward'),
-('Mtitu', @district_11_4, 'ward'),
-('Dabaga', @district_11_4, 'ward'),
-('Ukumbi', @district_11_4, 'ward'),
-('Ukwega', @district_11_4, 'ward'),
-('Boma la Ng''ombe', @district_11_4, 'ward'),
-('Idete', @district_11_4, 'ward'),
-('Masisiwe', @district_11_4, 'ward'),
-('Ng''uruhe', @district_11_4, 'ward'),
-('Ng''ang''ange', @district_11_4, 'ward'),
-('Ihimbo', @district_11_4, 'ward'),
-('Lugalo', @district_11_4, 'ward'),
-('Nyalumbu', @district_11_4, 'ward'),
-('Mlafu', @district_11_4, 'ward'),
-('Ibumu', @district_11_4, 'ward'),
-('Ruaha Mbuyuni', @district_11_4, 'ward'),
-('Kimala', @district_11_4, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mafinga Township Authority', @region_11, 'district');
-
-SET @district_11_5 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Sao Hill', @district_11_5, 'ward'),
-('Boma', @district_11_5, 'ward'),
-('Kinyanambo', @district_11_5, 'ward');
-
-
--- ============================================================
--- REGION: Mbeya
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mbeya', NULL, 'region');
-
-SET @region_12 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Chunya', @region_12, 'district');
-
-SET @district_12_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kambikatoto', @district_12_1, 'ward'),
-('Mafyeko', @district_12_1, 'ward'),
-('Matwiga', @district_12_1, 'ward'),
-('Mtanila', @district_12_1, 'ward'),
-('Lupatingatinga', @district_12_1, 'ward'),
-('Luwalaje', @district_12_1, 'ward'),
-('Sangambi', @district_12_1, 'ward'),
-('Itewe', @district_12_1, 'ward'),
-('Chokaa', @district_12_1, 'ward'),
-('Mbugani', @district_12_1, 'ward'),
-('Chalangwa', @district_12_1, 'ward'),
-('Ifumbo', @district_12_1, 'ward'),
-('Mamba', @district_12_1, 'ward'),
-('Mkola', @district_12_1, 'ward'),
-('Makongorosi', @district_12_1, 'ward'),
-('Matundasi', @district_12_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mbeya', @region_12, 'district');
-
-SET @district_12_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Ihango', @district_12_2, 'ward'),
-('Ulenje', @district_12_2, 'ward'),
-('Tembela', @district_12_2, 'ward'),
-('Ijombe', @district_12_2, 'ward'),
-('Santilya', @district_12_2, 'ward'),
-('Ilembo', @district_12_2, 'ward'),
-('Iwiji', @district_12_2, 'ward'),
-('Isuto', @district_12_2, 'ward'),
-('Igale', @district_12_2, 'ward'),
-('Iwindi', @district_12_2, 'ward'),
-('Utengule Usongwe', @district_12_2, 'ward'),
-('Mshewe', @district_12_2, 'ward'),
-('Ikukwa', @district_12_2, 'ward'),
-('Iyunga Mapinduzi', @district_12_2, 'ward'),
-('Bonde la Songwe', @district_12_2, 'ward'),
-('Inyala', @district_12_2, 'ward'),
-('Ilungu', @district_12_2, 'ward'),
-('Maendeleo', @district_12_2, 'ward'),
-('Swaya', @district_12_2, 'ward'),
-('Masoko', @district_12_2, 'ward'),
-('Itawa', @district_12_2, 'ward'),
-('Nsalala', @district_12_2, 'ward'),
-('Lwanjiro', @district_12_2, 'ward'),
-('Itewe', @district_12_2, 'ward'),
-('Igoma', @district_12_2, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kyela', @region_12, 'district');
-
-SET @district_12_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Lusungo', @district_12_3, 'ward'),
-('Makwale', @district_12_3, 'ward'),
-('Matema', @district_12_3, 'ward'),
-('Mwaya', @district_12_3, 'ward'),
-('Ndobo', @district_12_3, 'ward'),
-('Kajunjumele', @district_12_3, 'ward'),
-('Bujonde', @district_12_3, 'ward'),
-('Ikolo', @district_12_3, 'ward'),
-('Katumbasongwe', @district_12_3, 'ward'),
-('Ngana', @district_12_3, 'ward'),
-('Busale', @district_12_3, 'ward'),
-('Ipande', @district_12_3, 'ward'),
-('Ikama', @district_12_3, 'ward'),
-('Ipinda', @district_12_3, 'ward'),
-('Ngonga', @district_12_3, 'ward'),
-('Ikimba', @district_12_3, 'ward'),
-('Itope', @district_12_3, 'ward'),
-('Muungano', @district_12_3, 'ward'),
-('Talatala', @district_12_3, 'ward'),
-('Kyela', @district_12_3, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Rungwe', @region_12, 'district');
-
-SET @district_12_4 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Swaya', @district_12_4, 'ward'),
-('Masebe', @district_12_4, 'ward'),
-('Suma', @district_12_4, 'ward'),
-('Kandete', @district_12_4, 'ward'),
-('Luteba', @district_12_4, 'ward'),
-('Mpombo', @district_12_4, 'ward'),
-('Isange', @district_12_4, 'ward'),
-('Kabula', @district_12_4, 'ward'),
-('Lwangwa', @district_12_4, 'ward'),
-('Lufilyo', @district_12_4, 'ward'),
-('Itete', @district_12_4, 'ward'),
-('Kisegese', @district_12_4, 'ward'),
-('Lupata', @district_12_4, 'ward'),
-('Kambasegela', @district_12_4, 'ward'),
-('Masukulu', @district_12_4, 'ward'),
-('Kisiba', @district_12_4, 'ward'),
-('Masoko', @district_12_4, 'ward'),
-('Bujela', @district_12_4, 'ward'),
-('Ilima', @district_12_4, 'ward'),
-('Kisondela', @district_12_4, 'ward'),
-('Ikuti', @district_12_4, 'ward'),
-('Malindo', @district_12_4, 'ward'),
-('Mpuguso', @district_12_4, 'ward'),
-('Kikole', @district_12_4, 'ward'),
-('Lufingo', @district_12_4, 'ward'),
-('Nkunga', @district_12_4, 'ward'),
-('Kyimo', @district_12_4, 'ward'),
-('Kinyala', @district_12_4, 'ward'),
-('Kiwira', @district_12_4, 'ward'),
-('Isongole', @district_12_4, 'ward'),
-('Ikama', @district_12_4, 'ward'),
-('Ibighi', @district_12_4, 'ward'),
-('Bagamoyo', @district_12_4, 'ward'),
-('Kawetele', @district_12_4, 'ward'),
-('Bulyaga', @district_12_4, 'ward'),
-('Msasani', @district_12_4, 'ward'),
-('Makandana', @district_12_4, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mbarali', @region_12, 'district');
-
-SET @district_12_5 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Luhanga', @district_12_5, 'ward'),
-('Madibira', @district_12_5, 'ward'),
-('Mawindi', @district_12_5, 'ward'),
-('Ihahi', @district_12_5, 'ward'),
-('Mapogoro', @district_12_5, 'ward'),
-('Chimala', @district_12_5, 'ward'),
-('Utengule Usangu', @district_12_5, 'ward'),
-('Ruiwa', @district_12_5, 'ward'),
-('Mahongole', @district_12_5, 'ward'),
-('Ubaruku', @district_12_5, 'ward'),
-('Igurusi', @district_12_5, 'ward'),
-('Kongolo', @district_12_5, 'ward'),
-('Mwatenga', @district_12_5, 'ward'),
-('Imalilosongwe', @district_12_5, 'ward'),
-('Igava', @district_12_5, 'ward'),
-('Ipwani', @district_12_5, 'ward'),
-('Itambaleo', @district_12_5, 'ward'),
-('Miyombweni', @district_12_5, 'ward'),
-('Rujewa', @district_12_5, 'ward'),
-('Lugelele', @district_12_5, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mbeya Urban', @region_12, 'district');
-
-SET @district_12_6 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Sisimba', @district_12_6, 'ward'),
-('Isanga', @district_12_6, 'ward'),
-('Iganzo', @district_12_6, 'ward'),
-('Mwansekwa', @district_12_6, 'ward'),
-('Itagano', @district_12_6, 'ward'),
-('Itezi', @district_12_6, 'ward'),
-('Nsalaga', @district_12_6, 'ward'),
-('Igawilo', @district_12_6, 'ward'),
-('Iganjo', @district_12_6, 'ward'),
-('Uyole', @district_12_6, 'ward'),
-('Iduda', @district_12_6, 'ward'),
-('Mwasanga', @district_12_6, 'ward'),
-('Tembela', @district_12_6, 'ward'),
-('Ilomba', @district_12_6, 'ward'),
-('Mwakibete', @district_12_6, 'ward'),
-('Ilemi', @district_12_6, 'ward'),
-('Isyesye', @district_12_6, 'ward'),
-('Ruanda', @district_12_6, 'ward'),
-('Iyela', @district_12_6, 'ward'),
-('Sinde', @district_12_6, 'ward'),
-('Maanga', @district_12_6, 'ward'),
-('Mbalizi RD', @district_12_6, 'ward'),
-('Forest', @district_12_6, 'ward'),
-('Mabatini', @district_12_6, 'ward'),
-('Nzovwe', @district_12_6, 'ward'),
-('Kalobe', @district_12_6, 'ward'),
-('Iyunga', @district_12_6, 'ward'),
-('Iwambi', @district_12_6, 'ward'),
-('Itende', @district_12_6, 'ward'),
-('Iziwa', @district_12_6, 'ward'),
-('Nsoho', @district_12_6, 'ward'),
-('Majengo', @district_12_6, 'ward'),
-('Ghana', @district_12_6, 'ward'),
-('Nonde', @district_12_6, 'ward'),
-('Itiji', @district_12_6, 'ward'),
-('Maendeleo', @district_12_6, 'ward');
-
-
--- ============================================================
--- REGION: Songwe
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Songwe', NULL, 'region');
-
-SET @region_13 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Songwe', @region_13, 'district');
-
-SET @district_13_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kanga', @district_13_1, 'ward'),
-('Galula', @district_13_1, 'ward'),
-('Mbuyuni', @district_13_1, 'ward'),
-('Totowe', @district_13_1, 'ward'),
-('Namkukwe', @district_13_1, 'ward'),
-('Mkwajuni', @district_13_1, 'ward'),
-('Mbangala', @district_13_1, 'ward'),
-('Kapalala', @district_13_1, 'ward'),
-('Gua', @district_13_1, 'ward'),
-('Ngwala', @district_13_1, 'ward'),
-('Ifyenkenya', @district_13_1, 'ward'),
-('Magamba', @district_13_1, 'ward'),
-('Saza', @district_13_1, 'ward'),
-('Mwambani', @district_13_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Ileje', @region_13, 'district');
-
-SET @district_13_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Itumba', @district_13_2, 'ward'),
-('Itale', @district_13_2, 'ward'),
-('Ibaba', @district_13_2, 'ward'),
-('Ndola', @district_13_2, 'ward'),
-('Luswisi', @district_13_2, 'ward'),
-('Ngulilo', @district_13_2, 'ward'),
-('Lubanda', @district_13_2, 'ward'),
-('Ngulugulu', @district_13_2, 'ward'),
-('Sange', @district_13_2, 'ward'),
-('Ikinga', @district_13_2, 'ward'),
-('Kafule', @district_13_2, 'ward'),
-('Malangali', @district_13_2, 'ward'),
-('Bupigu', @district_13_2, 'ward'),
-('Isongole', @district_13_2, 'ward'),
-('Chitete', @district_13_2, 'ward'),
-('Mbebe', @district_13_2, 'ward'),
-('Mlale', @district_13_2, 'ward'),
-('Kalembo', @district_13_2, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mbozi', @region_13, 'district');
-
-SET @district_13_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Ihanda', @district_13_3, 'ward'),
-('Bara', @district_13_3, 'ward'),
-('Nanyala', @district_13_3, 'ward'),
-('Nambinzo', @district_13_3, 'ward'),
-('Itaka', @district_13_3, 'ward'),
-('Isansa', @district_13_3, 'ward'),
-('Ruanda', @district_13_3, 'ward'),
-('Iyula', @district_13_3, 'ward'),
-('Nyambili', @district_13_3, 'ward'),
-('Mlangali', @district_13_3, 'ward'),
-('Myovizi', @district_13_3, 'ward'),
-('Igamba', @district_13_3, 'ward'),
-('Halungu', @district_13_3, 'ward'),
-('Msia', @district_13_3, 'ward'),
-('Mlowo', @district_13_3, 'ward'),
-('Ipunga', @district_13_3, 'ward'),
-('Isandula', @district_13_3, 'ward'),
-('Vwawa', @district_13_3, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Momba', @region_13, 'district');
-
-SET @district_13_4 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Chilulumo', @district_13_4, 'ward'),
-('Kamsamba', @district_13_4, 'ward'),
-('Ivuna', @district_13_4, 'ward'),
-('Mpapa', @district_13_4, 'ward'),
-('Mkulwe', @district_13_4, 'ward'),
-('Chitete', @district_13_4, 'ward'),
-('Msangano', @district_13_4, 'ward'),
-('Chiwezi', @district_13_4, 'ward'),
-('Nkangamo', @district_13_4, 'ward'),
-('Ndalembo', @district_13_4, 'ward'),
-('Kapele', @district_13_4, 'ward'),
-('Nzoka', @district_13_4, 'ward'),
-('Myunga', @district_13_4, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Tunduma', @region_13, 'district');
-
-SET @district_13_5 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Tunduma', @district_13_5, 'ward');
-
-
--- ============================================================
--- REGION: Singida
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Singida', NULL, 'region');
-
-SET @region_14 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Iramba', @region_14, 'district');
-
-SET @district_14_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Urughu', @district_14_1, 'ward'),
-('Mtekente', @district_14_1, 'ward'),
-('Mtoa', @district_14_1, 'ward'),
-('Mgongo', @district_14_1, 'ward'),
-('Shelui', @district_14_1, 'ward'),
-('Ntwike', @district_14_1, 'ward'),
-('Tulya', @district_14_1, 'ward'),
-('Kidaru', @district_14_1, 'ward'),
-('Kisiriri', @district_14_1, 'ward'),
-('Kiomboi', @district_14_1, 'ward'),
-('Kinampanda', @district_14_1, 'ward'),
-('Ulemo', @district_14_1, 'ward'),
-('Kyengege', @district_14_1, 'ward'),
-('Ndago', @district_14_1, 'ward'),
-('Mbelekese', @district_14_1, 'ward'),
-('Kaselya', @district_14_1, 'ward'),
-('Ndulungu', @district_14_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Singida', @region_14, 'district');
-
-SET @district_14_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Mudida', @district_14_2, 'ward'),
-('Makuro', @district_14_2, 'ward'),
-('Ikhanoda', @district_14_2, 'ward'),
-('Mwasauya', @district_14_2, 'ward'),
-('Msange', @district_14_2, 'ward'),
-('Maghojoa', @district_14_2, 'ward'),
-('Itaja', @district_14_2, 'ward'),
-('Ngimu', @district_14_2, 'ward'),
-('Mughunga', @district_14_2, 'ward'),
-('Mgori', @district_14_2, 'ward'),
-('Mughamo', @district_14_2, 'ward'),
-('Kinyagigi', @district_14_2, 'ward'),
-('Merya', @district_14_2, 'ward'),
-('Kinyeto', @district_14_2, 'ward'),
-('Ntonge', @district_14_2, 'ward'),
-('Ilongero', @district_14_2, 'ward'),
-('Mrama', @district_14_2, 'ward'),
-('Kijota', @district_14_2, 'ward'),
-('Mtinko', @district_14_2, 'ward'),
-('Ughandi', @district_14_2, 'ward'),
-('Msisi', @district_14_2, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Manyoni', @region_14, 'district');
-
-SET @district_14_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Manyoni', @district_14_3, 'ward'),
-('Solya', @district_14_3, 'ward'),
-('Makuru', @district_14_3, 'ward'),
-('Chikuyu', @district_14_3, 'ward'),
-('Makanda', @district_14_3, 'ward'),
-('Kintinku', @district_14_3, 'ward'),
-('Mvumi', @district_14_3, 'ward'),
-('Majiri', @district_14_3, 'ward'),
-('Sasajila', @district_14_3, 'ward'),
-('Idodyandole', @district_14_3, 'ward'),
-('Chikola', @district_14_3, 'ward'),
-('Heka', @district_14_3, 'ward'),
-('Nkonko', @district_14_3, 'ward'),
-('Sanza', @district_14_3, 'ward'),
-('Isseke', @district_14_3, 'ward'),
-('Rungwa', @district_14_3, 'ward'),
-('Mgandu', @district_14_3, 'ward'),
-('Itigi Mjini', @district_14_3, 'ward'),
-('Ipande', @district_14_3, 'ward'),
-('Sanjaranda', @district_14_3, 'ward'),
-('Aghondi', @district_14_3, 'ward'),
-('Mkwese', @district_14_3, 'ward'),
-('Muhalala', @district_14_3, 'ward'),
-('Saranda', @district_14_3, 'ward'),
-('Makutupora', @district_14_3, 'ward'),
-('Sasilo', @district_14_3, 'ward'),
-('Mwamagembe', @district_14_3, 'ward'),
-('Mitundu', @district_14_3, 'ward'),
-('Kitaraka', @district_14_3, 'ward'),
-('Itigi Majengo', @district_14_3, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Singida Urban', @region_14, 'district');
-
-SET @district_14_4 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Mtipa', @district_14_4, 'ward'),
-('Mughanga', @district_14_4, 'ward'),
-('Mitunduru', @district_14_4, 'ward'),
-('Majengo', @district_14_4, 'ward'),
-('Umyambwa', @district_14_4, 'ward'),
-('Mungu maji', @district_14_4, 'ward'),
-('Unyamikumbi', @district_14_4, 'ward'),
-('Mtamaa', @district_14_4, 'ward'),
-('Kindai', @district_14_4, 'ward'),
-('Ipembe', @district_14_4, 'ward'),
-('Utemini', @district_14_4, 'ward'),
-('Mwankoko', @district_14_4, 'ward'),
-('Mandewa', @district_14_4, 'ward'),
-('Minga', @district_14_4, 'ward'),
-('Misuna', @district_14_4, 'ward'),
-('Uhamaka', @district_14_4, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Ikungi', @region_14, 'district');
-
-SET @district_14_5 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Puma', @district_14_5, 'ward'),
-('Kituntu', @district_14_5, 'ward'),
-('Mungaa', @district_14_5, 'ward'),
-('Siuyu', @district_14_5, 'ward'),
-('Kikio', @district_14_5, 'ward'),
-('Lighwa', @district_14_5, 'ward'),
-('Misughaa', @district_14_5, 'ward'),
-('Ntuntu', @district_14_5, 'ward'),
-('Dung''unyi', @district_14_5, 'ward'),
-('Mang''onyi', @district_14_5, 'ward'),
-('Mkiwa', @district_14_5, 'ward'),
-('Issuna', @district_14_5, 'ward'),
-('Unyahati', @district_14_5, 'ward'),
-('Ikungi', @district_14_5, 'ward'),
-('Iglansoni', @district_14_5, 'ward'),
-('Iseke', @district_14_5, 'ward'),
-('Ihanja', @district_14_5, 'ward'),
-('Minyughe', @district_14_5, 'ward'),
-('Muhintiri', @district_14_5, 'ward'),
-('Iyumbu', @district_14_5, 'ward'),
-('Mgungira', @district_14_5, 'ward'),
-('Mwaru', @district_14_5, 'ward'),
-('Ighombwe', @district_14_5, 'ward'),
-('Mtunduru', @district_14_5, 'ward'),
-('Sepuka', @district_14_5, 'ward'),
-('Irisya', @district_14_5, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mkalama', @region_14, 'district');
-
-SET @district_14_6 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Mpambala', @district_14_6, 'ward'),
-('Mwangeza', @district_14_6, 'ward'),
-('Mwanga', @district_14_6, 'ward'),
-('Nkinto', @district_14_6, 'ward'),
-('Ibaga', @district_14_6, 'ward'),
-('Gumanga', @district_14_6, 'ward'),
-('Msingi', @district_14_6, 'ward'),
-('Nduguti', @district_14_6, 'ward'),
-('Ilunda', @district_14_6, 'ward'),
-('Kinyangiri', @district_14_6, 'ward'),
-('Iguguno', @district_14_6, 'ward'),
-('Miganga', @district_14_6, 'ward'),
-('Matongo', @district_14_6, 'ward'),
-('Kikhonda', @district_14_6, 'ward');
-
-
--- ============================================================
--- REGION: Tabora
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Tabora', NULL, 'region');
-
-SET @region_15 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Nzega', @region_15, 'district');
-
-SET @district_15_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Puge', @district_15_1, 'ward'),
-('Nkiniziwa', @district_15_1, 'ward'),
-('Budushi', @district_15_1, 'ward'),
-('Mwakashanhala', @district_15_1, 'ward'),
-('Tongi', @district_15_1, 'ward'),
-('Mizibaziba', @district_15_1, 'ward'),
-('Milambo Itobo', @district_15_1, 'ward'),
-('Magengati', @district_15_1, 'ward'),
-('Ndala', @district_15_1, 'ward'),
-('Nzega Mjini', @district_15_1, 'ward'),
-('Wela', @district_15_1, 'ward'),
-('Mbogwe', @district_15_1, 'ward'),
-('Miguwa', @district_15_1, 'ward'),
-('Itilo', @district_15_1, 'ward'),
-('Muhugi', @district_15_1, 'ward'),
-('Utwigu', @district_15_1, 'ward'),
-('Ijanija', @district_15_1, 'ward'),
-('Nzegandogo', @district_15_1, 'ward'),
-('Lusu', @district_15_1, 'ward'),
-('Nata', @district_15_1, 'ward'),
-('Isanzu', @district_15_1, 'ward'),
-('Itobo', @district_15_1, 'ward'),
-('Mwangoye', @district_15_1, 'ward'),
-('Sigili', @district_15_1, 'ward'),
-('Mwamala', @district_15_1, 'ward'),
-('Igusule', @district_15_1, 'ward'),
-('Shigamba', @district_15_1, 'ward'),
-('Kasela', @district_15_1, 'ward'),
-('Karitu', @district_15_1, 'ward'),
-('Bukene', @district_15_1, 'ward'),
-('Mogwa', @district_15_1, 'ward'),
-('Mambali', @district_15_1, 'ward'),
-('Kahamanhalanga', @district_15_1, 'ward'),
-('Uduka', @district_15_1, 'ward'),
-('Semembela', @district_15_1, 'ward'),
-('Isagenhe', @district_15_1, 'ward'),
-('Ikindwa', @district_15_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Igunga', @region_15, 'district');
-
-SET @district_15_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Igunga', @district_15_2, 'ward'),
-('Itumba', @district_15_2, 'ward'),
-('Bukoko', @district_15_2, 'ward'),
-('Isakamaliwa', @district_15_2, 'ward'),
-('Nyandekwa', @district_15_2, 'ward'),
-('Nanga', @district_15_2, 'ward'),
-('Nguvumoja', @district_15_2, 'ward'),
-('Mbutu', @district_15_2, 'ward'),
-('Kining''inila', @district_15_2, 'ward'),
-('Igurubi', @district_15_2, 'ward'),
-('Mwamashimba', @district_15_2, 'ward'),
-('Kinungu', @district_15_2, 'ward'),
-('Ntobo', @district_15_2, 'ward'),
-('Itunduru', @district_15_2, 'ward'),
-('Mwamashiga', @district_15_2, 'ward'),
-('Choma', @district_15_2, 'ward'),
-('Mwashiku', @district_15_2, 'ward'),
-('Ziba', @district_15_2, 'ward'),
-('Ndembezi', @district_15_2, 'ward'),
-('Nkinga', @district_15_2, 'ward'),
-('Ngulu', @district_15_2, 'ward'),
-('Simbo', @district_15_2, 'ward'),
-('Igowero', @district_15_2, 'ward'),
-('Mwisi', @district_15_2, 'ward'),
-('Chabutwa', @district_15_2, 'ward'),
-('Sungwizi', @district_15_2, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Uyui', @region_15, 'district');
-
-SET @district_15_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Lutende', @district_15_3, 'ward'),
-('Kizengi', @district_15_3, 'ward'),
-('Goweko', @district_15_3, 'ward'),
-('Igalula', @district_15_3, 'ward'),
-('Ilolanguru', @district_15_3, 'ward'),
-('Mabama', @district_15_3, 'ward'),
-('Ndono', @district_15_3, 'ward'),
-('Ufuluma', @district_15_3, 'ward'),
-('Usagari', @district_15_3, 'ward'),
-('Ibiri', @district_15_3, 'ward'),
-('Bukumbi', @district_15_3, 'ward'),
-('Ikongolo', @district_15_3, 'ward'),
-('Upuge', @district_15_3, 'ward'),
-('Magiri', @district_15_3, 'ward'),
-('Isikizya', @district_15_3, 'ward'),
-('Shitage', @district_15_3, 'ward'),
-('Loya', @district_15_3, 'ward'),
-('Miswaki', @district_15_3, 'ward'),
-('Tura', @district_15_3, 'ward'),
-('Nsololo', @district_15_3, 'ward'),
-('Kigwa', @district_15_3, 'ward'),
-('Miyenze', @district_15_3, 'ward'),
-('Nsimbo', @district_15_3, 'ward'),
-('Ibelamilundi', @district_15_3, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Urambo', @region_15, 'district');
-
-SET @district_15_4 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kapilula', @district_15_4, 'ward'),
-('Urambo', @district_15_4, 'ward'),
-('Vumilia', @district_15_4, 'ward'),
-('Muungano', @district_15_4, 'ward'),
-('Songambele', @district_15_4, 'ward'),
-('Uyogo', @district_15_4, 'ward'),
-('Kiloleni', @district_15_4, 'ward'),
-('Ussoke', @district_15_4, 'ward'),
-('Uyumbu', @district_15_4, 'ward'),
-('Ugalla', @district_15_4, 'ward'),
-('Usisya', @district_15_4, 'ward'),
-('Utundu', @district_15_4, 'ward'),
-('Kasisi', @district_15_4, 'ward'),
-('Imalamakoye', @district_15_4, 'ward'),
-('Nsenda', @district_15_4, 'ward'),
-('Ukondamoyo', @district_15_4, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Sikonge', @region_15, 'district');
-
-SET @district_15_5 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Tutuo', @district_15_5, 'ward'),
-('Chabutwa', @district_15_5, 'ward'),
-('Kaloleli', @district_15_5, 'ward'),
-('Kipanga', @district_15_5, 'ward'),
-('Sikonge', @district_15_5, 'ward'),
-('Kitunda', @district_15_5, 'ward'),
-('Kiloli', @district_15_5, 'ward'),
-('Kipili', @district_15_5, 'ward'),
-('Pangale', @district_15_5, 'ward'),
-('Ipole', @district_15_5, 'ward'),
-('Ngoywa', @district_15_5, 'ward'),
-('Kisanga', @district_15_5, 'ward'),
-('Misheni', @district_15_5, 'ward'),
-('Mole', @district_15_5, 'ward'),
-('Mpombwe', @district_15_5, 'ward'),
-('Usunga', @district_15_5, 'ward'),
-('Igigwa', @district_15_5, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Tabora Urban', @region_15, 'district');
-
-SET @district_15_6 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kanyenye', @district_15_6, 'ward'),
-('Gongoni', @district_15_6, 'ward'),
-('Mbugani', @district_15_6, 'ward'),
-('Chemchem', @district_15_6, 'ward'),
-('Tambukareli', @district_15_6, 'ward'),
-('Kiloleni', @district_15_6, 'ward'),
-('Mtendeni', @district_15_6, 'ward'),
-('Isevya', @district_15_6, 'ward'),
-('Ipuli', @district_15_6, 'ward'),
-('Cheyo', @district_15_6, 'ward'),
-('Kitete', @district_15_6, 'ward'),
-('Ng`ambo', @district_15_6, 'ward'),
-('Malolo', @district_15_6, 'ward'),
-('Kakola', @district_15_6, 'ward'),
-('Uyui', @district_15_6, 'ward'),
-('Itonjanda', @district_15_6, 'ward'),
-('Ndevelwa', @district_15_6, 'ward'),
-('Itetemia', @district_15_6, 'ward'),
-('Tumbi', @district_15_6, 'ward'),
-('Kalunde', @district_15_6, 'ward'),
-('Misha', @district_15_6, 'ward'),
-('Kabila', @district_15_6, 'ward'),
-('Ikomwa', @district_15_6, 'ward'),
-('Ifucha', @district_15_6, 'ward'),
-('Ntalikwa', @district_15_6, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kaliua', @region_15, 'district');
-
-SET @district_15_7 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Ukumbi Siganga', @district_15_7, 'ward'),
-('Zugimlole', @district_15_7, 'ward'),
-('Ushokola', @district_15_7, 'ward'),
-('Ugunga', @district_15_7, 'ward'),
-('Kaliua', @district_15_7, 'ward'),
-('Usinge', @district_15_7, 'ward'),
-('Igagala', @district_15_7, 'ward'),
-('Kamsekwa', @district_15_7, 'ward'),
-('Kazaroho', @district_15_7, 'ward'),
-('Igwisi', @district_15_7, 'ward'),
-('Uyowa', @district_15_7, 'ward'),
-('Silambo', @district_15_7, 'ward'),
-('Kashishi', @district_15_7, 'ward'),
-('Sasu', @district_15_7, 'ward'),
-('Seleli', @district_15_7, 'ward'),
-('Ichemba', @district_15_7, 'ward'),
-('Mwongozo', @district_15_7, 'ward'),
-('Kanoge', @district_15_7, 'ward'),
-('Kanindo', @district_15_7, 'ward'),
-('Milambo', @district_15_7, 'ward'),
-('Igombe Mkulu', @district_15_7, 'ward');
-
-
--- ============================================================
--- REGION: Rukwa
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Rukwa', NULL, 'region');
-
-SET @region_16 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kalambo', @region_16, 'district');
-
-SET @district_16_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kasanga', @district_16_1, 'ward'),
-('Mkowe', @district_16_1, 'ward'),
-('Msanzi', @district_16_1, 'ward'),
-('Matai', @district_16_1, 'ward'),
-('Sopa', @district_16_1, 'ward'),
-('Mwazye', @district_16_1, 'ward'),
-('Katazi', @district_16_1, 'ward'),
-('Mwimbi', @district_16_1, 'ward'),
-('Mabwekenya', @district_16_1, 'ward'),
-('Mwembenkoswe', @district_16_1, 'ward'),
-('Legeza Mwendo', @district_16_1, 'ward'),
-('Ulumi', @district_16_1, 'ward'),
-('Mnamba', @district_16_1, 'ward'),
-('Katete', @district_16_1, 'ward'),
-('Kisumba', @district_16_1, 'ward'),
-('Mkali', @district_16_1, 'ward'),
-('Kilesha', @district_16_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Sumbawanga', @region_16, 'district');
-
-SET @district_16_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Mfinga', @district_16_2, 'ward'),
-('Laela', @district_16_2, 'ward'),
-('Muze', @district_16_2, 'ward'),
-('Mtowisa', @district_16_2, 'ward'),
-('Milepa', @district_16_2, 'ward'),
-('Sandulula', @district_16_2, 'ward'),
-('Kaengesa', @district_16_2, 'ward'),
-('Mpui', @district_16_2, 'ward'),
-('Msanda Muungano', @district_16_2, 'ward'),
-('Ilemba', @district_16_2, 'ward'),
-('Kipeta', @district_16_2, 'ward'),
-('Kaoze', @district_16_2, 'ward'),
-('Miangalua', @district_16_2, 'ward'),
-('Kalambanzite', @district_16_2, 'ward'),
-('Lusaka', @district_16_2, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Nkasi', @region_16, 'district');
-
-SET @district_16_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Korongwe', @district_16_3, 'ward'),
-('Mtenga', @district_16_3, 'ward'),
-('Mkwamba', @district_16_3, 'ward'),
-('Chala', @district_16_3, 'ward'),
-('Kipande', @district_16_3, 'ward'),
-('Isale', @district_16_3, 'ward'),
-('Kate', @district_16_3, 'ward'),
-('Sintali', @district_16_3, 'ward'),
-('Kala', @district_16_3, 'ward'),
-('Wampembe', @district_16_3, 'ward'),
-('Ninde', @district_16_3, 'ward'),
-('Kirando', @district_16_3, 'ward'),
-('Kabwe', @district_16_3, 'ward'),
-('Kipili', @district_16_3, 'ward'),
-('Nkandasi', @district_16_3, 'ward'),
-('Namanyere', @district_16_3, 'ward'),
-('Nkomolo', @district_16_3, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Sumbawanga Urban', @region_16, 'district');
-
-SET @district_16_4 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Malangali', @district_16_4, 'ward'),
-('Mazwi', @district_16_4, 'ward'),
-('Izia', @district_16_4, 'ward'),
-('Katandala', @district_16_4, 'ward'),
-('Old Sumbawanga', @district_16_4, 'ward'),
-('Kizwite', @district_16_4, 'ward'),
-('Ntendo', @district_16_4, 'ward'),
-('Senga', @district_16_4, 'ward'),
-('Mollo', @district_16_4, 'ward'),
-('Pito', @district_16_4, 'ward'),
-('Milanzi', @district_16_4, 'ward'),
-('Matanga', @district_16_4, 'ward'),
-('Kasense', @district_16_4, 'ward'),
-('Majengo', @district_16_4, 'ward'),
-('Chanji', @district_16_4, 'ward');
-
-
--- ============================================================
--- REGION: Kigoma
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kigoma', NULL, 'region');
-
-SET @region_17 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kibondo', @region_17, 'district');
-
-SET @district_17_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Misezero', @district_17_1, 'ward'),
-('Bitare', @district_17_1, 'ward'),
-('Kibondo', @district_17_1, 'ward'),
-('Murungu', @district_17_1, 'ward'),
-('Busagara', @district_17_1, 'ward'),
-('Rugongwe', @district_17_1, 'ward'),
-('Busunzu', @district_17_1, 'ward'),
-('Kumsenga', @district_17_1, 'ward'),
-('Kizazi', @district_17_1, 'ward'),
-('Mabamba', @district_17_1, 'ward'),
-('Bunyambo', @district_17_1, 'ward'),
-('Itaba', @district_17_1, 'ward'),
-('Kitahana', @district_17_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kasulu', @region_17, 'district');
-
-SET @district_17_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kitanga', @district_17_2, 'ward'),
-('Heru Shingo', @district_17_2, 'ward'),
-('Nyamidaho', @district_17_2, 'ward'),
-('Kitagata', @district_17_2, 'ward'),
-('Nyachenda', @district_17_2, 'ward'),
-('Buhoro', @district_17_2, 'ward'),
-('Nyamnyusi', @district_17_2, 'ward'),
-('Nyakitonto', @district_17_2, 'ward'),
-('Kagerankanda', @district_17_2, 'ward'),
-('Kurugongo', @district_17_2, 'ward'),
-('Rungwe Mpya', @district_17_2, 'ward'),
-('Asante Nyerere', @district_17_2, 'ward'),
-('Titye', @district_17_2, 'ward'),
-('Shunguliba', @district_17_2, 'ward'),
-('Muzye', @district_17_2, 'ward'),
-('Bugaga', @district_17_2, 'ward'),
-('Kigembe', @district_17_2, 'ward'),
-('Rusesa', @district_17_2, 'ward'),
-('Kwaga', @district_17_2, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kigoma', @region_17, 'district');
-
-SET @district_17_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kagunga', @district_17_3, 'ward'),
-('Mkigo', @district_17_3, 'ward'),
-('Mwamgongo', @district_17_3, 'ward'),
-('Kalinzi', @district_17_3, 'ward'),
-('Bitale', @district_17_3, 'ward'),
-('Mkongoro', @district_17_3, 'ward'),
-('Mahembe', @district_17_3, 'ward'),
-('Matendo', @district_17_3, 'ward'),
-('Mungonya', @district_17_3, 'ward'),
-('Kagongo', @district_17_3, 'ward'),
-('Mwandiga', @district_17_3, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kigoma  Urban', @region_17, 'district');
-
-SET @district_17_4 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Gungu', @district_17_4, 'ward'),
-('Kibirizi', @district_17_4, 'ward'),
-('Buhanda', @district_17_4, 'ward'),
-('Businde', @district_17_4, 'ward'),
-('Machinjioni', @district_17_4, 'ward'),
-('Kagera', @district_17_4, 'ward'),
-('Kasimbu', @district_17_4, 'ward'),
-('Rubuga', @district_17_4, 'ward'),
-('Kasingirima', @district_17_4, 'ward'),
-('Majengo', @district_17_4, 'ward'),
-('Kitongoni', @district_17_4, 'ward'),
-('Kipampa', @district_17_4, 'ward'),
-('Rusimbi', @district_17_4, 'ward'),
-('Buzebazeba', @district_17_4, 'ward'),
-('Mwanga Kusini', @district_17_4, 'ward'),
-('Kigoma', @district_17_4, 'ward'),
-('Bangwe', @district_17_4, 'ward'),
-('Mwanga Kaskazini', @district_17_4, 'ward'),
-('Katubuka', @district_17_4, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Uvinza', @region_17, 'district');
-
-SET @district_17_5 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kalya', @district_17_5, 'ward'),
-('Buhingu', @district_17_5, 'ward'),
-('Igalula', @district_17_5, 'ward'),
-('Sigunga', @district_17_5, 'ward'),
-('Sunuka', @district_17_5, 'ward'),
-('Ilagala', @district_17_5, 'ward'),
-('Simbo', @district_17_5, 'ward'),
-('Kandaga', @district_17_5, 'ward'),
-('Kazuramimba', @district_17_5, 'ward'),
-('Uvinza', @district_17_5, 'ward'),
-('Mganza', @district_17_5, 'ward'),
-('Mtego wa Noti', @district_17_5, 'ward'),
-('Nguruka', @district_17_5, 'ward'),
-('Itebula', @district_17_5, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Buhigwe', @region_17, 'district');
-
-SET @district_17_6 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Nyamugali', @district_17_6, 'ward'),
-('Biharu', @district_17_6, 'ward'),
-('Muyama', @district_17_6, 'ward'),
-('Kajana', @district_17_6, 'ward'),
-('Mugera', @district_17_6, 'ward'),
-('Kilelema', @district_17_6, 'ward'),
-('Munyegera', @district_17_6, 'ward'),
-('Buhigwe', @district_17_6, 'ward'),
-('Kibande', @district_17_6, 'ward'),
-('Janda', @district_17_6, 'ward'),
-('Munzeze', @district_17_6, 'ward'),
-('Rusaba', @district_17_6, 'ward'),
-('Muhinda', @district_17_6, 'ward'),
-('Munanila', @district_17_6, 'ward'),
-('Mwayaya', @district_17_6, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kakonko', @region_17, 'district');
-
-SET @district_17_7 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Nyabibuye', @district_17_7, 'ward'),
-('Nyamtukuza', @district_17_7, 'ward'),
-('Muhange', @district_17_7, 'ward'),
-('Kasunga', @district_17_7, 'ward'),
-('Kakonko', @district_17_7, 'ward'),
-('Kiziguzigu', @district_17_7, 'ward'),
-('Rugenge', @district_17_7, 'ward'),
-('Kasanda', @district_17_7, 'ward'),
-('Gwamumpu', @district_17_7, 'ward'),
-('Katanga', @district_17_7, 'ward'),
-('Mugunzu', @district_17_7, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kasulu Township Authority', @region_17, 'district');
-
-SET @district_17_8 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Muganza', @district_17_8, 'ward'),
-('Kigondo', @district_17_8, 'ward'),
-('Msambara', @district_17_8, 'ward'),
-('Ruhita', @district_17_8, 'ward'),
-('Nyumbigwa', @district_17_8, 'ward'),
-('Murufiti', @district_17_8, 'ward'),
-('Nyansha', @district_17_8, 'ward'),
-('Kasulu Mjini', @district_17_8, 'ward'),
-('Muhunga', @district_17_8, 'ward');
-
-
--- ============================================================
--- REGION: Shinyanga
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Shinyanga', NULL, 'region');
-
-SET @region_18 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Shinyanga Urban', @region_18, 'district');
-
-SET @district_18_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Mwamalili', @district_18_1, 'ward'),
-('Kolandoto', @district_18_1, 'ward'),
-('Ngokolo', @district_18_1, 'ward'),
-('Ibadakuli', @district_18_1, 'ward'),
-('Shinyanga Mjini', @district_18_1, 'ward'),
-('Chamaguha', @district_18_1, 'ward'),
-('Ibinzamata', @district_18_1, 'ward'),
-('Kitangili', @district_18_1, 'ward'),
-('Kizumbi', @district_18_1, 'ward'),
-('Mwawaza', @district_18_1, 'ward'),
-('Ndala', @district_18_1, 'ward'),
-('Kambarage', @district_18_1, 'ward'),
-('Chibe', @district_18_1, 'ward'),
-('Lubaga', @district_18_1, 'ward'),
-('Ndembezi', @district_18_1, 'ward'),
-('Masekelo', @district_18_1, 'ward'),
-('Old Shinyanga', @district_18_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kishapu', @region_18, 'district');
-
-SET @district_18_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Bunambiyu', @district_18_2, 'ward'),
-('Bubiki', @district_18_2, 'ward'),
-('Songwa', @district_18_2, 'ward'),
-('Seke Bugoro', @district_18_2, 'ward'),
-('Mondo', @district_18_2, 'ward'),
-('Mwadui Lohumbo', @district_18_2, 'ward'),
-('Uchunga', @district_18_2, 'ward'),
-('Kishapu', @district_18_2, 'ward'),
-('Mwakipoya', @district_18_2, 'ward'),
-('Shagihilu', @district_18_2, 'ward'),
-('Somagedi', @district_18_2, 'ward'),
-('Mwamalasa', @district_18_2, 'ward'),
-('Masanga', @district_18_2, 'ward'),
-('Lagana', @district_18_2, 'ward'),
-('Mwamashele', @district_18_2, 'ward'),
-('Ngofila', @district_18_2, 'ward'),
-('Kiloleli', @district_18_2, 'ward'),
-('Ukenyenge', @district_18_2, 'ward'),
-('Talaga', @district_18_2, 'ward'),
-('Itilima', @district_18_2, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Shinyanga', @region_18, 'district');
-
-SET @district_18_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Imesela', @district_18_3, 'ward'),
-('Usule', @district_18_3, 'ward'),
-('Ilola', @district_18_3, 'ward'),
-('Didia', @district_18_3, 'ward'),
-('Itwangi', @district_18_3, 'ward'),
-('Tinde', @district_18_3, 'ward'),
-('Mwakitolyoo', @district_18_3, 'ward'),
-('Salawe', @district_18_3, 'ward'),
-('Solwa', @district_18_3, 'ward'),
-('Iselamagazi', @district_18_3, 'ward'),
-('Lyabukande', @district_18_3, 'ward'),
-('Mwantini', @district_18_3, 'ward'),
-('Pandagichiza', @district_18_3, 'ward'),
-('Mwamala', @district_18_3, 'ward'),
-('Samuye', @district_18_3, 'ward'),
-('Usanda', @district_18_3, 'ward'),
-('Puni', @district_18_3, 'ward'),
-('Nyida', @district_18_3, 'ward'),
-('Nsalala', @district_18_3, 'ward'),
-('Bukene', @district_18_3, 'ward'),
-('Masengwa', @district_18_3, 'ward'),
-('Mwenge', @district_18_3, 'ward'),
-('Lyabusalu', @district_18_3, 'ward'),
-('Mwalukwa', @district_18_3, 'ward'),
-('Nyamalogo', @district_18_3, 'ward'),
-('Lyamidati', @district_18_3, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kahama', @region_18, 'district');
-
-SET @district_18_4 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Bulyanhulu', @district_18_4, 'ward'),
-('Bugarama', @district_18_4, 'ward'),
-('Lunguya', @district_18_4, 'ward'),
-('Shilela', @district_18_4, 'ward'),
-('Segese', @district_18_4, 'ward'),
-('Mega', @district_18_4, 'ward'),
-('Chela', @district_18_4, 'ward'),
-('Busangi', @district_18_4, 'ward'),
-('Ntobo', @district_18_4, 'ward'),
-('Ngaya', @district_18_4, 'ward'),
-('Bulige', @district_18_4, 'ward'),
-('Kashishi', @district_18_4, 'ward'),
-('Mwanase', @district_18_4, 'ward'),
-('Mwalugulu', @district_18_4, 'ward'),
-('Jana', @district_18_4, 'ward'),
-('Isaka', @district_18_4, 'ward'),
-('Chona', @district_18_4, 'ward'),
-('Chambo', @district_18_4, 'ward'),
-('Kisuke', @district_18_4, 'ward'),
-('Mapamba', @district_18_4, 'ward'),
-('Bukomela', @district_18_4, 'ward'),
-('Ukune', @district_18_4, 'ward'),
-('Igunda', @district_18_4, 'ward'),
-('Kinamapula', @district_18_4, 'ward'),
-('Igwamanoni', @district_18_4, 'ward'),
-('Mpunze', @district_18_4, 'ward'),
-('Sabasabini', @district_18_4, 'ward'),
-('Idahina', @district_18_4, 'ward'),
-('Bulungwa', @district_18_4, 'ward'),
-('Nyankende', @district_18_4, 'ward'),
-('Ulewe', @district_18_4, 'ward'),
-('Ushetu', @district_18_4, 'ward'),
-('Uyogo', @district_18_4, 'ward'),
-('Ulowa', @district_18_4, 'ward'),
-('Ubagwe', @district_18_4, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kahama Township Authority', @region_18, 'district');
-
-SET @district_18_5 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Ngogwa', @district_18_5, 'ward'),
-('Wendele', @district_18_5, 'ward'),
-('Kinaga', @district_18_5, 'ward'),
-('Isagehe', @district_18_5, 'ward'),
-('Mondo', @district_18_5, 'ward'),
-('Kagongwa', @district_18_5, 'ward'),
-('Nyahanga', @district_18_5, 'ward'),
-('Malunga', @district_18_5, 'ward'),
-('Mhongolo', @district_18_5, 'ward'),
-('Mwendakulima', @district_18_5, 'ward'),
-('Zongomera', @district_18_5, 'ward'),
-('Mhungula', @district_18_5, 'ward'),
-('Nyihogo', @district_18_5, 'ward'),
-('Nyasubi', @district_18_5, 'ward'),
-('Kahama Mjini', @district_18_5, 'ward'),
-('Majengo', @district_18_5, 'ward'),
-('Busoka', @district_18_5, 'ward'),
-('Kilago', @district_18_5, 'ward'),
-('Iyenze', @district_18_5, 'ward'),
-('Nyandekwa', @district_18_5, 'ward');
-
-
--- ============================================================
--- REGION: Kagera
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kagera', NULL, 'region');
-
-SET @region_19 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Karagwe', @region_19, 'district');
-
-SET @district_19_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Igurwa', @district_19_1, 'ward'),
-('Kanoni', @district_19_1, 'ward'),
-('Kihanga', @district_19_1, 'ward'),
-('Kituntu', @district_19_1, 'ward'),
-('Chanika', @district_19_1, 'ward'),
-('Kayanga', @district_19_1, 'ward'),
-('Bugene', @district_19_1, 'ward'),
-('Ndama', @district_19_1, 'ward'),
-('Rugera', @district_19_1, 'ward'),
-('Ihembe', @district_19_1, 'ward'),
-('Nyaishozi', @district_19_1, 'ward'),
-('Rugu', @district_19_1, 'ward'),
-('Nyakasimbi', @district_19_1, 'ward'),
-('Nyakakika', @district_19_1, 'ward'),
-('Nyakabanga', @district_19_1, 'ward'),
-('Bweranyange', @district_19_1, 'ward'),
-('Kibondo', @district_19_1, 'ward'),
-('Nyabiyonza', @district_19_1, 'ward'),
-('Kiruruma', @district_19_1, 'ward'),
-('Nyakahanga', @district_19_1, 'ward'),
-('Ihanda', @district_19_1, 'ward'),
-('Chonyonyo', @district_19_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Bukoba', @region_19, 'district');
-
-SET @district_19_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Rubafu', @district_19_2, 'ward'),
-('Kishanje', @district_19_2, 'ward'),
-('Kaagya', @district_19_2, 'ward'),
-('Buhendangabo', @district_19_2, 'ward'),
-('Nyakato', @district_19_2, 'ward'),
-('Katoma', @district_19_2, 'ward'),
-('Karabagaine', @district_19_2, 'ward'),
-('Bujugo', @district_19_2, 'ward'),
-('Maruku', @district_19_2, 'ward'),
-('Kanyangereko', @district_19_2, 'ward'),
-('Katerero', @district_19_2, 'ward'),
-('Kemondo', @district_19_2, 'ward'),
-('Nyakibimbili', @district_19_2, 'ward'),
-('Ibwera', @district_19_2, 'ward'),
-('Mikoni', @district_19_2, 'ward'),
-('Butelankuzi', @district_19_2, 'ward'),
-('Rubale', @district_19_2, 'ward'),
-('Rukoma', @district_19_2, 'ward'),
-('Kikomero', @district_19_2, 'ward'),
-('Kibirizi', @district_19_2, 'ward'),
-('Izimbya', @district_19_2, 'ward'),
-('Butulage', @district_19_2, 'ward'),
-('Ruhunga', @district_19_2, 'ward'),
-('Mugajwale', @district_19_2, 'ward'),
-('Kyamulaile', @district_19_2, 'ward'),
-('Katoro', @district_19_2, 'ward'),
-('Kaibanja', @district_19_2, 'ward'),
-('Kasharu', @district_19_2, 'ward'),
-('Kishogo', @district_19_2, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Muleba', @region_19, 'district');
-
-SET @district_19_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Muhutwe', @district_19_3, 'ward'),
-('Mayondwe', @district_19_3, 'ward'),
-('Goziba', @district_19_3, 'ward'),
-('Kerebe', @district_19_3, 'ward'),
-('Bumbire', @district_19_3, 'ward'),
-('Ikuza', @district_19_3, 'ward'),
-('Izigo', @district_19_3, 'ward'),
-('Katoke', @district_19_3, 'ward'),
-('Kagoma', @district_19_3, 'ward'),
-('Kikuku', @district_19_3, 'ward'),
-('Bureza', @district_19_3, 'ward'),
-('Muleba', @district_19_3, 'ward'),
-('Ikondo', @district_19_3, 'ward'),
-('Buhangaza', @district_19_3, 'ward'),
-('Mazinga', @district_19_3, 'ward'),
-('Magata (Karutanga)', @district_19_3, 'ward'),
-('Gwanseli', @district_19_3, 'ward'),
-('Kibanga', @district_19_3, 'ward'),
-('Kasharunga', @district_19_3, 'ward'),
-('Rulanda', @district_19_3, 'ward'),
-('Kimwani', @district_19_3, 'ward'),
-('Nyakabango', @district_19_3, 'ward'),
-('Kyebitembe', @district_19_3, 'ward'),
-('Karambi', @district_19_3, 'ward'),
-('Mubunda', @district_19_3, 'ward'),
-('Bisheke', @district_19_3, 'ward'),
-('Burungura', @district_19_3, 'ward'),
-('Biirabo', @district_19_3, 'ward'),
-('Mushabago', @district_19_3, 'ward'),
-('Nyakatanga', @district_19_3, 'ward'),
-('Ngenge', @district_19_3, 'ward'),
-('Rutoro', @district_19_3, 'ward'),
-('Kabirizi', @district_19_3, 'ward'),
-('Nshamba', @district_19_3, 'ward'),
-('Kashasha', @district_19_3, 'ward'),
-('Ijumbi', @district_19_3, 'ward'),
-('Kishanda', @district_19_3, 'ward'),
-('Buganguzi', @district_19_3, 'ward'),
-('Ibuga', @district_19_3, 'ward'),
-('Bulyakashaju', @district_19_3, 'ward'),
-('Kamachumu', @district_19_3, 'ward'),
-('Ruhanga', @district_19_3, 'ward'),
-('Mafumbo', @district_19_3, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Biharamulo', @region_19, 'district');
-
-SET @district_19_4 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Nyakahura', @district_19_4, 'ward'),
-('Ruziba', @district_19_4, 'ward'),
-('Biharamulo Mjini', @district_19_4, 'ward'),
-('Bisibo', @district_19_4, 'ward'),
-('Nyarubungo', @district_19_4, 'ward'),
-('Nyamahanga', @district_19_4, 'ward'),
-('Runazi', @district_19_4, 'ward'),
-('Kabindi', @district_19_4, 'ward'),
-('Nyamigogo', @district_19_4, 'ward'),
-('Nyabusozi', @district_19_4, 'ward'),
-('Nemba', @district_19_4, 'ward'),
-('Lusahunga', @district_19_4, 'ward'),
-('Kaniha', @district_19_4, 'ward'),
-('Nyantakara', @district_19_4, 'ward'),
-('Kalenge', @district_19_4, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Ngara', @region_19, 'district');
-
-SET @district_19_5 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Rusumo', @district_19_5, 'ward'),
-('Nyakisasa', @district_19_5, 'ward'),
-('Rulenge', @district_19_5, 'ward'),
-('Keza', @district_19_5, 'ward'),
-('Murusagamba', @district_19_5, 'ward'),
-('Muganza', @district_19_5, 'ward'),
-('Bugarama', @district_19_5, 'ward'),
-('Bukiriro', @district_19_5, 'ward'),
-('Kabanga', @district_19_5, 'ward'),
-('Mabawe', @district_19_5, 'ward'),
-('Kanazi', @district_19_5, 'ward'),
-('Mugoma', @district_19_5, 'ward'),
-('Kirushya', @district_19_5, 'ward'),
-('Ntobeye', @district_19_5, 'ward'),
-('Nyamiyaga', @district_19_5, 'ward'),
-('Ngara Mjini', @district_19_5, 'ward'),
-('Kibimba', @district_19_5, 'ward'),
-('Mbuba', @district_19_5, 'ward'),
-('Murukulazo', @district_19_5, 'ward'),
-('Kasulo', @district_19_5, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Bukoba Urban', @region_19, 'district');
-
-SET @district_19_6 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Hamugembe', @district_19_6, 'ward'),
-('Nshambya', @district_19_6, 'ward'),
-('Buhemba', @district_19_6, 'ward'),
-('Kahororo', @district_19_6, 'ward'),
-('Kashai', @district_19_6, 'ward'),
-('Miembeni', @district_19_6, 'ward'),
-('Bilele', @district_19_6, 'ward'),
-('Bakoba', @district_19_6, 'ward'),
-('Ijuganyondo', @district_19_6, 'ward'),
-('Kitendaguro', @district_19_6, 'ward'),
-('Kibeta', @district_19_6, 'ward'),
-('Kagondo', @district_19_6, 'ward'),
-('Nyanga', @district_19_6, 'ward'),
-('Rwamishenye', @district_19_6, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Missenyi', @region_19, 'district');
-
-SET @district_19_7 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kakunyu', @district_19_7, 'ward'),
-('Nsunga', @district_19_7, 'ward'),
-('Mutukula', @district_19_7, 'ward'),
-('Kassambya', @district_19_7, 'ward'),
-('Minziro', @district_19_7, 'ward'),
-('Ruzinga', @district_19_7, 'ward'),
-('Kashenye', @district_19_7, 'ward'),
-('Kanyigo', @district_19_7, 'ward'),
-('Ishunju', @district_19_7, 'ward'),
-('Buyango', @district_19_7, 'ward'),
-('Bwanjai', @district_19_7, 'ward'),
-('Ishozi', @district_19_7, 'ward'),
-('Gera', @district_19_7, 'ward'),
-('Bugandika', @district_19_7, 'ward'),
-('Kitobo', @district_19_7, 'ward'),
-('Bugorora', @district_19_7, 'ward'),
-('Kyaka', @district_19_7, 'ward'),
-('Mushasha', @district_19_7, 'ward'),
-('Kilimilil', @district_19_7, 'ward'),
-('Mabale', @district_19_7, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kyerwa', @region_19, 'district');
-
-SET @district_19_8 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Isingiro', @district_19_8, 'ward'),
-('Kaisho', @district_19_8, 'ward'),
-('Rutunguru', @district_19_8, 'ward'),
-('Kibingo', @district_19_8, 'ward'),
-('Murongo', @district_19_8, 'ward'),
-('Bugomora', @district_19_8, 'ward'),
-('Kibale', @district_19_8, 'ward'),
-('Mabira', @district_19_8, 'ward'),
-('Businde', @district_19_8, 'ward'),
-('Kamuli', @district_19_8, 'ward'),
-('Nyakatuntu', @district_19_8, 'ward'),
-('Kimuli', @district_19_8, 'ward'),
-('Kikukuru', @district_19_8, 'ward'),
-('Rwabwere', @district_19_8, 'ward'),
-('Nkwenda', @district_19_8, 'ward'),
-('Rukuraijo', @district_19_8, 'ward'),
-('Songambele', @district_19_8, 'ward'),
-('Kyerwa', @district_19_8, 'ward');
-
-
--- ============================================================
--- REGION: Mwanza
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mwanza', NULL, 'region');
-
-SET @region_20 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Ukerewe', @region_20, 'district');
-
-SET @district_20_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Nansio', @district_20_1, 'ward'),
-('Kagera', @district_20_1, 'ward'),
-('Nakatunguru', @district_20_1, 'ward'),
-('Kakerege', @district_20_1, 'ward'),
-('Bukongo', @district_20_1, 'ward'),
-('Nkilizya', @district_20_1, 'ward'),
-('Bukanda', @district_20_1, 'ward'),
-('Mukituntu', @district_20_1, 'ward'),
-('Igala', @district_20_1, 'ward'),
-('Bwiro', @district_20_1, 'ward'),
-('Muriti', @district_20_1, 'ward'),
-('Ilangala', @district_20_1, 'ward'),
-('Namilembe', @district_20_1, 'ward'),
-('Nduruma', @district_20_1, 'ward'),
-('Murutunguru', @district_20_1, 'ward'),
-('Kagunguli', @district_20_1, 'ward'),
-('Bukindo', @district_20_1, 'ward'),
-('Namagondo', @district_20_1, 'ward'),
-('Ngoma', @district_20_1, 'ward'),
-('Bwisya', @district_20_1, 'ward'),
-('Bukungu', @district_20_1, 'ward'),
-('Nyamanga', @district_20_1, 'ward'),
-('Bukiro', @district_20_1, 'ward'),
-('Irugwa', @district_20_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Magu', @region_20, 'district');
-
-SET @district_20_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kisesa', @district_20_2, 'ward'),
-('Bujashi', @district_20_2, 'ward'),
-('Lutale', @district_20_2, 'ward'),
-('Kongolo', @district_20_2, 'ward'),
-('Nyanguge', @district_20_2, 'ward'),
-('Kitongo Sim', @district_20_2, 'ward'),
-('Mwamanga', @district_20_2, 'ward'),
-('Kahangara', @district_20_2, 'ward'),
-('Nyigogo', @district_20_2, 'ward'),
-('Mwamabanza', @district_20_2, 'ward'),
-('Sukuma', @district_20_2, 'ward'),
-('Lubugu', @district_20_2, 'ward'),
-('Ng''haya', @district_20_2, 'ward'),
-('Nkungulu', @district_20_2, 'ward'),
-('Jinjimili', @district_20_2, 'ward'),
-('Shishani', @district_20_2, 'ward'),
-('Magu Mjini', @district_20_2, 'ward'),
-('Bukandwe', @district_20_2, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Nyamagana', @region_20, 'district');
-
-SET @district_20_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Mkuyuni', @district_20_3, 'ward'),
-('Igogo', @district_20_3, 'ward'),
-('Pamba', @district_20_3, 'ward'),
-('Nyamagana', @district_20_3, 'ward'),
-('Mirongo', @district_20_3, 'ward'),
-('Isamilo', @district_20_3, 'ward'),
-('Mbugani', @district_20_3, 'ward'),
-('Mahina', @district_20_3, 'ward'),
-('Igoma', @district_20_3, 'ward'),
-('Buhongwa', @district_20_3, 'ward'),
-('Mkolani', @district_20_3, 'ward'),
-('Butimba', @district_20_3, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kwimba', @region_20, 'district');
-
-SET @district_20_4 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Walla', @district_20_4, 'ward'),
-('Bungulwa', @district_20_4, 'ward'),
-('Sumve', @district_20_4, 'ward'),
-('Mantare', @district_20_4, 'ward'),
-('Ngulla', @district_20_4, 'ward'),
-('Mwabomba', @district_20_4, 'ward'),
-('Mwagi', @district_20_4, 'ward'),
-('Iseni', @district_20_4, 'ward'),
-('Nyambiti', @district_20_4, 'ward'),
-('Maligisu', @district_20_4, 'ward'),
-('Mwandu', @district_20_4, 'ward'),
-('Malya', @district_20_4, 'ward'),
-('Lyoma', @district_20_4, 'ward'),
-('Mwang''halanga', @district_20_4, 'ward'),
-('Nyamilama', @district_20_4, 'ward'),
-('Mwakilambiti', @district_20_4, 'ward'),
-('Hungumalwa', @district_20_4, 'ward'),
-('Mwamala', @district_20_4, 'ward'),
-('Kikubiji', @district_20_4, 'ward'),
-('Mhande', @district_20_4, 'ward'),
-('Bupamwa', @district_20_4, 'ward'),
-('Fukalo', @district_20_4, 'ward'),
-('Ng''hundi', @district_20_4, 'ward'),
-('Igongwa', @district_20_4, 'ward'),
-('Ngudu', @district_20_4, 'ward'),
-('Bugando', @district_20_4, 'ward'),
-('Nkalalo', @district_20_4, 'ward'),
-('Mwankulwe', @district_20_4, 'ward'),
-('Ilula', @district_20_4, 'ward'),
-('Shilembo', @district_20_4, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Sengerema', @region_20, 'district');
-
-SET @district_20_5 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Ibisabageni', @district_20_5, 'ward'),
-('Nyamazugo', @district_20_5, 'ward'),
-('Chifumfu', @district_20_5, 'ward'),
-('Katunguru', @district_20_5, 'ward'),
-('Kasungamile', @district_20_5, 'ward'),
-('Nyamatongo', @district_20_5, 'ward'),
-('Tabaruka', @district_20_5, 'ward'),
-('Busisi', @district_20_5, 'ward'),
-('Buyagu', @district_20_5, 'ward'),
-('Igalula', @district_20_5, 'ward'),
-('Kagunga', @district_20_5, 'ward'),
-('Sima', @district_20_5, 'ward'),
-('Nyakasunga', @district_20_5, 'ward'),
-('Kalebezo', @district_20_5, 'ward'),
-('Nyehunge', @district_20_5, 'ward'),
-('Kafunzo', @district_20_5, 'ward'),
-('Bupandwa', @district_20_5, 'ward'),
-('Katwe', @district_20_5, 'ward'),
-('Maisome', @district_20_5, 'ward'),
-('Kazunzu', @district_20_5, 'ward'),
-('Lugata', @district_20_5, 'ward'),
-('Nyakaliro', @district_20_5, 'ward'),
-('Nyakasasa', @district_20_5, 'ward'),
-('Buzilasoga', @district_20_5, 'ward'),
-('Nyanzenda', @district_20_5, 'ward'),
-('Bulyaheke', @district_20_5, 'ward'),
-('Irenza', @district_20_5, 'ward'),
-('Kasenyi', @district_20_5, 'ward'),
-('Mwambului', @district_20_5, 'ward'),
-('Nyatukala', @district_20_5, 'ward'),
-('Nyampulukano', @district_20_5, 'ward'),
-('Nyampande', @district_20_5, 'ward'),
-('Kishinda', @district_20_5, 'ward'),
-('Igulumuki', @district_20_5, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Ilemela', @region_20, 'district');
-
-SET @district_20_6 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Buswelu', @district_20_6, 'ward'),
-('Nyakato', @district_20_6, 'ward'),
-('Nyamanoro', @district_20_6, 'ward'),
-('Kirumba', @district_20_6, 'ward'),
-('Kitangiri', @district_20_6, 'ward'),
-('Pasiansi', @district_20_6, 'ward'),
-('Ilemela', @district_20_6, 'ward'),
-('Bugogwa', @district_20_6, 'ward'),
-('Sangabuye', @district_20_6, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Misungwi', @region_20, 'district');
-
-SET @district_20_7 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Bulemeji', @district_20_7, 'ward'),
-('Idetemya', @district_20_7, 'ward'),
-('Usagara', @district_20_7, 'ward'),
-('Ukiriguru', @district_20_7, 'ward'),
-('Kanyelele', @district_20_7, 'ward'),
-('Koromije', @district_20_7, 'ward'),
-('Igokelo', @district_20_7, 'ward'),
-('Mwaniko', @district_20_7, 'ward'),
-('Misungwi', @district_20_7, 'ward'),
-('Masasi', @district_20_7, 'ward'),
-('Kijima', @district_20_7, 'ward'),
-('Shilalo', @district_20_7, 'ward'),
-('Buhingo', @district_20_7, 'ward'),
-('Busongo', @district_20_7, 'ward'),
-('Nhundulu', @district_20_7, 'ward'),
-('Lubili', @district_20_7, 'ward'),
-('Ilujamate', @district_20_7, 'ward'),
-('Mbarika', @district_20_7, 'ward'),
-('Sumbugu', @district_20_7, 'ward'),
-('Kasololo', @district_20_7, 'ward'),
-('Ilalambogo', @district_20_7, 'ward'),
-('Isesa', @district_20_7, 'ward'),
-('Gulumungu', @district_20_7, 'ward'),
-('Mabuki', @district_20_7, 'ward'),
-('Mondo', @district_20_7, 'ward'),
-('Mamaye', @district_20_7, 'ward'),
-('Fella', @district_20_7, 'ward');
-
-
--- ============================================================
--- REGION: Mara
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mara', NULL, 'region');
-
-SET @region_21 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Tarime', @region_21, 'district');
-
-SET @district_21_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Susuni', @district_21_1, 'ward'),
-('Mwema', @district_21_1, 'ward'),
-('Sirari', @district_21_1, 'ward'),
-('Pemba', @district_21_1, 'ward'),
-('Nyakonga', @district_21_1, 'ward'),
-('Nyarero', @district_21_1, 'ward'),
-('Nyamwaga', @district_21_1, 'ward'),
-('Muriba', @district_21_1, 'ward'),
-('Nyanungu', @district_21_1, 'ward'),
-('Gorong''a', @district_21_1, 'ward'),
-('Nyarokoba', @district_21_1, 'ward'),
-('Kemambo', @district_21_1, 'ward'),
-('Kibasuka', @district_21_1, 'ward'),
-('Binagi', @district_21_1, 'ward'),
-('Turwa', @district_21_1, 'ward'),
-('Bomani', @district_21_1, 'ward'),
-('Nyandoto', @district_21_1, 'ward'),
-('Matongo', @district_21_1, 'ward'),
-('Manga', @district_21_1, 'ward'),
-('Bumera', @district_21_1, 'ward'),
-('Komaswa', @district_21_1, 'ward'),
-('Kiore', @district_21_1, 'ward'),
-('Sabasaba', @district_21_1, 'ward'),
-('Nyamisangura', @district_21_1, 'ward'),
-('Kentare', @district_21_1, 'ward'),
-('Nyamaranga', @district_21_1, 'ward'),
-('Mbogi', @district_21_1, 'ward'),
-('Genyange', @district_21_1, 'ward'),
-('Nyansicha', @district_21_1, 'ward'),
-('Itiryo', @district_21_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Serengeti', @region_21, 'district');
-
-SET @district_21_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kenyamonta', @district_21_2, 'ward'),
-('Busawe', @district_21_2, 'ward'),
-('Kisaka', @district_21_2, 'ward'),
-('Kebanchabancha', @district_21_2, 'ward'),
-('Ring''wani', @district_21_2, 'ward'),
-('Rung''abure', @district_21_2, 'ward'),
-('Machochwe', @district_21_2, 'ward'),
-('Kisangura', @district_21_2, 'ward'),
-('Mugumu', @district_21_2, 'ward'),
-('Ikoma', @district_21_2, 'ward'),
-('Natta', @district_21_2, 'ward'),
-('Issenye', @district_21_2, 'ward'),
-('Rigicha', @district_21_2, 'ward'),
-('Nyambureti', @district_21_2, 'ward'),
-('Nyamoko', @district_21_2, 'ward'),
-('Manchira', @district_21_2, 'ward'),
-('Kyambahi', @district_21_2, 'ward'),
-('Nyamatare', @district_21_2, 'ward'),
-('Majimoto', @district_21_2, 'ward'),
-('Magange', @district_21_2, 'ward'),
-('Nyansurura', @district_21_2, 'ward'),
-('Mosongo', @district_21_2, 'ward'),
-('Sedeco', @district_21_2, 'ward'),
-('Mbalibali', @district_21_2, 'ward'),
-('Stendi Kuu', @district_21_2, 'ward'),
-('Geitasamo', @district_21_2, 'ward'),
-('Morotonga', @district_21_2, 'ward'),
-('Uwanja wa Ndege', @district_21_2, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Musoma', @region_21, 'district');
-
-SET @district_21_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Bukumi', @district_21_3, 'ward'),
-('Makojo', @district_21_3, 'ward'),
-('Bwasi', @district_21_3, 'ward'),
-('Bulinga', @district_21_3, 'ward'),
-('Bukima', @district_21_3, 'ward'),
-('Murangi', @district_21_3, 'ward'),
-('Bugwema', @district_21_3, 'ward'),
-('Nyamrandirira', @district_21_3, 'ward'),
-('Nyambono', @district_21_3, 'ward'),
-('Suguti', @district_21_3, 'ward'),
-('Tegeruka', @district_21_3, 'ward'),
-('Kiriba', @district_21_3, 'ward'),
-('Busambara', @district_21_3, 'ward'),
-('Mugango', @district_21_3, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Bunda', @region_21, 'district');
-
-SET @district_21_4 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Nyamuswa', @district_21_4, 'ward'),
-('Salama', @district_21_4, 'ward'),
-('Mihingo', @district_21_4, 'ward'),
-('Mugeta', @district_21_4, 'ward'),
-('Hunyari', @district_21_4, 'ward'),
-('Mcharo', @district_21_4, 'ward'),
-('Sazira', @district_21_4, 'ward'),
-('Kunzugu', @district_21_4, 'ward'),
-('Bunda Mjini', @district_21_4, 'ward'),
-('Guta', @district_21_4, 'ward'),
-('Butimba', @district_21_4, 'ward'),
-('Neruma', @district_21_4, 'ward'),
-('Kibara', @district_21_4, 'ward'),
-('Nansimo', @district_21_4, 'ward'),
-('Kisorya', @district_21_4, 'ward'),
-('Igundu', @district_21_4, 'ward'),
-('Iramba', @district_21_4, 'ward'),
-('Namhula', @district_21_4, 'ward'),
-('Wariku', @district_21_4, 'ward'),
-('Kabasa', @district_21_4, 'ward'),
-('Nampindi', @district_21_4, 'ward'),
-('Chitengule', @district_21_4, 'ward'),
-('Kasuguti', @district_21_4, 'ward'),
-('Balili', @district_21_4, 'ward'),
-('Bunda Stoo', @district_21_4, 'ward'),
-('Nyasura', @district_21_4, 'ward'),
-('Nyamang''uta', @district_21_4, 'ward'),
-('Ketare', @district_21_4, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Rorya', @region_21, 'district');
-
-SET @district_21_5 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kigunga', @district_21_5, 'ward'),
-('Kirogo', @district_21_5, 'ward'),
-('Nyamtinga', @district_21_5, 'ward'),
-('Nyamagaro', @district_21_5, 'ward'),
-('Nyahongo', @district_21_5, 'ward'),
-('Mkoma', @district_21_5, 'ward'),
-('Tai', @district_21_5, 'ward'),
-('Bukura', @district_21_5, 'ward'),
-('Roche', @district_21_5, 'ward'),
-('Kitembe', @district_21_5, 'ward'),
-('Mirare', @district_21_5, 'ward'),
-('Goribe', @district_21_5, 'ward'),
-('Ikoma', @district_21_5, 'ward'),
-('Koryo', @district_21_5, 'ward'),
-('Bukwe', @district_21_5, 'ward'),
-('Nyathorogo', @district_21_5, 'ward'),
-('Rabour', @district_21_5, 'ward'),
-('Kisumwa', @district_21_5, 'ward'),
-('Komuge', @district_21_5, 'ward'),
-('Nyamunga', @district_21_5, 'ward'),
-('Kyang''ombe', @district_21_5, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Butiam', @region_21, 'district');
-
-SET @district_21_6 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Bwiregi', @district_21_6, 'ward'),
-('Buswahili', @district_21_6, 'ward'),
-('Nyamimange', @district_21_6, 'ward'),
-('Sirorisimba', @district_21_6, 'ward'),
-('Buhemba', @district_21_6, 'ward'),
-('Mirwa', @district_21_6, 'ward'),
-('Muriaza', @district_21_6, 'ward'),
-('Butiama', @district_21_6, 'ward'),
-('Masaba', @district_21_6, 'ward'),
-('Kyanyari', @district_21_6, 'ward'),
-('Kukirango', @district_21_6, 'ward'),
-('Buruma', @district_21_6, 'ward'),
-('Nyakatende', @district_21_6, 'ward'),
-('Etaro', @district_21_6, 'ward'),
-('Nyegina', @district_21_6, 'ward'),
-('Nyankanga', @district_21_6, 'ward'),
-('Bisumwa', @district_21_6, 'ward'),
-('Bukabwa', @district_21_6, 'ward'),
-('Butuguri', @district_21_6, 'ward'),
-('Busegwe', @district_21_6, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Musoma Urban', @region_21, 'district');
-
-SET @district_21_7 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Mukendo', @district_21_7, 'ward'),
-('Mwigobero', @district_21_7, 'ward'),
-('Iringo', @district_21_7, 'ward'),
-('Kitaji', @district_21_7, 'ward'),
-('Nyasho', @district_21_7, 'ward'),
-('Bweri', @district_21_7, 'ward'),
-('Nyakato', @district_21_7, 'ward'),
-('Kigera', @district_21_7, 'ward'),
-('Kamunyonge', @district_21_7, 'ward'),
-('Nyamatare', @district_21_7, 'ward'),
-('Mwisenge', @district_21_7, 'ward'),
-('Buhare', @district_21_7, 'ward'),
-('Makoko', @district_21_7, 'ward');
-
-
--- ============================================================
--- REGION: Manyara
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Manyara', NULL, 'region');
-
-SET @region_22 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Babati', @region_22, 'district');
-
-SET @district_22_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Magara', @district_22_1, 'ward'),
-('Nkaiti', @district_22_1, 'ward'),
-('Mwada', @district_22_1, 'ward'),
-('Mamire', @district_22_1, 'ward'),
-('Galapo', @district_22_1, 'ward'),
-('Qashi', @district_22_1, 'ward'),
-('Ayasanda', @district_22_1, 'ward'),
-('Gidas', @district_22_1, 'ward'),
-('Duru', @district_22_1, 'ward'),
-('Riroda', @district_22_1, 'ward'),
-('Arri', @district_22_1, 'ward'),
-('Dareda', @district_22_1, 'ward'),
-('Dabil', @district_22_1, 'ward'),
-('Ufana', @district_22_1, 'ward'),
-('Bashneti', @district_22_1, 'ward'),
-('Madunga', @district_22_1, 'ward'),
-('Kiru', @district_22_1, 'ward'),
-('Magugu', @district_22_1, 'ward'),
-('Endokise', @district_22_1, 'ward'),
-('Boay', @district_22_1, 'ward'),
-('Nar', @district_22_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Hanang', @region_22, 'district');
-
-SET @district_22_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Balagidalalu', @district_22_2, 'ward'),
-('Gehandu', @district_22_2, 'ward'),
-('Laghanga', @district_22_2, 'ward'),
-('Getanuwas', @district_22_2, 'ward'),
-('Hirbadaw', @district_22_2, 'ward'),
-('Bassodesh', @district_22_2, 'ward'),
-('Bassotu', @district_22_2, 'ward'),
-('Gendabi', @district_22_2, 'ward'),
-('Mogitu', @district_22_2, 'ward'),
-('Giting', @district_22_2, 'ward'),
-('Masakta', @district_22_2, 'ward'),
-('Masqaroda', @district_22_2, 'ward'),
-('Endasak', @district_22_2, 'ward'),
-('Gidahababieg', @district_22_2, 'ward'),
-('Maskron', @district_22_2, 'ward'),
-('Hidet', @district_22_2, 'ward'),
-('Simbay', @district_22_2, 'ward'),
-('Sirop', @district_22_2, 'ward'),
-('Gisambalang', @district_22_2, 'ward'),
-('Nangwa', @district_22_2, 'ward'),
-('Katesh', @district_22_2, 'ward'),
-('Ganana', @district_22_2, 'ward'),
-('Dirma', @district_22_2, 'ward'),
-('Lalaji', @district_22_2, 'ward'),
-('Endasiwold', @district_22_2, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mbulu', @region_22, 'district');
-
-SET @district_22_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Daudi', @district_22_3, 'ward'),
-('Bargish', @district_22_3, 'ward'),
-('Gehandu', @district_22_3, 'ward'),
-('Kainam', @district_22_3, 'ward'),
-('Murray', @district_22_3, 'ward'),
-('Ayamaami', @district_22_3, 'ward'),
-('Uhuru', @district_22_3, 'ward'),
-('Tlawi', @district_22_3, 'ward'),
-('Bashay', @district_22_3, 'ward'),
-('Dongobesh', @district_22_3, 'ward'),
-('Tumati', @district_22_3, 'ward'),
-('Maretadu', @district_22_3, 'ward'),
-('Maghang', @district_22_3, 'ward'),
-('Haydom', @district_22_3, 'ward'),
-('Yaeda Chini', @district_22_3, 'ward'),
-('Masieda', @district_22_3, 'ward'),
-('Marang', @district_22_3, 'ward'),
-('Gunyoda', @district_22_3, 'ward'),
-('Nahasey', @district_22_3, 'ward'),
-('Endamilay', @district_22_3, 'ward'),
-('Yaeda Ampa', @district_22_3, 'ward'),
-('Masqaroda', @district_22_3, 'ward'),
-('Nambisi', @district_22_3, 'ward'),
-('Dinamu', @district_22_3, 'ward'),
-('Ayamohe', @district_22_3, 'ward'),
-('Sanu Baray', @district_22_3, 'ward'),
-('Imboru', @district_22_3, 'ward'),
-('Endagikot', @district_22_3, 'ward'),
-('Geterer', @district_22_3, 'ward'),
-('Hayderer', @district_22_3, 'ward'),
-('Eshkesh', @district_22_3, 'ward'),
-('Gidihim', @district_22_3, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Simanjiro', @region_22, 'district');
-
-SET @district_22_4 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Orkesmet', @district_22_4, 'ward'),
-('Loiborsiret', @district_22_4, 'ward'),
-('Emboreet', @district_22_4, 'ward'),
-('Terrat', @district_22_4, 'ward'),
-('Oljoro  No. 5', @district_22_4, 'ward'),
-('Shambarai', @district_22_4, 'ward'),
-('Mererani', @district_22_4, 'ward'),
-('Msitu wa Tembo', @district_22_4, 'ward'),
-('Ngorika', @district_22_4, 'ward'),
-('Liborsoit', @district_22_4, 'ward'),
-('Ruvu Remiti', @district_22_4, 'ward'),
-('Komolo', @district_22_4, 'ward'),
-('Naisinyai', @district_22_4, 'ward'),
-('Endiantu', @district_22_4, 'ward'),
-('Endonyongijape', @district_22_4, 'ward'),
-('Kitwai', @district_22_4, 'ward'),
-('Naberera', @district_22_4, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kiteto', @region_22, 'district');
-
-SET @district_22_5 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kibaya', @district_22_5, 'ward'),
-('Partimbo', @district_22_5, 'ward'),
-('Makame', @district_22_5, 'ward'),
-('Ndedo', @district_22_5, 'ward'),
-('Kijungu', @district_22_5, 'ward'),
-('Lengatei', @district_22_5, 'ward'),
-('Sunya', @district_22_5, 'ward'),
-('Dongo', @district_22_5, 'ward'),
-('Songambele', @district_22_5, 'ward'),
-('Dosidosi', @district_22_5, 'ward'),
-('Engusero', @district_22_5, 'ward'),
-('Matui', @district_22_5, 'ward'),
-('Bwagamoyo', @district_22_5, 'ward'),
-('Loolera', @district_22_5, 'ward'),
-('Magungu', @district_22_5, 'ward'),
-('Namelock', @district_22_5, 'ward'),
-('Njoro', @district_22_5, 'ward'),
-('Olboroti', @district_22_5, 'ward'),
-('Chapakazi', @district_22_5, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Babati Urban', @region_22, 'district');
-
-SET @district_22_6 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Babati', @district_22_6, 'ward'),
-('Mutuka', @district_22_6, 'ward'),
-('Nangara', @district_22_6, 'ward'),
-('Singe', @district_22_6, 'ward'),
-('Bonga', @district_22_6, 'ward'),
-('Bagara', @district_22_6, 'ward'),
-('Sigino', @district_22_6, 'ward'),
-('Maisaka', @district_22_6, 'ward');
-
-
--- ============================================================
--- REGION: Njombe
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Njombe', NULL, 'region');
-
-SET @region_23 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Njombe Urban', @region_23, 'district');
-
-SET @district_23_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Njombe Mjini', @district_23_1, 'ward'),
-('Mjimwema', @district_23_1, 'ward'),
-('Ramadhani', @district_23_1, 'ward'),
-('Yakobi', @district_23_1, 'ward'),
-('Kifanya', @district_23_1, 'ward'),
-('Ihanga', @district_23_1, 'ward'),
-('Iwungilo', @district_23_1, 'ward'),
-('Luponde', @district_23_1, 'ward'),
-('Matola', @district_23_1, 'ward'),
-('Makowo', @district_23_1, 'ward'),
-('Lugenge', @district_23_1, 'ward'),
-('Uwemba', @district_23_1, 'ward'),
-('Utalingolo', @district_23_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Wanging''ombe', @region_23, 'district');
-
-SET @district_23_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Saja', @district_23_2, 'ward'),
-('Kijombe', @district_23_2, 'ward'),
-('Wanging''ombe', @district_23_2, 'ward'),
-('Ilembula', @district_23_2, 'ward'),
-('Uhambule', @district_23_2, 'ward'),
-('Usuka', @district_23_2, 'ward'),
-('Igwachanya', @district_23_2, 'ward'),
-('Mdandu', @district_23_2, 'ward'),
-('Igima', @district_23_2, 'ward'),
-('Imalinyi', @district_23_2, 'ward'),
-('Ulembwe', @district_23_2, 'ward'),
-('Makoga', @district_23_2, 'ward'),
-('Kipengere', @district_23_2, 'ward'),
-('Igosi', @district_23_2, 'ward'),
-('Wangama', @district_23_2, 'ward'),
-('Kidugala', @district_23_2, 'ward'),
-('Luduga', @district_23_2, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Makete', @region_23, 'district');
-
-SET @district_23_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Lupalilo', @district_23_3, 'ward'),
-('Mang''oto', @district_23_3, 'ward'),
-('Iwawa', @district_23_3, 'ward'),
-('Lupila', @district_23_3, 'ward'),
-('Ukwama', @district_23_3, 'ward'),
-('Bulongwa', @district_23_3, 'ward'),
-('Kipagalo', @district_23_3, 'ward'),
-('Iniho', @district_23_3, 'ward'),
-('Ipelele', @district_23_3, 'ward'),
-('Kigulu', @district_23_3, 'ward'),
-('Matamba', @district_23_3, 'ward'),
-('Mlondwe', @district_23_3, 'ward'),
-('Kitulo', @district_23_3, 'ward'),
-('Ikuwo', @district_23_3, 'ward'),
-('Mfumbi', @district_23_3, 'ward'),
-('Ipepo', @district_23_3, 'ward'),
-('Mbalatse', @district_23_3, 'ward'),
-('Tandala', @district_23_3, 'ward'),
-('Luwumbu', @district_23_3, 'ward'),
-('Isapulano', @district_23_3, 'ward'),
-('Kigala', @district_23_3, 'ward'),
-('Itundu', @district_23_3, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Njombe', @region_23, 'district');
-
-SET @district_23_4 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Mtwango', @district_23_4, 'ward'),
-('Igongolo', @district_23_4, 'ward'),
-('Kichiwa', @district_23_4, 'ward'),
-('Ninga', @district_23_4, 'ward'),
-('Ikuna', @district_23_4, 'ward'),
-('Kidegembye', @district_23_4, 'ward'),
-('Matembwe', @district_23_4, 'ward'),
-('Lupembe', @district_23_4, 'ward'),
-('Ikondo', @district_23_4, 'ward'),
-('Mfriga', @district_23_4, 'ward'),
-('Idamba', @district_23_4, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Ludewa', @region_23, 'district');
-
-SET @district_23_5 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Lumbila', @district_23_5, 'ward'),
-('Kilondo', @district_23_5, 'ward'),
-('Mawengi', @district_23_5, 'ward'),
-('Lupanga', @district_23_5, 'ward'),
-('Mlangali', @district_23_5, 'ward'),
-('Milo', @district_23_5, 'ward'),
-('Lugarawa', @district_23_5, 'ward'),
-('Madope', @district_23_5, 'ward'),
-('Madilu', @district_23_5, 'ward'),
-('Mundindi', @district_23_5, 'ward'),
-('Mavanga', @district_23_5, 'ward'),
-('Ibumi', @district_23_5, 'ward'),
-('Nkomang''ombe', @district_23_5, 'ward'),
-('Luilo', @district_23_5, 'ward'),
-('Masasi', @district_23_5, 'ward'),
-('Manda', @district_23_5, 'ward'),
-('Iwela', @district_23_5, 'ward'),
-('Lupingu', @district_23_5, 'ward'),
-('Ludewa', @district_23_5, 'ward'),
-('Ludende', @district_23_5, 'ward'),
-('Luana', @district_23_5, 'ward'),
-('Makonde', @district_23_5, 'ward'),
-('Mkongobaki', @district_23_5, 'ward'),
-('Lifuma', @district_23_5, 'ward'),
-('Ruhuhu', @district_23_5, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Makambako Township Authority', @region_23, 'district');
-
-SET @district_23_6 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Ubena', @district_23_6, 'ward'),
-('Mjimwema', @district_23_6, 'ward'),
-('Mlowa', @district_23_6, 'ward'),
-('Lyamkena', @district_23_6, 'ward'),
-('Mwembetogwa', @district_23_6, 'ward'),
-('Mahongole', @district_23_6, 'ward'),
-('Kitandililo', @district_23_6, 'ward'),
-('Utengule', @district_23_6, 'ward');
-
-
--- ============================================================
--- REGION: Katavi
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Katavi', NULL, 'region');
-
-SET @region_24 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mpanda Urban', @region_24, 'district');
-
-SET @district_24_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kakese', @district_24_1, 'ward'),
-('Misunkumilo', @district_24_1, 'ward'),
-('Shanwe', @district_24_1, 'ward'),
-('Makanyagio', @district_24_1, 'ward'),
-('Kashaulili', @district_24_1, 'ward'),
-('Mpanda Hotel', @district_24_1, 'ward'),
-('Kawajense', @district_24_1, 'ward'),
-('Nsemulwa', @district_24_1, 'ward'),
-('Ilembo', @district_24_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mpanda', @region_24, 'district');
-
-SET @district_24_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Mishamo', @district_24_2, 'ward'),
-('Mpanda Ndogo', @district_24_2, 'ward'),
-('Mwese', @district_24_2, 'ward'),
-('Katuma', @district_24_2, 'ward'),
-('Kabungu', @district_24_2, 'ward'),
-('Sibwesa', @district_24_2, 'ward'),
-('Ikola', @district_24_2, 'ward'),
-('Karema', @district_24_2, 'ward'),
-('Kapalamsenga', @district_24_2, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mlele', @region_24, 'district');
-
-SET @district_24_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kasokola', @district_24_3, 'ward'),
-('Ugala', @district_24_3, 'ward'),
-('Litapunga', @district_24_3, 'ward'),
-('Mtapenda', @district_24_3, 'ward'),
-('Inyonga', @district_24_3, 'ward'),
-('Ilunde', @district_24_3, 'ward'),
-('Ilela', @district_24_3, 'ward'),
-('Utende', @district_24_3, 'ward'),
-('Mamba', @district_24_3, 'ward'),
-('Mbede', @district_24_3, 'ward'),
-('Urwira', @district_24_3, 'ward'),
-('Nsimbo', @district_24_3, 'ward'),
-('Magamba', @district_24_3, 'ward'),
-('Sitalike', @district_24_3, 'ward'),
-('Usevya', @district_24_3, 'ward'),
-('Kibaoni', @district_24_3, 'ward'),
-('Machimboni', @district_24_3, 'ward'),
-('Kapalala', @district_24_3, 'ward'),
-('Itenka', @district_24_3, 'ward'),
-('Ikuba', @district_24_3, 'ward'),
-('Mwamapuli', @district_24_3, 'ward'),
-('Majimoto', @district_24_3, 'ward'),
-('Kasansa', @district_24_3, 'ward'),
-('Nsenkwa', @district_24_3, 'ward');
-
-
--- ============================================================
--- REGION: Simiyu
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Simiyu', NULL, 'region');
-
-SET @region_25 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Bariadi', @region_25, 'district');
-
-SET @district_25_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Nkindwabiye', @district_25_1, 'ward'),
-('Mwaubinge', @district_25_1, 'ward'),
-('Nkololo', @district_25_1, 'ward'),
-('Mwaumatondo', @district_25_1, 'ward'),
-('Madobana', @district_25_1, 'ward'),
-('Nyangokolwa', @district_25_1, 'ward'),
-('Somanda', @district_25_1, 'ward'),
-('Bunamhala', @district_25_1, 'ward'),
-('Sakwe', @district_25_1, 'ward'),
-('Ngulyati', @district_25_1, 'ward'),
-('Mhango', @district_25_1, 'ward'),
-('Kilalo', @district_25_1, 'ward'),
-('Kasoli', @district_25_1, 'ward'),
-('Gambosi', @district_25_1, 'ward'),
-('Guduwi', @district_25_1, 'ward'),
-('Ikungulyabashashi', @district_25_1, 'ward'),
-('Nyakabindi', @district_25_1, 'ward'),
-('Dutwa', @district_25_1, 'ward'),
-('Sapiwi', @district_25_1, 'ward'),
-('Matongo', @district_25_1, 'ward'),
-('Gilya', @district_25_1, 'ward'),
-('Isanga', @district_25_1, 'ward'),
-('Bariadi', @district_25_1, 'ward'),
-('Malambo', @district_25_1, 'ward'),
-('Sima', @district_25_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Itilima', @region_25, 'district');
-
-SET @district_25_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Bumera', @district_25_2, 'ward'),
-('Ikindiro', @district_25_2, 'ward'),
-('Mwamtani', @district_25_2, 'ward'),
-('Sagata', @district_25_2, 'ward'),
-('Mwaswale', @district_25_2, 'ward'),
-('Nkuyu', @district_25_2, 'ward'),
-('Mhunze', @district_25_2, 'ward'),
-('Migato', @district_25_2, 'ward'),
-('Chinamili', @district_25_2, 'ward'),
-('Ndolelezi', @district_25_2, 'ward'),
-('Lagangabilili', @district_25_2, 'ward'),
-('Budalabujiga', @district_25_2, 'ward'),
-('Nkoma', @district_25_2, 'ward'),
-('Mwalushu', @district_25_2, 'ward'),
-('Mwamapalala', @district_25_2, 'ward'),
-('Nyamalapa', @district_25_2, 'ward'),
-('Lugulu', @district_25_2, 'ward'),
-('Nhobora', @district_25_2, 'ward'),
-('Zagayu', @district_25_2, 'ward'),
-('Kinang''weli', @district_25_2, 'ward'),
-('Mbita', @district_25_2, 'ward'),
-('Sawida', @district_25_2, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Meatu', @region_25, 'district');
-
-SET @district_25_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Mwanhuzi', @district_25_3, 'ward'),
-('Nkoma', @district_25_3, 'ward'),
-('Kimali', @district_25_3, 'ward'),
-('Mwamishali', @district_25_3, 'ward'),
-('Itinje', @district_25_3, 'ward'),
-('Kisesa', @district_25_3, 'ward'),
-('Mwandoya', @district_25_3, 'ward'),
-('Lingeka', @district_25_3, 'ward'),
-('Sakasaka', @district_25_3, 'ward'),
-('Imalaseko', @district_25_3, 'ward'),
-('Mwabuzo', @district_25_3, 'ward'),
-('Mwamalole', @district_25_3, 'ward'),
-('Mwanjolo', @district_25_3, 'ward'),
-('Mwabuma', @district_25_3, 'ward'),
-('Mwabusalu', @district_25_3, 'ward'),
-('Lubiga', @district_25_3, 'ward'),
-('Mwamanongu', @district_25_3, 'ward'),
-('Nghoboko', @district_25_3, 'ward'),
-('Bukundi', @district_25_3, 'ward'),
-('Mwasengela', @district_25_3, 'ward'),
-('Mwamanimba', @district_25_3, 'ward'),
-('Tindabuligi', @district_25_3, 'ward'),
-('Mwakisandu', @district_25_3, 'ward'),
-('Mwangundo', @district_25_3, 'ward'),
-('Mwanyahina', @district_25_3, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Maswa', @region_25, 'district');
-
-SET @district_25_4 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Ng''wigwa', @district_25_4, 'ward'),
-('Nguliguli', @district_25_4, 'ward'),
-('Ipililo', @district_25_4, 'ward'),
-('Senani', @district_25_4, 'ward'),
-('Mwamanenge', @district_25_4, 'ward'),
-('Sukuma', @district_25_4, 'ward'),
-('Mpindo', @district_25_4, 'ward'),
-('Dakama', @district_25_4, 'ward'),
-('Lalago', @district_25_4, 'ward'),
-('Budekwa', @district_25_4, 'ward'),
-('Busilili', @district_25_4, 'ward'),
-('Sengwa', @district_25_4, 'ward'),
-('Masela', @district_25_4, 'ward'),
-('Isanga', @district_25_4, 'ward'),
-('Zanzui', @district_25_4, 'ward'),
-('Mwamashimba', @district_25_4, 'ward'),
-('Buchambi', @district_25_4, 'ward'),
-('Kadoto', @district_25_4, 'ward'),
-('Shishiyu', @district_25_4, 'ward'),
-('Nyabubinza', @district_25_4, 'ward'),
-('Mwang''honoli', @district_25_4, 'ward'),
-('Kulimi', @district_25_4, 'ward'),
-('Malampaka', @district_25_4, 'ward'),
-('Badi', @district_25_4, 'ward'),
-('Nyalikungu', @district_25_4, 'ward'),
-('Binza', @district_25_4, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Busega', @region_25, 'district');
-
-SET @district_25_5 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Shigala', @district_25_5, 'ward'),
-('Badugu', @district_25_5, 'ward'),
-('Nyaluhande', @district_25_5, 'ward'),
-('Kiloleli', @district_25_5, 'ward'),
-('Mwamanyili', @district_25_5, 'ward'),
-('Kabita', @district_25_5, 'ward'),
-('Kalemela', @district_25_5, 'ward'),
-('Lamadi', @district_25_5, 'ward'),
-('Lutubiga', @district_25_5, 'ward'),
-('Mkula', @district_25_5, 'ward'),
-('Ngasamo', @district_25_5, 'ward'),
-('Malili', @district_25_5, 'ward'),
-('Igalukilo', @district_25_5, 'ward');
-
-
--- ============================================================
--- REGION: Geita
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Geita', NULL, 'region');
-
-SET @region_26 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Geita', @region_26, 'district');
-
-SET @district_26_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kagu', @district_26_1, 'ward'),
-('Bugulula', @district_26_1, 'ward'),
-('Senga', @district_26_1, 'ward'),
-('Kakubilo', @district_26_1, 'ward'),
-('Nkome', @district_26_1, 'ward'),
-('Katoma', @district_26_1, 'ward'),
-('Nzera', @district_26_1, 'ward'),
-('Lwezera', @district_26_1, 'ward'),
-('Kamhanga', @district_26_1, 'ward'),
-('Bugalama', @district_26_1, 'ward'),
-('Lubanga', @district_26_1, 'ward'),
-('Isulwabutunde', @district_26_1, 'ward'),
-('Kasamwa', @district_26_1, 'ward'),
-('Bung''wangoko', @district_26_1, 'ward'),
-('Bulela', @district_26_1, 'ward'),
-('Ihanamilo', @district_26_1, 'ward'),
-('Nyanguku', @district_26_1, 'ward'),
-('Kamena', @district_26_1, 'ward'),
-('Nyamalimbe', @district_26_1, 'ward'),
-('Bujula', @district_26_1, 'ward'),
-('Bukoli', @district_26_1, 'ward'),
-('Butobela', @district_26_1, 'ward'),
-('Nyarugusu', @district_26_1, 'ward'),
-('Nyakamwaga', @district_26_1, 'ward'),
-('Lwamgasa', @district_26_1, 'ward'),
-('Kaseme', @district_26_1, 'ward'),
-('Busanda', @district_26_1, 'ward'),
-('Katoro', @district_26_1, 'ward'),
-('Nyamigota', @district_26_1, 'ward'),
-('Nyakagomba', @district_26_1, 'ward'),
-('Nyachiluluma', @district_26_1, 'ward'),
-('Bukondo', @district_26_1, 'ward'),
-('Chigunga', @district_26_1, 'ward'),
-('Mtakuja', @district_26_1, 'ward'),
-('Kalangalala', @district_26_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Nyang''hwale', @region_26, 'district');
-
-SET @district_26_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Shabaka', @district_26_2, 'ward'),
-('Busolwa', @district_26_2, 'ward'),
-('Kakura', @district_26_2, 'ward'),
-('Nyugwa', @district_26_2, 'ward'),
-('Bukwimba', @district_26_2, 'ward'),
-('Kafita', @district_26_2, 'ward'),
-('Kharumwa', @district_26_2, 'ward'),
-('Izunya', @district_26_2, 'ward'),
-('Mwingiro', @district_26_2, 'ward'),
-('Nyabulanda', @district_26_2, 'ward'),
-('Nyang''hwale', @district_26_2, 'ward'),
-('Nyijundu', @district_26_2, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mbogwe', @region_26, 'district');
-
-SET @district_26_3 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Nanda', @district_26_3, 'ward'),
-('Ikobe', @district_26_3, 'ward'),
-('Lulembela', @district_26_3, 'ward'),
-('Ikunguigazi', @district_26_3, 'ward'),
-('Isebya', @district_26_3, 'ward'),
-('Ilolangulu', @district_26_3, 'ward'),
-('Mbogwe', @district_26_3, 'ward'),
-('Mgemo', @district_26_3, 'ward'),
-('Ushirika', @district_26_3, 'ward'),
-('Nyasato', @district_26_3, 'ward'),
-('Lugunga', @district_26_3, 'ward'),
-('Nyakafulu', @district_26_3, 'ward'),
-('Bukandwe', @district_26_3, 'ward'),
-('Ng''homolwa', @district_26_3, 'ward'),
-('Masumbwe', @district_26_3, 'ward'),
-('Iponya', @district_26_3, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Bukombe', @region_26, 'district');
-
-SET @district_26_4 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Runzewe Mashariki', @district_26_4, 'ward'),
-('Runzewe Magharibi', @district_26_4, 'ward'),
-('Namonge', @district_26_4, 'ward'),
-('Uyovu', @district_26_4, 'ward'),
-('Busonzo', @district_26_4, 'ward'),
-('Ng''anzo', @district_26_4, 'ward'),
-('Butinzya', @district_26_4, 'ward'),
-('Ushirombo', @district_26_4, 'ward'),
-('Lyambamgongo', @district_26_4, 'ward'),
-('Bukombe', @district_26_4, 'ward'),
-('Bugelenga', @district_26_4, 'ward'),
-('Iyogelo', @district_26_4, 'ward'),
-('Igulwa', @district_26_4, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Chato', @region_26, 'district');
-
-SET @district_26_5 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Muganza', @district_26_5, 'ward'),
-('Bwongera', @district_26_5, 'ward'),
-('Kigongo', @district_26_5, 'ward'),
-('Nyamirembe', @district_26_5, 'ward'),
-('Ichwankima', @district_26_5, 'ward'),
-('Kachwamba', @district_26_5, 'ward'),
-('Kasenga', @district_26_5, 'ward'),
-('Ilemela', @district_26_5, 'ward'),
-('Chato', @district_26_5, 'ward'),
-('Muungano', @district_26_5, 'ward'),
-('Bwina', @district_26_5, 'ward'),
-('Katende', @district_26_5, 'ward'),
-('Ilyamchele', @district_26_5, 'ward'),
-('Bukome', @district_26_5, 'ward'),
-('Buziku', @district_26_5, 'ward'),
-('Nyarutembo', @district_26_5, 'ward'),
-('Makurugusi', @district_26_5, 'ward'),
-('Buseresere', @district_26_5, 'ward'),
-('Butengorumasa', @district_26_5, 'ward'),
-('Iparamasa', @district_26_5, 'ward'),
-('Bwanga', @district_26_5, 'ward'),
-('Bwera', @district_26_5, 'ward');
-
-
--- ============================================================
--- REGION: Kaskazini Unguja
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kaskazini Unguja', NULL, 'region');
-
-SET @region_27 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kaskazini A', @region_27, 'district');
-
-SET @district_27_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Mkokotoni', @district_27_1, 'ward'),
-('Mto wa Pwani', @district_27_1, 'ward'),
-('Pale', @district_27_1, 'ward'),
-('Kivunge', @district_27_1, 'ward'),
-('Tumbatu Gomani', @district_27_1, 'ward'),
-('Jongowe', @district_27_1, 'ward'),
-('Mkwajuni', @district_27_1, 'ward'),
-('Kibeni', @district_27_1, 'ward'),
-('Muwange', @district_27_1, 'ward'),
-('Pitanazako', @district_27_1, 'ward'),
-('Potowa', @district_27_1, 'ward'),
-('Fukuchani', @district_27_1, 'ward'),
-('Kidoti', @district_27_1, 'ward'),
-('Tazari', @district_27_1, 'ward'),
-('Kigunda', @district_27_1, 'ward'),
-('Nungwi', @district_27_1, 'ward'),
-('Matemwe', @district_27_1, 'ward'),
-('Kijini', @district_27_1, 'ward'),
-('Pwani Mchangani', @district_27_1, 'ward'),
-('Gamba', @district_27_1, 'ward'),
-('Moga', @district_27_1, 'ward'),
-('Chaani Masingini', @district_27_1, 'ward'),
-('Mcheza Shauri', @district_27_1, 'ward'),
-('Chaani Kubwa', @district_27_1, 'ward'),
-('Kikobweni', @district_27_1, 'ward'),
-('Bandamaji', @district_27_1, 'ward'),
-('Kinyasini', @district_27_1, 'ward'),
-('Kandwi', @district_27_1, 'ward'),
-('Chutama', @district_27_1, 'ward'),
-('Kisongoni', @district_27_1, 'ward'),
-('Kilindi', @district_27_1, 'ward'),
-('Kilimani', @district_27_1, 'ward'),
-('Uvivini', @district_27_1, 'ward'),
-('Kidombo', @district_27_1, 'ward'),
-('Bwereu', @district_27_1, 'ward'),
-('Kigomani', @district_27_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kaskazini B', @region_27, 'district');
-
-SET @district_27_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Misufini', @district_27_2, 'ward'),
-('Makoba', @district_27_2, 'ward'),
-('Mangapwani', @district_27_2, 'ward'),
-('Fujoni', @district_27_2, 'ward'),
-('Kiomba Mvua', @district_27_2, 'ward'),
-('Donge  Mchangani', @district_27_2, 'ward'),
-('Mkadini', @district_27_2, 'ward'),
-('Zingwe Zingwe', @district_27_2, 'ward'),
-('Kitope', @district_27_2, 'ward'),
-('Mahonda', @district_27_2, 'ward'),
-('Mnyimbi', @district_27_2, 'ward'),
-('Donge Mtambile', @district_27_2, 'ward'),
-('Kinduni', @district_27_2, 'ward'),
-('Donge Karange', @district_27_2, 'ward'),
-('Donge Mbiji', @district_27_2, 'ward'),
-('Donge Kipange', @district_27_2, 'ward'),
-('Donge Vijibweni', @district_27_2, 'ward'),
-('Upenja', @district_27_2, 'ward'),
-('Kiwengwa', @district_27_2, 'ward'),
-('Pangeni', @district_27_2, 'ward'),
-('Kilombero', @district_27_2, 'ward'),
-('Mgambo', @district_27_2, 'ward'),
-('Muwanda', @district_27_2, 'ward'),
-('Matetema', @district_27_2, 'ward'),
-('Kidanzini', @district_27_2, 'ward'),
-('Mbaleni', @district_27_2, 'ward'),
-('Mafufuni', @district_27_2, 'ward'),
-('Mkataleni', @district_27_2, 'ward'),
-('Njia ya Mtoni', @district_27_2, 'ward');
-
-
--- ============================================================
--- REGION: Kusini Unguja
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kusini Unguja', NULL, 'region');
-
-SET @region_28 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kati', @region_28, 'district');
-
-SET @district_28_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Dunga Bweni', @district_28_1, 'ward'),
-('Ubago', @district_28_1, 'ward'),
-('Kidimni', @district_28_1, 'ward'),
-('Machui', @district_28_1, 'ward'),
-('Kiboje Muembeshauri', @district_28_1, 'ward'),
-('Miwani', @district_28_1, 'ward'),
-('Kiboje Mkwajuni', @district_28_1, 'ward'),
-('Ghana', @district_28_1, 'ward'),
-('Koani', @district_28_1, 'ward'),
-('Mgeni Haji', @district_28_1, 'ward'),
-('Uzini', @district_28_1, 'ward'),
-('Mitakawani', @district_28_1, 'ward'),
-('Tunduni', @district_28_1, 'ward'),
-('Bambi', @district_28_1, 'ward'),
-('Pagali', @district_28_1, 'ward'),
-('Umbuji', @district_28_1, 'ward'),
-('Mchangani', @district_28_1, 'ward'),
-('Dunga Kiembeni', @district_28_1, 'ward'),
-('Ndijani Mseweni', @district_28_1, 'ward'),
-('Jendele', @district_28_1, 'ward'),
-('Chwaka', @district_28_1, 'ward'),
-('Marumbi', @district_28_1, 'ward'),
-('Uroa', @district_28_1, 'ward'),
-('Pongwe', @district_28_1, 'ward'),
-('Jumbi', @district_28_1, 'ward'),
-('Tunguu', @district_28_1, 'ward'),
-('Binguni', @district_28_1, 'ward'),
-('Cheju', @district_28_1, 'ward'),
-('Bungi', @district_28_1, 'ward'),
-('Unguja Ukuu Kaepwani', @district_28_1, 'ward'),
-('Kikungwi', @district_28_1, 'ward'),
-('Uzi', @district_28_1, 'ward'),
-('Ng''ambwa', @district_28_1, 'ward'),
-('Charawe', @district_28_1, 'ward'),
-('Ukongoroni', @district_28_1, 'ward'),
-('Michamvi', @district_28_1, 'ward'),
-('Mpapa', @district_28_1, 'ward'),
-('Unguja Ukuu Kaebona', @district_28_1, 'ward'),
-('Ndijani Muembe Punda', @district_28_1, 'ward'),
-('Tindini', @district_28_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kusini', @region_28, 'district');
-
-SET @district_28_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Nganani', @district_28_2, 'ward'),
-('Kijini', @district_28_2, 'ward'),
-('Mzuri', @district_28_2, 'ward'),
-('Kajengwa', @district_28_2, 'ward'),
-('Jambiani Kikadini', @district_28_2, 'ward'),
-('Mtende', @district_28_2, 'ward'),
-('Kibuteni', @district_28_2, 'ward'),
-('Kizimkazi Dimbani', @district_28_2, 'ward'),
-('Kizimkazi Mkunguni', @district_28_2, 'ward'),
-('Muyuni A', @district_28_2, 'ward'),
-('Muyuni B', @district_28_2, 'ward'),
-('Muyuni C', @district_28_2, 'ward'),
-('Pete', @district_28_2, 'ward'),
-('Muungoni', @district_28_2, 'ward'),
-('Paje', @district_28_2, 'ward'),
-('Jambiani Kibigija', @district_28_2, 'ward'),
-('Bwejuu', @district_28_2, 'ward'),
-('Kitogani', @district_28_2, 'ward'),
-('Kiongoni', @district_28_2, 'ward'),
-('Tasani', @district_28_2, 'ward'),
-('Dongwe', @district_28_2, 'ward');
-
-
--- ============================================================
--- REGION: Mjini Magharibi
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mjini Magharibi', NULL, 'region');
-
-SET @region_29 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Magharibi', @region_29, 'district');
-
-SET @district_29_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Mwera', @district_29_1, 'ward'),
-('Mtoni', @district_29_1, 'ward'),
-('Bububu', @district_29_1, 'ward'),
-('Chuini', @district_29_1, 'ward'),
-('Kama', @district_29_1, 'ward'),
-('Mfenesini', @district_29_1, 'ward'),
-('Mwakaje', @district_29_1, 'ward'),
-('Fuoni Kibondeni', @district_29_1, 'ward'),
-('Kianga', @district_29_1, 'ward'),
-('Dole', @district_29_1, 'ward'),
-('Kizimbani', @district_29_1, 'ward'),
-('Mbuzini', @district_29_1, 'ward'),
-('Bumbwisudi', @district_29_1, 'ward'),
-('Maungani', @district_29_1, 'ward'),
-('Shakani', @district_29_1, 'ward'),
-('Kiembesamaki', @district_29_1, 'ward'),
-('Chukwani', @district_29_1, 'ward'),
-('Fumba', @district_29_1, 'ward'),
-('Bweleo', @district_29_1, 'ward'),
-('Dimani', @district_29_1, 'ward'),
-('Kombeni', @district_29_1, 'ward'),
-('Mwanakwerekwe', @district_29_1, 'ward'),
-('Mtopepo', @district_29_1, 'ward'),
-('Magogoni', @district_29_1, 'ward'),
-('Mtoni Kidatu', @district_29_1, 'ward'),
-('Mwanyanya', @district_29_1, 'ward'),
-('Fuoni Kijito Upele', @district_29_1, 'ward'),
-('Tomondo', @district_29_1, 'ward'),
-('Welezo', @district_29_1, 'ward'),
-('Mtufaani', @district_29_1, 'ward'),
-('Sharifumsa', @district_29_1, 'ward'),
-('Kibweni', @district_29_1, 'ward'),
-('Kihinani', @district_29_1, 'ward'),
-('Mombasa', @district_29_1, 'ward'),
-('Kisauni', @district_29_1, 'ward'),
-('Melinne', @district_29_1, 'ward'),
-('Pangawe', @district_29_1, 'ward'),
-('Kinuni', @district_29_1, 'ward'),
-('Nyamanzi', @district_29_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mjini', @region_29, 'district');
-
-SET @district_29_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Shangani', @district_29_2, 'ward'),
-('Mkunazini', @district_29_2, 'ward'),
-('Kiponda', @district_29_2, 'ward'),
-('Malindi', @district_29_2, 'ward'),
-('Mchangani', @district_29_2, 'ward'),
-('Mlandege', @district_29_2, 'ward'),
-('Mwembeladu', @district_29_2, 'ward'),
-('Gulioni', @district_29_2, 'ward'),
-('Makadara', @district_29_2, 'ward'),
-('Shaurimoyo', @district_29_2, 'ward'),
-('Mwembe Makumbi', @district_29_2, 'ward'),
-('Chumbuni', @district_29_2, 'ward'),
-('Kwamtipura', @district_29_2, 'ward'),
-('Kilimahewa Juu', @district_29_2, 'ward'),
-('Amani', @district_29_2, 'ward'),
-('Nyerere', @district_29_2, 'ward'),
-('Sebleni', @district_29_2, 'ward'),
-('Magomeni', @district_29_2, 'ward'),
-('Mpendae', @district_29_2, 'ward'),
-('Urusi', @district_29_2, 'ward'),
-('Kilimani', @district_29_2, 'ward'),
-('Miembeni', @district_29_2, 'ward'),
-('Kikwajuni Juu', @district_29_2, 'ward'),
-('Kikwajuni Bondeni', @district_29_2, 'ward'),
-('Kisima Majongoo', @district_29_2, 'ward'),
-('Vikokotoni', @district_29_2, 'ward'),
-('Muembetanga', @district_29_2, 'ward'),
-('Muembeshauri', @district_29_2, 'ward'),
-('Rahaleo', @district_29_2, 'ward'),
-('Kwaalimsha', @district_29_2, 'ward'),
-('Mikunguni', @district_29_2, 'ward'),
-('Mkele', @district_29_2, 'ward'),
-('Muungano', @district_29_2, 'ward'),
-('Sogea', @district_29_2, 'ward'),
-('Jang''ombe', @district_29_2, 'ward'),
-('Kidongo Chekundu', @district_29_2, 'ward'),
-('Matarumbeta', @district_29_2, 'ward'),
-('Kwahani', @district_29_2, 'ward'),
-('Kwaalinatu', @district_29_2, 'ward'),
-('Karakana', @district_29_2, 'ward'),
-('Kilimahewa Bondeni', @district_29_2, 'ward'),
-('Kwa Wazee', @district_29_2, 'ward'),
-('Migombani', @district_29_2, 'ward'),
-('Meya', @district_29_2, 'ward'),
-('Kisiwandui', @district_29_2, 'ward');
-
-
--- ============================================================
--- REGION: Kaskazini Pemba
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kaskazini Pemba', NULL, 'region');
-
-SET @region_30 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Wete', @region_30, 'district');
-
-SET @district_30_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Kipangani', @district_30_1, 'ward'),
-('Mtambwe Kaskazini', @district_30_1, 'ward'),
-('Fundo', @district_30_1, 'ward'),
-('Mchanga Mdogo', @district_30_1, 'ward'),
-('Kambini', @district_30_1, 'ward'),
-('Kojani', @district_30_1, 'ward'),
-('Ole', @district_30_1, 'ward'),
-('Kangagani', @district_30_1, 'ward'),
-('Kiuyu Minungwini', @district_30_1, 'ward'),
-('Piki', @district_30_1, 'ward'),
-('Kisiwani', @district_30_1, 'ward'),
-('Gando', @district_30_1, 'ward'),
-('Ukunjwi', @district_30_1, 'ward'),
-('Pandani', @district_30_1, 'ward'),
-('Shengejuu', @district_30_1, 'ward'),
-('Bopwe', @district_30_1, 'ward'),
-('Utaani', @district_30_1, 'ward'),
-('Mtambwe Kusini', @district_30_1, 'ward'),
-('Selem', @district_30_1, 'ward'),
-('Kinyikani', @district_30_1, 'ward'),
-('Chwale', @district_30_1, 'ward'),
-('Maziwani', @district_30_1, 'ward'),
-('Mpambani', @district_30_1, 'ward'),
-('Mjini Ole', @district_30_1, 'ward'),
-('Kiuyu Kigongoni', @district_30_1, 'ward'),
-('Mzambarauni Takao', @district_30_1, 'ward'),
-('Junguni', @district_30_1, 'ward'),
-('Kiungoni', @district_30_1, 'ward'),
-('Pembeni', @district_30_1, 'ward'),
-('Kizimbani', @district_30_1, 'ward'),
-('Limbani', @district_30_1, 'ward'),
-('Jadida', @district_30_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Micheweni', @region_30, 'district');
-
-SET @district_30_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Micheweni', @district_30_2, 'ward'),
-('Msuka Mashariki', @district_30_2, 'ward'),
-('Kinowe', @district_30_2, 'ward'),
-('Tumbe Mashariki', @district_30_2, 'ward'),
-('Mgogoni', @district_30_2, 'ward'),
-('Shumba Viamboni', @district_30_2, 'ward'),
-('Finya', @district_30_2, 'ward'),
-('Konde', @district_30_2, 'ward'),
-('Wingwi Mapofu', @district_30_2, 'ward'),
-('Kiuyu Mbuyuni', @district_30_2, 'ward'),
-('Makangale', @district_30_2, 'ward'),
-('Wingwi Njuguni', @district_30_2, 'ward'),
-('Shumba Mjini', @district_30_2, 'ward'),
-('Majenzi', @district_30_2, 'ward'),
-('Mjini Wingwi', @district_30_2, 'ward'),
-('Msuka Magharibi', @district_30_2, 'ward'),
-('Chimba', @district_30_2, 'ward'),
-('Tumbe Magharibi', @district_30_2, 'ward'),
-('Sizini', @district_30_2, 'ward'),
-('Kinyasini', @district_30_2, 'ward'),
-('Mihogoni', @district_30_2, 'ward'),
-('Kifundi', @district_30_2, 'ward'),
-('Maziwa Ng''ombe', @district_30_2, 'ward'),
-('Tondooni', @district_30_2, 'ward'),
-('Mtemani', @district_30_2, 'ward'),
-('Wingwi Mjananza', @district_30_2, 'ward'),
-('Mlindo', @district_30_2, 'ward');
-
-
--- ============================================================
--- REGION: Kusini Pemba
--- ============================================================
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Kusini Pemba', NULL, 'region');
-
-SET @region_31 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Chake Chake', @region_31, 'district');
-
-SET @district_31_1 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Chanjaani', @district_31_1, 'ward'),
-('Wawi', @district_31_1, 'ward'),
-('Pujini', @district_31_1, 'ward'),
-('Ziwani', @district_31_1, 'ward'),
-('Ndagoni', @district_31_1, 'ward'),
-('Kwale', @district_31_1, 'ward'),
-('Vitongoji', @district_31_1, 'ward'),
-('Ng''ambwa', @district_31_1, 'ward'),
-('Shungi', @district_31_1, 'ward'),
-('Chonga', @district_31_1, 'ward'),
-('Mgelema', @district_31_1, 'ward'),
-('Kilindi', @district_31_1, 'ward'),
-('Tibirinzi', @district_31_1, 'ward'),
-('Chachani', @district_31_1, 'ward'),
-('Wara', @district_31_1, 'ward'),
-('Mvumoni', @district_31_1, 'ward'),
-('Matale', @district_31_1, 'ward'),
-('Wesha', @district_31_1, 'ward'),
-('Uwandani', @district_31_1, 'ward'),
-('Madungu', @district_31_1, 'ward'),
-('Mgogoni', @district_31_1, 'ward'),
-('Dodo', @district_31_1, 'ward'),
-('Mbuzini', @district_31_1, 'ward'),
-('Michungwani', @district_31_1, 'ward'),
-('Kibokoni', @district_31_1, 'ward'),
-('Kichungwani', @district_31_1, 'ward'),
-('Msingini', @district_31_1, 'ward'),
-('Mkoroshoni', @district_31_1, 'ward'),
-('Mfikiwa', @district_31_1, 'ward');
-
-INSERT INTO locations (name, parent_id, type)
-VALUES ('Mkoani', @region_31, 'district');
-
-SET @district_31_2 = LAST_INSERT_ID();
-
-INSERT INTO locations (name, parent_id, type)
-VALUES
-('Ng''ombeni', @district_31_2, 'ward'),
-('Makombeni', @district_31_2, 'ward'),
-('Makoongwe', @district_31_2, 'ward'),
-('Shidi', @district_31_2, 'ward'),
-('Mkanyageni', @district_31_2, 'ward'),
-('Michenzani', @district_31_2, 'ward'),
-('Chokocho', @district_31_2, 'ward'),
-('Kisiwa Panza', @district_31_2, 'ward'),
-('Kangani', @district_31_2, 'ward'),
-('Kengeja', @district_31_2, 'ward'),
-('Muambe', @district_31_2, 'ward'),
-('Kiwani', @district_31_2, 'ward'),
-('Mtambile', @district_31_2, 'ward'),
-('Mizingani', @district_31_2, 'ward'),
-('Ngwachani', @district_31_2, 'ward'),
-('Chambani', @district_31_2, 'ward'),
-('Wambaa', @district_31_2, 'ward'),
-('Mbuguani', @district_31_2, 'ward'),
-('Uweleni', @district_31_2, 'ward'),
-('Mtangani', @district_31_2, 'ward'),
-('Ukutini', @district_31_2, 'ward'),
-('Chumbageni', @district_31_2, 'ward'),
-('Mbuyuni', @district_31_2, 'ward'),
-('Stahabu', @district_31_2, 'ward'),
-('Kuukuu', @district_31_2, 'ward'),
-('Mjimbini', @district_31_2, 'ward'),
-('Shamiani', @district_31_2, 'ward'),
-('Jombwe', @district_31_2, 'ward'),
-('Kendwa', @district_31_2, 'ward'),
-('Minazini', @district_31_2, 'ward'),
-('Mgagadu', @district_31_2, 'ward'),
-('Mkungu', @district_31_2, 'ward'),
-('Changaweni', @district_31_2, 'ward');
-
+--
+-- Dumping data for table `locations`
+--
+
+INSERT INTO `locations` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitude`, `created_at`, `updated_at`) VALUES
+(1, 'Dodoma', NULL, 'region', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:24:18'),
+(2, 'Kondoa', 1, 'district', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(3, 'Bumbuta', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(4, 'Pahi', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(5, 'Haubi', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(6, 'Kalamba', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(7, 'Kwadelo', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:22:58'),
+(8, 'Masange', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(9, 'Kikilo', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(10, 'Bereko', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(11, 'Kisese', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(12, 'Kikore', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(13, 'Serya', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(14, 'Kilimani', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(15, 'Chemchem', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(16, 'Hondo mairo', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(17, 'Bolisa', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(18, 'Kinyasi', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(19, 'Salanka', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(20, 'Itololo', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(21, 'Itaswi', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(22, 'Suruke', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(23, 'Kingale', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(24, 'Kondoa mjini', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(25, 'Kolo', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(26, 'Changaa', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(27, 'Thawi', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(28, 'Mnenia', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(29, 'Soera', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(30, 'Busi', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(31, 'Mpwapwa', 1, 'district', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(32, 'Mazae', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(33, 'Vingh\'awe', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(34, 'Matomondo', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(35, 'Kimagai', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(36, 'Kibakwe', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(37, 'Lumuma', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(38, 'Luhundwa', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(39, 'Massa', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(40, 'Ipera', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(41, 'Rudi', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(42, 'Mlunduzi', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(43, 'Wotta', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(44, 'Mima', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(45, 'Berege', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(46, 'Chunyu', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(47, 'Mbuga', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(48, 'Godegode', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(49, 'Mpwapwa', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(50, 'Lupeta', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(51, 'Gulwe', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(52, 'Nghambi', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(53, 'Chitemo', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(54, 'Iwondo', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(55, 'Kingiti', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(56, 'Lufu', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(57, 'Pwaga', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(58, 'Galigali', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(59, 'Mtera', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(60, 'Chipogoro', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(61, 'Malolo', 31, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(62, 'Kongwa', 1, 'district', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(63, 'Kongwa', 62, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(64, 'Sejeli', 62, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(65, 'Hogoro', 62, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(66, 'Zoissa', 62, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(67, 'Mkoka', 62, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(68, 'Njoge', 62, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(69, 'Mtanana', 62, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(70, 'Pandambili', 62, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(71, 'Mlali', 62, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(72, 'Iduo', 62, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(73, 'Sagara', 62, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(74, 'Kibaigwa', 62, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(75, 'Ugogoni', 62, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(76, 'Chamkoroma', 62, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(77, 'Makawa', 62, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(78, 'Chitego', 62, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(79, 'Matongoro', 62, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(80, 'Ngomai', 62, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(81, 'Songambele', 62, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(82, 'Chiwe', 62, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(83, 'Lenjulu', 62, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(84, 'Nghumbi', 62, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(85, 'Chamwino', 1, 'district', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(86, 'Haneti', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(87, 'Segala', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(88, 'Itiso', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(89, 'Dabalo', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(90, 'Membe', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(91, 'Msanga', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(92, 'Chilonwa', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(93, 'Buigiri', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(94, 'Majeleko', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(95, 'Manchali', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(96, 'Ikowa', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(97, 'Msamalo', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(98, 'Igandu', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(99, 'Muungano', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(100, 'Mvumi Makulu', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(101, 'Handali', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(102, 'Mvumi Mission', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(103, 'Idifu', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(104, 'Makang\'wa', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(105, 'Iringamvumi', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(106, 'Manzase', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(107, 'Fufu', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(108, 'Mlowa Bwawani', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(109, 'Mpwayungu', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(110, 'Nghambaku', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(111, 'Chinugulu', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(112, 'Manda', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(113, 'Huzi', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(114, 'Loje', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(115, 'Chiboli', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(116, 'Nhinhi', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(117, 'Zajilwa', 85, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
+(118, 'Dodoma Urban', 1, 'district', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(119, 'Viwandani', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(120, 'Uhuru', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(121, 'Chamwino', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(122, 'Kiwanja cha ndege', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(123, 'Makole', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(124, 'Miyuji', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(125, 'Msalato', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(126, 'Makutupora', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(127, 'Chihanga', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(128, 'Hombolo', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(129, 'Ipala', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(130, 'Nzuguni', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(131, 'Dom-Makulu', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(132, 'Mtumba', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(133, 'Kikombo', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(134, 'Ngh\'ongh\'onha', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(135, 'Mpunguzi', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(136, 'Tambukareli', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(137, 'Kilimani', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(138, 'Kikuyu Kusini', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(139, 'Kikuyu Kaskazini', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(140, 'Mkonze', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(141, 'Mbabala', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(142, 'Zuzu', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(143, 'Hazina', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(144, 'Madukani', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(145, 'Majengo', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(146, 'Kizota', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(147, 'Nala', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(148, 'Mbalawala', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(149, 'Ntyuka', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(150, 'Chigongwe', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(151, 'Chang\'ombe', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(152, 'Iyumbu', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(153, 'Chahwa', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(154, 'Mnadani', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(155, 'Ipagala', 118, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(156, 'Bahi', 1, 'district', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(157, 'Makanda', 156, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(158, 'Lamaiti', 156, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(159, 'Babayu', 156, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(160, 'Zanka', 156, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(161, 'Msisi', 156, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(162, 'Mundemu', 156, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(163, 'Bahi', 156, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(164, 'Mpamantwa', 156, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(165, 'Ibihwa', 156, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(166, 'Ilindi', 156, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(167, 'Kigwe', 156, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(168, 'Chikola', 156, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(169, 'Chipanga', 156, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(170, 'Chali', 156, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(171, 'Nondwa', 156, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(172, 'Mpalanga', 156, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(173, 'Ibugule', 156, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(174, 'Chibelela', 156, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(175, 'Mwitikira', 156, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(176, 'Mtitaa', 156, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(177, 'Chemba', 1, 'district', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(178, 'Makorongo', 177, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(179, 'Ovada', 177, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(180, 'Msaada', 177, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(181, 'Kimaha', 177, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(182, 'Churuku', 177, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(183, 'Songoro', 177, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(184, 'Mondo', 177, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(185, 'Dalai', 177, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(186, 'Mrijo', 177, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(187, 'Chandama', 177, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(188, 'Goima', 177, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(189, 'Chemba', 177, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(190, 'Paranga', 177, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(191, 'Gwandi', 177, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(192, 'Farkwa', 177, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(193, 'Mpendo', 177, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(194, 'Sanzawa', 177, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(195, 'Kwamtoro', 177, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(196, 'Lalta', 177, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(197, 'Jangalo', 177, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(198, 'Arusha', NULL, 'region', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(199, 'Monduli', 198, 'district', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(200, 'Engaruka', 199, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(201, 'Monduli juu', 199, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(202, 'Engutoto', 199, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(203, 'Monduli Mjini', 199, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(204, 'Moita', 199, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(205, 'Sepeko', 199, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(206, 'Lolkisale', 199, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(207, 'Makuyuni', 199, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(208, 'Esilalei', 199, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(209, 'Mto wa Mbu', 199, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(210, 'Lepurko', 199, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(211, 'Meserani', 199, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(212, 'Mswakini', 199, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(213, 'Majengo', 199, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(214, 'Selela', 199, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(215, 'Meru', 198, 'district', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(216, 'Ngarenanyuki', 215, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(217, 'Leguruki', 215, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(218, 'King\'ori', 215, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(219, 'Maji ya chai', 215, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(220, 'Kikatiti', 215, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(221, 'Maroroni', 215, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(222, 'Makiba', 215, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(223, 'Mbuguni', 215, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(224, 'Kikwe', 215, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(225, 'Usariver', 215, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(226, 'Nkoaranga', 215, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(227, 'Poli', 215, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(228, 'Seela Sing\'isi', 215, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(229, 'Akheri', 215, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(230, 'Nkoanrua', 215, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(231, 'Songoro', 215, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(232, 'Nkoarisambu', 215, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(233, 'Arusha Urban', 198, 'district', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(234, 'Kati', 233, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(235, 'Kaloleni', 233, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(236, 'Sekei', 233, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(237, 'Kimandolu', 233, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(238, 'Baraa', 233, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(239, 'Oloirieni', 233, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(240, 'Themi', 233, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(241, 'Lemara', 233, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(242, 'Terrat', 233, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(243, 'Sokoni I', 233, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(244, 'Daraja Mbili', 233, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(245, 'Unga Ltd', 233, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(246, 'Sombetini', 233, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(247, 'Ngarenaro', 233, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(248, 'Levolosi', 233, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(249, 'Engutoto', 233, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(250, 'Elerai', 233, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(251, 'Olasiti', 233, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(252, 'Moshono', 233, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(253, 'Karatu', 198, 'district', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(254, 'Karatu', 253, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(255, 'Endamarariek', 253, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(256, 'Buger', 253, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(257, 'Endabash', 253, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(258, 'Kansay', 253, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(259, 'Baray', 253, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(260, 'Mang\'ola', 253, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(261, 'Daa', 253, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(262, 'Oldean', 253, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(263, 'Qurus', 253, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(264, 'Ganako', 253, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(265, 'Rhotia', 253, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(266, 'Mbulumbulu', 253, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(267, 'Endamaghang', 253, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(268, 'Ngorongoro', 198, 'district', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(269, 'Orgosorok', 268, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(270, 'Digodigo', 268, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(271, 'Oldonyo Sambu', 268, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(272, 'Pinyinyi', 268, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(273, 'Sale', 268, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(274, 'Malambo', 268, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(275, 'Naiyobi', 268, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(276, 'Nainokanoka', 268, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(277, 'Olbalbal', 268, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(278, 'Ngorongoro', 268, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(279, 'Endulen', 268, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(280, 'Kakesio', 268, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(281, 'Arash', 268, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(282, 'Soitsambu', 268, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(283, 'Engusero Sambu', 268, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(284, 'Oloirien', 268, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(285, 'Samunge', 268, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(286, 'Alailelai', 268, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(287, 'Maalon', 268, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(288, 'Ololosokwan', 268, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(289, 'Oloipiri', 268, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(290, 'Arusha', 198, 'district', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(291, 'Olkokola', 290, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(292, 'Ilkiding\'a', 290, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(293, 'Bangata', 290, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(294, 'Sokon II', 290, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(295, 'Oltoroto', 290, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(296, 'Moivo', 290, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(297, 'Kiranyi', 290, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(298, 'Kimnyaki', 290, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(299, 'Oltrumet', 290, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(300, 'Mwandeti', 290, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(301, 'Mussa', 290, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(302, 'Kisongo', 290, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(303, 'Mateves', 290, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(304, 'Oljoro', 290, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(305, 'Bwawani', 290, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(306, 'Nduruma', 290, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(307, 'Mlangarini', 290, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(308, 'Sambasha', 290, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(309, 'Olorieni', 290, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(310, 'Olmotonyi', 290, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(311, 'Oldonyosambu', 290, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(312, 'Longido', 198, 'district', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(313, 'Kitumbeine', 312, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(314, 'Engikaret', 312, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(315, 'Eleng\'ata Dapash', 312, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(316, 'Ilorienito', 312, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(317, 'Gelai Meirugoi', 312, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(318, 'Gelai lumbwa', 312, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(319, 'Matale', 312, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(320, 'Engarenaibor', 312, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(321, 'Mundarara', 312, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(322, 'Kimokouwa', 312, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(323, 'Namanga', 312, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(324, 'Orbomba', 312, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(325, 'Longido', 312, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(326, 'Tingatinga', 312, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(327, 'Olmolog', 312, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(328, 'Kamwanga', 312, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(329, 'Kilimanjaro', NULL, 'region', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(330, 'Rombo', 329, 'district', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(331, 'Mamsera', 330, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(332, 'Mahida', 330, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(333, 'Mengwe', 330, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(334, 'Keni Mengeni', 330, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(335, 'Aleni', 330, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(336, 'Shimbi', 330, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(337, 'Makiidi', 330, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(338, 'Kelamfua Mokala', 330, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(339, 'Ushiri Ikuini', 330, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(340, 'Mrao Keryo', 330, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(341, 'Kirwa Keni', 330, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(342, 'Katangara Mrere', 330, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(343, 'Kisale Msaranga', 330, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(344, 'Olele', 330, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(345, 'Kirongo Samanga', 330, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(346, 'Kitirima Kingachi', 330, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(347, 'Ubetu Kahe', 330, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(348, 'Nanjara Reha', 330, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(349, 'Tarakea Motamburu', 330, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(350, 'Motamburu Kitendeni', 330, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(351, 'Marangu Kitowo', 330, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(352, 'Ngoyoni', 330, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(353, 'Manda', 330, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(354, 'Holili', 330, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(355, 'Mwanga', 329, 'district', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(356, 'Kileo', 355, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(357, 'Mwanga', 355, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(358, 'Msangeni', 355, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(359, 'Kifula', 355, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(360, 'Kighare', 355, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(361, 'Kirongwe', 355, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(362, 'Kwakoa', 355, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(363, 'Lembeni', 355, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(364, 'Jipe', 355, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(365, 'Mwaniko', 355, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(366, 'Chomvu', 355, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(367, 'Ngujini', 355, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(368, 'Kirya', 355, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(369, 'Kilomeni', 355, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(370, 'Shighatini', 355, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(371, 'Lang\'ata', 355, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(372, 'Mgagao', 355, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(373, 'Toloha', 355, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(374, 'Kigoningoni', 355, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(375, 'Kivisini', 355, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(376, 'Same', 329, 'district', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(377, 'Same', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(378, 'Ruvu', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(379, 'Njoro', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(380, 'Kisiwani', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(381, 'Msindo', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(382, 'Mshewa', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(383, 'Mhezi', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(384, 'Mwembe', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(385, 'Vudee', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(386, 'Vuje', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(387, 'Bombo', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(388, 'Mtii', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(389, 'Maore', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(390, 'Ndungu', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(391, 'Kihurio', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(392, 'Bendera', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(393, 'Myamba', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(394, 'Mpinji', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(395, 'Bwambo', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(396, 'Vunta', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(397, 'Chome', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(398, 'Suji', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(399, 'Makanya', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(400, 'Hedaru', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(401, 'Kirangare', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(402, 'Kisima', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(403, 'Stesheni', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(404, 'Vumari', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(405, 'Mabilioni', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(406, 'Kalemawe', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(407, 'Lugulu', 376, 'ward', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(408, 'Moshi', 329, 'district', NULL, NULL, '2026-05-20 12:15:35', '2026-05-20 12:15:35'),
+(409, 'Mwika Kusini', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(410, 'MwikaKaskazini', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(411, 'Mamba Kaskazini', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(412, 'Mamba Kusini', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(413, 'Marangu Mashariki', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(414, 'Marangu Magharibi', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(415, 'Makuyuni', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(416, 'Kilema Kaskazini', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(417, 'Kilema Kusini', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(418, 'KiruaVunjo Mashariki', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(419, 'KiruaVunjo Magharibi', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(420, 'Kahe', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(421, 'Kahe Mashariki', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(422, 'Old Moshi Mashariki', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(423, 'Old Moshi Magharibi', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(424, 'Mbokomu', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(425, 'Uru Mashariki', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(426, 'Uru Shimbwe', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(427, 'Uru Kusini', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(428, 'Uru Kaskazini', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(429, 'Mabogini', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(430, 'Arusha Chini', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(431, 'Kibosho Mashariki', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(432, 'Kibosho Kati', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(433, 'Kibosho Magharibi', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(434, 'Kindi', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(435, 'KiruaVunjo Kusini', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(436, 'Kirima', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(437, 'Okaoni', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(438, 'Kimochi', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(439, 'Kilema Kati', 408, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(440, 'Hai', 329, 'district', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(441, 'Machame Mashariki', 440, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(442, 'Machame Kusini', 440, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(443, 'Machame Kaskazini', 440, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(444, 'Machame Magharibi', 440, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(445, 'Machame Uroki', 440, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(446, 'Masama Mashariki', 440, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(447, 'Masama Magharibi', 440, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(448, 'Masama Kusini', 440, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(449, 'Masama Rundugai', 440, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(450, 'Hai Mjini', 440, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(451, 'Masama Kati', 440, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(452, 'Machame Weruweru', 440, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(453, 'KIA', 440, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(454, 'Machame Narumu', 440, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(455, 'Moshi Urban', 329, 'district', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(456, 'Kilimanjaro', 455, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(457, 'Njoro', 455, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(458, 'Mji Mpya', 455, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(459, 'Majengo', 455, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(460, 'Mawenzi', 455, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(461, 'Rau', 455, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(462, 'Korongoni', 455, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(463, 'Kiusa', 455, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(464, 'Bondeni', 455, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(465, 'Pasua', 455, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(466, 'Kaloleni', 455, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(467, 'Kiboriloni', 455, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(468, 'Msaranga', 455, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(469, 'Karanga', 455, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(470, 'Longuo B', 455, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(471, 'Miembeni', 455, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(472, 'Mfumuni', 455, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(473, 'Soweto', 455, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(474, 'Boma Mbuzi', 455, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(475, 'Ng\'ambo', 455, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(476, 'Shirimatunda', 455, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(477, 'Siha', 329, 'district', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(478, 'Ndumeti', 477, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(479, 'Ngarenairobi', 477, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(480, 'Gararagua', 477, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(481, 'Sanya Juu', 477, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(482, 'Biriri', 477, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(483, 'Makiwaru', 477, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(484, 'Nasai', 477, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(485, 'Livishi', 477, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(486, 'Ivaeny', 477, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(487, 'Kashisha', 477, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(488, 'Karansi', 477, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(489, 'Olkolili', 477, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(490, 'Tanga', NULL, 'region', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(491, 'Lushoto', 490, 'district', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(492, 'Lushoto', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(493, 'Gare', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(494, 'Kwai', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(495, 'Ubiri', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(496, 'Soni', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(497, 'Vuga', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(498, 'Mponde', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(499, 'Mamba', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(500, 'Mbuzii', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(501, 'Tamota', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(502, 'Bumbuli', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(503, 'Funta', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(504, 'Mayo', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(505, 'Baga', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(506, 'Milingano', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(507, 'Mgwashi', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(508, 'Mtae', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(509, 'Sunga', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(510, 'Rangwi', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(511, 'Mnazi', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(512, 'Lunguza', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(513, 'Mbaramo', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(514, 'Mng\'aro', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(515, 'Mlalo', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(516, 'Mwangoi', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(517, 'Shume', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(518, 'Malindi', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(519, 'Hemtoye', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(520, 'Malibwi', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(521, 'Mlola', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(522, 'Makanya', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(523, 'Ngwelo', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(524, 'Kilole', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(525, 'Kwekanga', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(526, 'Lukozi', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(527, 'Manolo', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(528, 'Dule \"M\"', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(529, 'Kwemshasha', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(530, 'Nkongoi', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(531, 'Dule \"B\"', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(532, 'Maheza ngulu', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(533, 'Usambara', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(534, 'Ngulwi', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(535, 'Kwemashai', 491, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(536, 'Korogwe', 490, 'district', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(537, 'Mashewa', 536, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(538, 'Kizara', 536, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(539, 'Magoma', 536, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(540, 'Kerenge', 536, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(541, 'Kwagunda', 536, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(542, 'Mnyuzi', 536, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(543, 'Vugiri', 536, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(544, 'Dindira', 536, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(545, 'Bungu', 536, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(546, 'Lutindi', 536, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(547, 'Makuyuni', 536, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(548, 'Chekelei', 536, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(549, 'Mombo', 536, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(550, 'Mkalamo', 536, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(551, 'Mkomazi', 536, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(552, 'Kwashemshi', 536, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(553, 'Mpale', 536, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(554, 'Mswaha', 536, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(555, 'Magamba Kwalukonge', 536, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(556, 'Mazinde', 536, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(557, 'Muheza', 490, 'district', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(558, 'Misozwe', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(559, 'Pande Darajani', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(560, 'Ngomeni', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(561, 'Kigombe', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(562, 'Lusanga', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(563, 'Kicheba', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(564, 'Magoroto', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(565, 'Magila', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(566, 'Mbaramo', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(567, 'Majengo', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(568, 'Masuguru', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(569, 'Tingeni', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(570, 'Kilulu', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36');
+INSERT INTO `locations` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitude`, `created_at`, `updated_at`) VALUES
+(571, 'Mkuzi', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(572, 'Mtindiro', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(573, 'Kwafungo', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(574, 'Songa', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(575, 'Bwembwera', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(576, 'Potwe', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(577, 'Nkumba', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(578, 'Kisiwani', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(579, 'Misalai', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(580, 'Zirai', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(581, 'Mbomole', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(582, 'Amani', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(583, 'Tongwe', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(584, 'Mhamba', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(585, 'Kwakifua', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(586, 'Kwemkabala', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(587, 'Genge', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(588, 'Tanganyika', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(589, 'Mpapayu', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(590, 'Mlingano', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(591, 'Tanga Urban', 490, 'district', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(592, 'Central', 591, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(593, 'Majengo', 591, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(594, 'Nguvumali', 591, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(595, 'Chumbageni', 591, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(596, 'Ngamiani Kaskazini', 591, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(597, 'Ngamiani Kati', 591, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(598, 'Ngamiani Kusini', 591, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(599, 'Usagara', 591, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(600, 'Makorora', 591, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(601, 'Mzingani', 591, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(602, 'Msambweni', 591, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(603, 'Mwanzange', 591, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(604, 'Tangasisi', 591, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(605, 'Mabawa', 591, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(606, 'Tongoni', 591, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(607, 'Marungu', 591, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(608, 'Pongwe', 591, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(609, 'Maweni', 591, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(610, 'Duga', 591, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(611, 'Mzizima', 591, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(612, 'Mabokweni', 591, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(613, 'Kirare', 591, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(614, 'Kiomoni', 591, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(615, 'Chongoleani', 591, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(616, 'Pangani', 490, 'district', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(617, 'Pangani Mashariki', 616, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(618, 'Pangani Magharibi', 616, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(619, 'Bweni', 616, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(620, 'Madanga', 616, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(621, 'Kimang\'a', 616, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(622, 'Bushiri', 616, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(623, 'Mwera', 616, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(624, 'Tungamaa', 616, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(625, 'Kipumbwi', 616, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(626, 'Mikunguni', 616, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(627, 'Ubangaa', 616, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(628, 'Mkwaja', 616, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(629, 'Mkalamo', 616, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(630, 'Handeni', 490, 'district', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(631, 'Segera', 630, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(632, 'Ndolwa', 630, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(633, 'Mazingara', 630, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(634, 'Kwamsisi', 630, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(635, 'Kwasunga', 630, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(636, 'Kwaluguru', 630, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(637, 'Kang\'ata', 630, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(638, 'Kwamkonje', 630, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(639, 'Kwachaga', 630, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(640, 'Sindeni', 630, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(641, 'Misima', 630, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(642, 'Kiva', 630, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(643, 'Kabuku', 630, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(644, 'Kwamatuku', 630, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(645, 'Kwedizinga', 630, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(646, 'Mgambo', 630, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(647, 'Komkonga', 630, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(648, 'Mkata', 630, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(649, 'Kabuku ndani', 630, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(650, 'Kwamgwe', 630, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(651, 'Kilindi', 490, 'district', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(652, 'Lwande', 651, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(653, 'Kikunde', 651, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(654, 'Songe', 651, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(655, 'Pagwi', 651, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(656, 'Masagalu', 651, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(657, 'Kimbe', 651, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(658, 'Kilindi', 651, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(659, 'Negero', 651, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(660, 'Mkindi', 651, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(661, 'Mvungwe', 651, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(662, 'Kwediboma', 651, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(663, 'Saunyi', 651, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(664, 'Jaila', 651, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(665, 'Msanja', 651, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(666, 'Kisangasa', 651, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(667, 'Mabalanga', 651, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(668, 'Kibirashi', 651, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(669, 'Kilwa', 651, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(670, 'Tunguli', 651, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(671, 'Kwekivu', 651, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(672, 'Mkinga', 490, 'district', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(673, 'Mwakijembe', 672, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(674, 'Mkinga', 672, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(675, 'Duga', 672, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(676, 'Moa', 672, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(677, 'Manza', 672, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(678, 'Kwale', 672, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(679, 'Mtimbwani', 672, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(680, 'Gombero', 672, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(681, 'Mhinduro', 672, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(682, 'Maramba', 672, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(683, 'Kigongoi', 672, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(684, 'Daluni', 672, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(685, 'Bosha', 672, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(686, 'Mapatano', 672, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(687, 'Bwiti', 672, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(688, 'Mnyenzani', 672, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(689, 'Doda', 672, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(690, 'Boma', 672, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(691, 'Parungu Kasera', 672, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(692, 'Mayomboni', 672, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(693, 'Sigaya', 672, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(694, 'Korogwe Township Authority', 490, 'district', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(695, 'Ngombezi', 694, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(696, 'Mtonga', 694, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(697, 'Magunga', 694, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(698, 'Kwamndolwa', 694, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(699, 'Old Korogwe', 694, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(700, 'Manundu', 694, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(701, 'Kilole', 694, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(702, 'Kwamsisi', 694, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(703, 'Handeni Mji', 490, 'district', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(704, 'Malezi', 703, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(705, 'Kwenjugo', 703, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(706, 'Mabanda', 703, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(707, 'Konje', 703, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(708, 'Mlimani', 703, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(709, 'Msasa', 703, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(710, 'Kideleko', 703, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(711, 'Kwamagome', 703, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(712, 'Vibaoni', 703, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(713, 'Chanika', 703, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(714, 'Mdoe', 703, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(715, 'Kwediyamba', 703, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(716, 'Morogoro', NULL, 'region', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(717, 'Kilosa', 716, 'district', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(718, 'Mabula', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(719, 'Maguha', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(720, 'Berega', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(721, 'Magubike', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(722, 'Mamboya', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(723, 'Dumila', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(724, 'Magole', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(725, 'Msowero', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(726, 'Rudewa', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(727, 'Chanzulu', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(728, 'Kimamba \'A\'', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(729, 'Kimamba \' B \'', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(730, 'Mbumi', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(731, 'Mkwatani', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(732, 'Magomeni', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(733, 'Kasiki', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(734, 'Mabwerebwere', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(735, 'Kilangali', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(736, 'Mikumi', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(737, 'Ruhembe', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(738, 'Kidodi', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(739, 'Vidunda', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(740, 'Malolo', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(741, 'Kisanga', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(742, 'Uleling\'ombe', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(743, 'Ulaya', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(744, 'Zombo', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(745, 'Lumuma', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(746, 'Masanze', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(747, 'Lumbiji', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(748, 'Kitete', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(749, 'Madoto', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(750, 'Tindiga', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(751, 'Ruaha', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(752, 'Kidete', 717, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(753, 'Morogoro', 716, 'district', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(754, 'Kasanga', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(755, 'Kolero', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(756, 'Mvuha', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(757, 'Selembala', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(758, 'Bwaki la Chini', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(759, 'Bwakila Juu', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(760, 'Kisaki', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(761, 'Mngazi', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(762, 'Singisa', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(763, 'Mkambarani', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(764, 'Mikese', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(765, 'Kidugalo', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(766, 'Mkulazi', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(767, 'Ngerengere', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(768, 'Tununguo', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(769, 'Kiroka', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(770, 'Mkuyuni', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(771, 'Tegetero', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(772, 'Kibogwa', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(773, 'Kibungo Juu', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(774, 'Kisemu', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(775, 'Lundi', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(776, 'Mtombozi', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(777, 'Tawa', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(778, 'Matuli', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(779, 'Gwata', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(780, 'Konde', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(781, 'Bungu', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(782, 'Kinole', 753, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(783, 'Kilombero', 716, 'district', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(784, 'Kidatu', 783, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(785, 'Sanje', 783, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(786, 'Mkula', 783, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(787, 'Mang\'ula', 783, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(788, 'Kisawasawa', 783, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(789, 'Kiberege', 783, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(790, 'Kibaoni', 783, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(791, 'Ifakara', 783, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(792, 'Lumemo', 783, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(793, 'Idete', 783, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(794, 'Mbingu', 783, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(795, 'Mofu', 783, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(796, 'Mchombe', 783, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(797, 'Chisano', 783, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(798, 'Mlimba', 783, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(799, 'Utengule', 783, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(800, 'Masagati', 783, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(801, 'Uchindile', 783, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(802, 'Chita', 783, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(803, 'Ulanga', 716, 'district', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(804, 'Minepa', 803, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(805, 'Lupiro', 803, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(806, 'Kichangani', 803, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(807, 'Msogezi', 803, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(808, 'Vigoi', 803, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(809, 'Mahenge', 803, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(810, 'Isongo', 803, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(811, 'Ruaha', 803, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(812, 'Chirombola', 803, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(813, 'Sali', 803, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(814, 'Euga', 803, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(815, 'Mwaya', 803, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(816, 'Lukande', 803, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(817, 'Mbuga', 803, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(818, 'Ilonga', 803, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(819, 'Kilosa kwa Mpepo', 803, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(820, 'Ngoheranga', 803, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(821, 'Biro', 803, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(822, 'Malinyi', 803, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(823, 'Sofi', 803, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(824, 'Usangule', 803, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(825, 'Mtimbira', 803, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(826, 'Itete', 803, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(827, 'Iragua', 803, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
+(828, 'Morogoro Urban', 716, 'district', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(829, 'Sabasaba', 828, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(830, 'Uwanja wa Taifa', 828, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(831, 'Kiwanja Cha Ndege', 828, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(832, 'Mji Mpya', 828, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(833, 'Kingo', 828, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(834, 'Mji Mkuu', 828, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(835, 'Sultan Area', 828, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(836, 'Mafiga', 828, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(837, 'Mazimbu', 828, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(838, 'Mwembesongo', 828, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(839, 'Kichangani', 828, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(840, 'Kilakala', 828, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(841, 'Boma', 828, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(842, 'Mlimani', 828, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(843, 'Mbuyuni', 828, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(844, 'Kingolwira', 828, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(845, 'Bigwa', 828, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(846, 'Mzinga', 828, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(847, 'Kihonda', 828, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(848, 'Mvomero', 716, 'district', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(849, 'Mvomero', 848, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(850, 'Hembeti', 848, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(851, 'Maskati', 848, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(852, 'Kibati', 848, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(853, 'Sungaji', 848, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(854, 'Mhonda', 848, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(855, 'Diongoya', 848, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(856, 'Mtibwa', 848, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(857, 'Kanga', 848, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(858, 'Bunduki', 848, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(859, 'Kikeo', 848, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(860, 'Langali', 848, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(861, 'Tchenzema', 848, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(862, 'Mzumbe', 848, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(863, 'Mlali', 848, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(864, 'Doma', 848, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(865, 'Melela', 848, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(866, 'Gairo', 716, 'district', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(867, 'Chakwale', 866, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(868, 'Iyogwe', 866, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(869, 'Idibo', 866, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(870, 'Kibedya', 866, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(871, 'Msingisi', 866, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(872, 'Gairo', 866, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(873, 'Rubeho', 866, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(874, 'Mandege', 866, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(875, 'Chagongwe', 866, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(876, 'Chanjale', 866, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(877, 'Nongwe', 866, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(878, 'Pwani', NULL, 'region', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(879, 'Bagamoyo', 878, 'district', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(880, 'Kiwangwa', 879, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(881, 'Msata', 879, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(882, 'Miono', 879, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(883, 'Mkange', 879, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(884, 'Magomeni', 879, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(885, 'Dunda', 879, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(886, 'Kiromo', 879, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(887, 'Zinga', 879, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(888, 'Yombo', 879, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(889, 'Vigwaza', 879, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(890, 'Talawanda', 879, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(891, 'Bwilingu', 879, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(892, 'Lugoba', 879, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(893, 'Ubenazomozi', 879, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(894, 'Kibindu', 879, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(895, 'Fukayose', 879, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(896, 'Kerege', 879, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(897, 'Pera', 879, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(898, 'Msoga', 879, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(899, 'Kimange', 879, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(900, 'Mandera', 879, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(901, 'Mbwewe', 879, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(902, 'Kibaha', 878, 'district', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(903, 'Gwata', 902, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(904, 'Dutumi', 902, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(905, 'Magindu', 902, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(906, 'Soga', 902, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(907, 'Kikongo', 902, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(908, 'Ruvu', 902, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(909, 'Mlandizi', 902, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(910, 'Kwala', 902, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(911, 'Kilangalanga', 902, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(912, 'Janga', 902, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(913, 'Bokomnemela', 902, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(914, 'Kisarawe', 878, 'district', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(915, 'Kisarawe', 914, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(916, 'Msimbu', 914, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(917, 'Masaki', 914, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(918, 'Kibuta', 914, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(919, 'Marumbo', 914, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(920, 'Maneromango', 914, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(921, 'Msanga', 914, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(922, 'Marui', 914, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(923, 'Cholesamvula', 914, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(924, 'Vikumbulu', 914, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(925, 'Mafizi', 914, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(926, 'Kurui', 914, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(927, 'Mzenga', 914, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(928, 'Vihingo', 914, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(929, 'Kiluvya', 914, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(930, 'Mkuranga', 878, 'district', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(931, 'Mkuranga', 930, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(932, 'Tambani', 930, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(933, 'Vikindu', 930, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(934, 'Mbezi', 930, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(935, 'Shungubweni', 930, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(936, 'Kisiju', 930, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(937, 'Magawa', 930, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(938, 'Kitomondo', 930, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(939, 'Lukanga', 930, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(940, 'Nyamato', 930, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(941, 'Kimanzichana', 930, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(942, 'Mkamba', 930, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(943, 'Panzuo', 930, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(944, 'Bupu', 930, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(945, 'Mwarusembe', 930, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(946, 'Vianzi', 930, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(947, 'Njia nne', 930, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(948, 'Kiparang\'anda', 930, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(949, 'Rufiji', 878, 'district', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(950, 'Ikwiriri', 949, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(951, 'Mgomba', 949, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(952, 'Umwe', 949, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(953, 'Utete', 949, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(954, 'Mkongo', 949, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(955, 'Ngorongo', 949, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(956, 'Mwaseni', 949, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(957, 'Kibiti', 949, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(958, 'Bungu', 949, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(959, 'Mahege', 949, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(960, 'Mchukwi', 949, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(961, 'Chumbi', 949, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(962, 'Mbwara', 949, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(963, 'Mtunda', 949, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(964, 'Ruaruke', 949, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(965, 'Salale', 949, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(966, 'Mbuchi', 949, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(967, 'Kiongoroni', 949, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(968, 'Maparoni', 949, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(969, 'Chemchem', 949, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(970, 'Ngarambe', 949, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(971, 'Dimani', 949, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(972, 'Mtawanya', 949, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(973, 'Mjawa', 949, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(974, 'Mlanzi', 949, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(975, 'Mwambao', 949, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(976, 'Mafia', 878, 'district', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(977, 'Kanga', 976, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(978, 'Kirongwe', 976, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(979, 'Baleni', 976, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(980, 'Ndagoni', 976, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(981, 'Kilindoni', 976, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(982, 'Miburani', 976, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(983, 'Kiegeani', 976, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(984, 'Jibondo', 976, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(985, 'Kibaha Urban', 878, 'district', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(986, 'Pangani', 985, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(987, 'Mailimoja', 985, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(988, 'Tumbi', 985, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(989, 'Picha ya Ndege', 985, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(990, 'Mkuza', 985, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(991, 'Kibaha', 985, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(992, 'Msangani', 985, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(993, 'Kongowe', 985, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(994, 'Misugusugu', 985, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(995, 'Visiga', 985, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(996, 'Mbwawa', 985, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(997, 'Dar-es-salaam', NULL, 'region', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(998, 'Kinondoni', 997, 'district', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(999, 'Magomeni', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1000, 'Makurumla', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1001, 'Ndugumbi', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1002, 'Tandale', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1003, 'Mwananyamala', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1004, 'Msasani', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1005, 'Kinondoni', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1006, 'Mzimuni', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1007, 'Kigogo', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1008, 'Mabibo', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1009, 'Manzese', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1010, 'Ubungo', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1011, 'Kibamba', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1012, 'Goba', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1013, 'Kawe', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1014, 'Kunduchi', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1015, 'Mbweni', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1016, 'Bunju', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1017, 'Makuburi', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1018, 'Mburahati', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1019, 'Makumbusho', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1020, 'Sinza', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1021, 'Kijitonyama', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1022, 'Kimara', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1023, 'Mikocheni', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1024, 'Mbezi', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1025, 'Hananasifu', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1026, 'Saranga', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1027, 'Kwembe', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1028, 'Msigani', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1029, 'Mbezi Juu', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1030, 'Makongo', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1031, 'Mabwepande', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1032, 'Wazo', 998, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1033, 'Ilala', 997, 'district', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1034, 'Ukonga', 1033, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1035, 'Pugu', 1033, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1036, 'Msongola', 1033, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1037, 'Tabata', 1033, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1038, 'Kinyerezi', 1033, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1039, 'Ilala', 1033, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1040, 'Mchikichini', 1033, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1041, 'Vingunguti', 1033, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1042, 'Kipawa', 1033, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1043, 'Buguruni', 1033, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1044, 'Kariakoo', 1033, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1045, 'Jangwani', 1033, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1046, 'Gerezani', 1033, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1047, 'Kisutu', 1033, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1048, 'Mchafukoge', 1033, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1049, 'Upanga Mashariki', 1033, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1050, 'Upanga Magharibi', 1033, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1051, 'Kivukoni', 1033, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1052, 'Kiwalani', 1033, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1053, 'Segerea', 1033, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1054, 'Kitunda', 1033, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1055, 'Chanika', 1033, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1056, 'Kivule', 1033, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1057, 'Gongolamboto', 1033, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1058, 'Majohe', 1033, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1059, 'Kimanga', 1033, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1060, 'Temeke', 997, 'district', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1061, 'Kigamboni', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1062, 'Vijibweni', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1063, 'Kibada', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1064, 'Kisarawe II', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1065, 'Somangila', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1066, 'Kimbiji', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1067, 'Mbagala', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1068, 'Chamazi', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1069, 'Yombo Vituka', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1070, 'Charambe', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1071, 'Toangoma', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1072, 'Miburani', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1073, 'Temeke', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1074, 'Mtoni', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1075, 'Keko', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1076, 'Kurasini', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1077, 'Azimio', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1078, 'Tandika', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1079, 'Sandali', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1080, 'Chang\'ombe', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1081, 'Mbagala Kuu', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1082, 'Makangarawe', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1083, 'Pemba Mnazi', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1084, 'Mjimwema', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1085, 'Tungi', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1086, 'Kijichi', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1087, 'Mianzini', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1088, 'Kiburugwa', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1089, 'Buza', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1090, 'Kilakala', 1060, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1091, 'Lindi', NULL, 'region', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1092, 'Kilwa', 1091, 'district', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1093, 'Tingi', 1092, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1094, 'Miteja', 1092, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1095, 'Mingumbi', 1092, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1096, 'Kinjumbi', 1092, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1097, 'Chumo', 1092, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1098, 'Kipatimu', 1092, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1099, 'Kandawale', 1092, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1100, 'Njinjo', 1092, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1101, 'Mitole', 1092, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1102, 'Miguruwe', 1092, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1103, 'Likawage', 1092, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1104, 'Nanjirinji', 1092, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1105, 'Kirnjernje', 1092, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1106, 'Mandawa', 1092, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1107, 'Lihimalyao', 1092, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1108, 'Pande', 1092, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1109, 'Kikole', 1092, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1110, 'Kivinjesingino', 1092, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1111, 'Songosongo', 1092, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1112, 'Masoko', 1092, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1113, 'Kibata', 1092, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1114, 'Lindi', 1091, 'district', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1115, 'Mipingo', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1116, 'Kitomanga', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1117, 'Mchinga', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1118, 'Kilolambwani', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1119, 'Kilangala', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1120, 'Kiwalala', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1121, 'Navanga', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1122, 'Mnolela', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1123, 'Sudi', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1124, 'Nachunyu', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1125, 'Mtama', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1126, 'Nyangao', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1127, 'Namupa', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1128, 'Nyengedi', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1129, 'Mtua', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1130, 'Nahukahuka', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1131, 'Nyangamara', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1132, 'Mandwanga', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1133, 'Mnara', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1134, 'Chiponda', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1135, 'Pangatena', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1136, 'Longa', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37');
+INSERT INTO `locations` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitude`, `created_at`, `updated_at`) VALUES
+(1137, 'Rutamba', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1138, 'Milola', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1139, 'Kiwawa', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1140, 'Mtumbya', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1141, 'Matimba', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1142, 'Nangaru', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1143, 'Majengo', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1144, 'Namangale', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1145, 'Nachingwea', 1091, 'district', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
+(1146, 'Nambambo', 1145, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1147, 'Kilimanihewa', 1145, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1148, 'Ruponda', 1145, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1149, 'Minero Miembeni', 1145, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1150, 'Namapwia', 1145, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1151, 'Kipara Mnero', 1145, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1152, 'Lionja', 1145, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1153, 'Namikango', 1145, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1154, 'Nditi', 1145, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1155, 'Kilima Rondo', 1145, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1156, 'Mbondo', 1145, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1157, 'Kiegei', 1145, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1158, 'Mkoka', 1145, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1159, 'Chiola', 1145, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1160, 'Mpiruka', 1145, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1161, 'Nangowe', 1145, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1162, 'Mkotokuyana', 1145, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1163, 'Naipanga', 1145, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1164, 'Stesheni', 1145, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1165, 'Naipingo', 1145, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1166, 'Mtua', 1145, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1167, 'Minerongongo', 1145, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1168, 'Matekwe', 1145, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1169, 'Marambo', 1145, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1170, 'Namatula', 1145, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1171, 'Ndomoni', 1145, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1172, 'Liwale', 1091, 'district', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1173, 'Liwale Mjini', 1172, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1174, 'Mihumo', 1172, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1175, 'Ngongowele', 1172, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1176, 'Mlembwe', 1172, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1177, 'Makata', 1172, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1178, 'Barikiwa', 1172, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1179, 'Mkutano', 1172, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1180, 'Mbaya', 1172, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1181, 'Kimambi', 1172, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1182, 'Kiangara', 1172, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1183, 'Kibutuka', 1172, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1184, 'Nangano', 1172, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1185, 'Mpigamiti', 1172, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1186, 'Mirui', 1172, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1187, 'Liwale \'B\'', 1172, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1188, 'Mangirikiti', 1172, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1189, 'Nangando', 1172, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1190, 'Likongowele', 1172, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1191, 'Kichonda', 1172, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1192, 'Lilombe', 1172, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1193, 'Ruangwa', 1091, 'district', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1194, 'Ruangwa', 1193, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1195, 'Mbekenyera', 1193, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1196, 'Nkowe', 1193, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1197, 'Malolo', 1193, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1198, 'Luchelegwa', 1193, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1199, 'Chienjele', 1193, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1200, 'Namichiga', 1193, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1201, 'Narung\'ombe', 1193, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1202, 'Makanjiro', 1193, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1203, 'Likunja', 1193, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1204, 'Mnacho', 1193, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1205, 'Mandawa', 1193, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1206, 'Nambilanje', 1193, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1207, 'Chunyu', 1193, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1208, 'Mandarawe', 1193, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1209, 'Nachingwea', 1193, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1210, 'Matambarale', 1193, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1211, 'Chibula', 1193, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1212, 'Nandagala', 1193, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1213, 'Nanganga', 1193, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1214, 'Chinongwe', 1193, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1215, 'Lindi Urban', 1091, 'district', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1216, 'Ndoro', 1215, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1217, 'Makonde', 1215, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1218, 'Mikumbi', 1215, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1219, 'Mitandi', 1215, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1220, 'Rahaleo', 1215, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1221, 'Mwenge', 1215, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1222, 'Matopeni', 1215, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1223, 'Wailes', 1215, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1224, 'Nachingwea', 1215, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1225, 'Rasbura', 1215, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1226, 'Mtanda', 1215, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1227, 'Jamhuri', 1215, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1228, 'Msinjahili', 1215, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1229, 'Mingoyo', 1215, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1230, 'Ng\'apa', 1215, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1231, 'Tandangongoro', 1215, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1232, 'Chikonji', 1215, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1233, 'Mbanja', 1215, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1234, 'Mtwara', NULL, 'region', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1235, 'Mtwara', 1234, 'district', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1236, 'Madimba', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1237, 'Ziwani', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1238, 'Nanguruwe', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1239, 'Mahurunga', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1240, 'Kitaya', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1241, 'Kiromba', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1242, 'Njengwa', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1243, 'Nitekela', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1244, 'Nanyamba', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1245, 'Mtiniko', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1246, 'Dihimba', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1247, 'Mnima', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1248, 'Kitere', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1249, 'Ndumbwe', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1250, 'Mayanga', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1251, 'Naumbu', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1252, 'Chawi', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1253, 'Namtumbuka', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1254, 'Libobe', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1255, 'Mpapura', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1256, 'Muungano', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1257, 'Mbawala', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1258, 'Msanga Mkuu', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1259, 'Tangazo', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1260, 'Kiyanga', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1261, 'Milango Minne', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1262, 'Mbembaleo', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1263, 'Mtimbwilimbwi', 1235, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1264, 'Newala', 1234, 'district', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1265, 'Luchindu', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1266, 'Makote', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1267, 'Nanguruwe', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1268, 'Mkunya', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1269, 'Mcholi I', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1270, 'Namiyonga', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1271, 'Mnekachi', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1272, 'Chitekete', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1273, 'Mnyambe', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1274, 'Chilangala', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1275, 'Mkoma II', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1276, 'Kitangari', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1277, 'Malatu', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1278, 'Mchemo', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1279, 'Mtopwa', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1280, 'Chiwonga', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1281, 'Maputi', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1282, 'Makukwe', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1283, 'Mkwedu', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1284, 'Mcholi II', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1285, 'Mtonya', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1286, 'Makonga', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1287, 'Nakahako', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1288, 'Chihangu', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1289, 'Nambali', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1290, 'Nandwahi', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1291, 'Mtunguru', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1292, 'Mdimba MpeleMpele', 1264, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1293, 'Masasi', 1234, 'district', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1294, 'Namatutwe', 1293, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1295, 'Namajani', 1293, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1296, 'Mlingula', 1293, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1297, 'Chiwale', 1293, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1298, 'Lukuledi', 1293, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1299, 'Mpanyani', 1293, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1300, 'Chigugu', 1293, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1301, 'Mwena', 1293, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1302, 'Nanganga', 1293, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1303, 'Chiwata', 1293, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1304, 'Mkundi', 1293, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1305, 'Mkululu', 1293, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1306, 'Nanjota', 1293, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1307, 'Chiungutwa', 1293, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1308, 'Mbuyuni', 1293, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1309, 'Lipumburu', 1293, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1310, 'Sindano', 1293, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1311, 'Namalenga', 1293, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1312, 'Mchauru', 1293, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1313, 'Mnavira', 1293, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1314, 'Chikolopola', 1293, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1315, 'Lulindi', 1293, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1316, 'Tandahimba', 1234, 'district', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1317, 'Tandahimba', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1318, 'Kitama', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1319, 'Michenjele', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1320, 'Mihambwe', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1321, 'Mkoreha', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1322, 'Maundo', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1323, 'Naputa', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1324, 'Namikupa', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1325, 'Mnyawa', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1326, 'Mkundi', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1327, 'Lukokoda', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1328, 'Mahuta', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1329, 'Nanhyanga', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1330, 'Chingungwe', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1331, 'Mdimba Mnyoma', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1332, 'Milongodi', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1333, 'Lyenje', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1334, 'Chaume', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1335, 'Mkonjowano', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1336, 'Luagala', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1337, 'Ngunja', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1338, 'Mkwiti', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1339, 'Litehu', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1340, 'Nambahu', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1341, 'Miuta', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1342, 'Kwanyama', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1343, 'Mchichira', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1344, 'Chikongola', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1345, 'Dinduma', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1346, 'Mdumbwe', 1316, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1347, 'Mtwara Urban', 1234, 'district', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1348, 'Majengo', 1347, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1349, 'Chikongola', 1347, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1350, 'Likombe', 1347, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1351, 'Railway', 1347, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1352, 'Shangani', 1347, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1353, 'Vigaeni', 1347, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1354, 'Chuno', 1347, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1355, 'Jangwani', 1347, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1356, 'Kisungule', 1347, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1357, 'Mitengo', 1347, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1358, 'Mtonya', 1347, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1359, 'Ufukoni', 1347, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1360, 'Magengeni', 1347, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1361, 'Rahaleo', 1347, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1362, 'Naliendele', 1347, 'ward', NULL, NULL, '2026-05-20 12:15:38', '2026-05-20 12:15:38'),
+(1363, 'Nanyumbu', 1234, 'district', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1364, 'Mangaka', 1363, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1365, 'Nangomba', 1363, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1366, 'Lumesule', 1363, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1367, 'Likokona', 1363, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1368, 'Sengenya', 1363, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1369, 'Mnanje', 1363, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1370, 'Mikangaula', 1363, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1371, 'Maratani', 1363, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1372, 'Nandete', 1363, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1373, 'Mkonona', 1363, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1374, 'Nanyumbu', 1363, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1375, 'Masuguru', 1363, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1376, 'Chipuputa', 1363, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1377, 'Napacho', 1363, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1378, 'Masasi  Township Authority', 1234, 'district', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1379, 'Mwenge Mtapika', 1378, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1380, 'Temeke', 1378, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1381, 'Mkuti', 1378, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1382, 'Mpindimbi', 1378, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1383, 'Nyasa', 1378, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1384, 'Marika', 1378, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1385, 'Mkomaindo', 1378, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1386, 'Mtandi', 1378, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1387, 'Jida', 1378, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1388, 'Migongo', 1378, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1389, 'Mwenge', 1378, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1390, 'Sululu', 1378, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1391, 'Ruvuma', NULL, 'region', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1392, 'Tunduru', 1391, 'district', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1393, 'Kalulu', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1394, 'Ligunga', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1395, 'Mlingoti  Mashariki', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1396, 'Mindu', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1397, 'Ngapa', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1398, 'Nakapanya', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1399, 'Muhuwesi', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1400, 'Tuwemacho', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1401, 'Ligoma', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1402, 'Misechela', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1403, 'Namasakata', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1404, 'Mtina', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1405, 'Mchesi', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1406, 'Lukumbule', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1407, 'Nalasi-Magharibi', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1408, 'Mchoteka', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1409, 'Marumba', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1410, 'Mbesa', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1411, 'Mlingoti  Magharibi', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1412, 'Kidodoma', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1413, 'Nandembo', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1414, 'Nampungu', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1415, 'Matemanga', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1416, 'Namwinyu', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1417, 'Mbati', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1418, 'Nalasi Mashariki', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1419, 'Mchuluka', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1420, 'Namiungo', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1421, 'Jakika', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1422, 'Masonya', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1423, 'Sisikwasisi', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1424, 'Mchangani', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1425, 'Majengo', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1426, 'Nanjoka', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1427, 'Nakayaya', 1392, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1428, 'Songea', 1391, 'district', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1429, 'Wino', 1428, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1430, 'Ndongosi', 1428, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1431, 'Matumbi', 1428, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1432, 'Mpandangino', 1428, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1433, 'Gumbiro', 1428, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1434, 'Mpitimbi', 1428, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1435, 'Muhuruku', 1428, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1436, 'Magagura', 1428, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1437, 'Litisha', 1428, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1438, 'Kilagano', 1428, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1439, 'Maposeni', 1428, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1440, 'Peramiho', 1428, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1441, 'Mahanje', 1428, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1442, 'Matimira', 1428, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1443, 'Mtyangimbole', 1428, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1444, 'Mkongotema', 1428, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1445, 'Mbinga Mhalule', 1428, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1446, 'Mbinga', 1391, 'district', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1447, 'Ruanda', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1448, 'Litumbandyosi', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1449, 'Kigonsera', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1450, 'Kihangi Mahuka', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1451, 'Utiri', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1452, 'Mbinga Mjini', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1453, 'Kilimani', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1454, 'Mbangamao', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1455, 'Kihungu', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1456, 'Kikolo', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1457, 'Kambarage', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1458, 'Mapera', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1459, 'Kipapa', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1460, 'Kipololo', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1461, 'Nyoni', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1462, 'Luwaita', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1463, 'Maguu', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1464, 'Kitumbalomo', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1465, 'Mkako', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1466, 'Mikalanga', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1467, 'Langiro', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1468, 'Mbuji', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1469, 'Litembo', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1470, 'Ngima', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1471, 'Myangayanga', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1472, 'Mkumbi', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1473, 'Linda', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1474, 'Matiri', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1475, 'Ukata', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1476, 'Kitanda', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1477, 'Kitura', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1478, 'Namswea', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1479, 'Mpepai', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1480, 'Mpapa', 1446, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1481, 'Songea Urban', 1391, 'district', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1482, 'Mjini', 1481, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1483, 'Majengo', 1481, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1484, 'Misufini', 1481, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1485, 'Mfaranyaki', 1481, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1486, 'Lizaboni', 1481, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1487, 'Matarawe', 1481, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1488, 'Bombambili', 1481, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1489, 'Matogoro', 1481, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1490, 'Ruvuma', 1481, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1491, 'Subira', 1481, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1492, 'Ruhuwiko', 1481, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1493, 'Mshangano', 1481, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1494, 'Mletele', 1481, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1495, 'Seedfarm', 1481, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1496, 'Tanga', 1481, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1497, 'Msamala', 1481, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1498, 'Mwengemshindo', 1481, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1499, 'Mjimwema', 1481, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1500, 'Mateka', 1481, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1501, 'Ndilimalitembo', 1481, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1502, 'Lilambo', 1481, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1503, 'Namtumbo', 1391, 'district', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1504, 'Rwinga', 1503, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1505, 'Mkongo', 1503, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1506, 'Ligera', 1503, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1507, 'Lusewa', 1503, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1508, 'Magazini', 1503, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1509, 'Msindo', 1503, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1510, 'Luchili', 1503, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1511, 'Namabengo', 1503, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1512, 'Kitanda', 1503, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1513, 'Luegu', 1503, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1514, 'Namtumbo', 1503, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1515, 'Mgombasi', 1503, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1516, 'Litola', 1503, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1517, 'Likuyuseka', 1503, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1518, 'Mputa', 1503, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1519, 'Hanga', 1503, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1520, 'Limamu', 1503, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1521, 'Mchomoro', 1503, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1522, 'Nyasa', 1391, 'district', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1523, 'Liparamba', 1522, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1524, 'Tingi', 1522, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1525, 'Chiwanda', 1522, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1526, 'Mtipwili', 1522, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1527, 'Kingerikiti', 1522, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1528, 'Luhangarasi', 1522, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1529, 'Kilosa', 1522, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1530, 'Mbambabay', 1522, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1531, 'Lipingo', 1522, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1532, 'Liuli', 1522, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1533, 'Kihagara', 1522, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1534, 'Ngumbo', 1522, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1535, 'Liwundi', 1522, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1536, 'Mbaha', 1522, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1537, 'Lituhi', 1522, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1538, 'Iringa', NULL, 'region', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1539, 'Iringa', 1538, 'district', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1540, 'Kalenga', 1539, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1541, 'Kiwere', 1539, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1542, 'Nzihi', 1539, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1543, 'Ulanda', 1539, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1544, 'Mseke', 1539, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1545, 'Maguliwa', 1539, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1546, 'Mgama', 1539, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1547, 'Ifunda', 1539, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1548, 'Lumuli', 1539, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1549, 'Maboga', 1539, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1550, 'Wasa', 1539, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1551, 'Mahuninga', 1539, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1552, 'Idodi', 1539, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1553, 'Mlowa', 1539, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1554, 'Itunundu', 1539, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1555, 'Ilolo Mpya', 1539, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1556, 'Nduli', 1539, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1557, 'Kihorogota', 1539, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1558, 'Izazi', 1539, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1559, 'Malenga Makali', 1539, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1560, 'Nyang\'oro', 1539, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1561, 'Luhota', 1539, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1562, 'Lyamgungwe', 1539, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1563, 'Mlenge', 1539, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1564, 'Migoli', 1539, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1565, 'Mufindi', 1538, 'district', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1566, 'Kiyowela', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1567, 'Makungu', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1568, 'Mninga', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1569, 'Kasanga', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1570, 'Igowole', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1571, 'Mtambula', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1572, 'Itandula', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1573, 'Mbalamaziwa', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1574, 'Idunda', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1575, 'Malangali', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1576, 'Nyololo', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1577, 'Ihowanza', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1578, 'Ikweha', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1579, 'Sadani', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1580, 'Igombavanu', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1581, 'Bumilayinga', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1582, 'Mtwango', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1583, 'Isalavanu', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1584, 'Rungemba', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1585, 'Ifwagi', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1586, 'Mdabulo', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1587, 'Ihalimba', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1588, 'Kibengu', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1589, 'Mapanda', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1590, 'Mpanga', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1591, 'Ihanu', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1592, 'Luhanga', 1565, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1593, 'Iringa Urban', 1538, 'district', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1594, 'Kihesa', 1593, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1595, 'Mtwivila', 1593, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1596, 'Gangilonga', 1593, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1597, 'Kitanzini', 1593, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1598, 'Ruaha', 1593, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1599, 'Mshindo', 1593, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1600, 'Mivinjeni', 1593, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1601, 'Mlandege', 1593, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1602, 'Mwangata', 1593, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1603, 'Kwakilosa', 1593, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1604, 'Makorongoni', 1593, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1605, 'Ilala', 1593, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1606, 'Mkwawa', 1593, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1607, 'Kitwiru', 1593, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1608, 'Isakalilo', 1593, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1609, 'Nduli', 1593, 'ward', NULL, NULL, '2026-05-20 12:15:39', '2026-05-20 12:15:39'),
+(1610, 'Kilolo', 1538, 'district', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1611, 'Image', 1610, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1612, 'Irole', 1610, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1613, 'Ilula', 1610, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1614, 'Uhambingeto', 1610, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1615, 'Udekwa', 1610, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1616, 'Mahenge', 1610, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1617, 'Mtitu', 1610, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1618, 'Dabaga', 1610, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1619, 'Ukumbi', 1610, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1620, 'Ukwega', 1610, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1621, 'Boma la Ng\'ombe', 1610, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1622, 'Idete', 1610, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1623, 'Masisiwe', 1610, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1624, 'Ng\'uruhe', 1610, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1625, 'Ng\'ang\'ange', 1610, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1626, 'Ihimbo', 1610, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1627, 'Lugalo', 1610, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1628, 'Nyalumbu', 1610, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1629, 'Mlafu', 1610, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1630, 'Ibumu', 1610, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1631, 'Ruaha Mbuyuni', 1610, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1632, 'Kimala', 1610, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1633, 'Mafinga Township Authority', 1538, 'district', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1634, 'Sao Hill', 1633, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1635, 'Boma', 1633, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1636, 'Kinyanambo', 1633, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1637, 'Mbeya', NULL, 'region', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1638, 'Chunya', 1637, 'district', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1639, 'Kambikatoto', 1638, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1640, 'Mafyeko', 1638, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1641, 'Matwiga', 1638, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1642, 'Mtanila', 1638, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1643, 'Lupatingatinga', 1638, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1644, 'Luwalaje', 1638, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1645, 'Sangambi', 1638, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1646, 'Itewe', 1638, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1647, 'Chokaa', 1638, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1648, 'Mbugani', 1638, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1649, 'Chalangwa', 1638, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1650, 'Ifumbo', 1638, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1651, 'Mamba', 1638, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1652, 'Mkola', 1638, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1653, 'Makongorosi', 1638, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1654, 'Matundasi', 1638, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1655, 'Mbeya', 1637, 'district', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1656, 'Ihango', 1655, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1657, 'Ulenje', 1655, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1658, 'Tembela', 1655, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1659, 'Ijombe', 1655, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1660, 'Santilya', 1655, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1661, 'Ilembo', 1655, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1662, 'Iwiji', 1655, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1663, 'Isuto', 1655, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1664, 'Igale', 1655, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1665, 'Iwindi', 1655, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1666, 'Utengule Usongwe', 1655, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1667, 'Mshewe', 1655, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1668, 'Ikukwa', 1655, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1669, 'Iyunga Mapinduzi', 1655, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1670, 'Bonde la Songwe', 1655, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1671, 'Inyala', 1655, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1672, 'Ilungu', 1655, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1673, 'Maendeleo', 1655, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1674, 'Swaya', 1655, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1675, 'Masoko', 1655, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1676, 'Itawa', 1655, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1677, 'Nsalala', 1655, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1678, 'Lwanjiro', 1655, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1679, 'Itewe', 1655, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1680, 'Igoma', 1655, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1681, 'Kyela', 1637, 'district', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1682, 'Lusungo', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1683, 'Makwale', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1684, 'Matema', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1685, 'Mwaya', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1686, 'Ndobo', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1687, 'Kajunjumele', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1688, 'Bujonde', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1689, 'Ikolo', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1690, 'Katumbasongwe', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40');
+INSERT INTO `locations` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitude`, `created_at`, `updated_at`) VALUES
+(1691, 'Ngana', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1692, 'Busale', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1693, 'Ipande', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1694, 'Ikama', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1695, 'Ipinda', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1696, 'Ngonga', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1697, 'Ikimba', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1698, 'Itope', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1699, 'Muungano', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1700, 'Talatala', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1701, 'Kyela', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1702, 'Rungwe', 1637, 'district', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1703, 'Swaya', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1704, 'Masebe', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1705, 'Suma', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1706, 'Kandete', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1707, 'Luteba', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1708, 'Mpombo', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1709, 'Isange', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1710, 'Kabula', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1711, 'Lwangwa', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1712, 'Lufilyo', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1713, 'Itete', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1714, 'Kisegese', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1715, 'Lupata', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1716, 'Kambasegela', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1717, 'Masukulu', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1718, 'Kisiba', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1719, 'Masoko', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1720, 'Bujela', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1721, 'Ilima', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1722, 'Kisondela', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1723, 'Ikuti', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1724, 'Malindo', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1725, 'Mpuguso', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1726, 'Kikole', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1727, 'Lufingo', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1728, 'Nkunga', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1729, 'Kyimo', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1730, 'Kinyala', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1731, 'Kiwira', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1732, 'Isongole', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1733, 'Ikama', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1734, 'Ibighi', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1735, 'Bagamoyo', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1736, 'Kawetele', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1737, 'Bulyaga', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1738, 'Msasani', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1739, 'Makandana', 1702, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1740, 'Mbarali', 1637, 'district', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1741, 'Luhanga', 1740, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1742, 'Madibira', 1740, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1743, 'Mawindi', 1740, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1744, 'Ihahi', 1740, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1745, 'Mapogoro', 1740, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1746, 'Chimala', 1740, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1747, 'Utengule Usangu', 1740, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1748, 'Ruiwa', 1740, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1749, 'Mahongole', 1740, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1750, 'Ubaruku', 1740, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1751, 'Igurusi', 1740, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1752, 'Kongolo', 1740, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1753, 'Mwatenga', 1740, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1754, 'Imalilosongwe', 1740, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1755, 'Igava', 1740, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1756, 'Ipwani', 1740, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1757, 'Itambaleo', 1740, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1758, 'Miyombweni', 1740, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1759, 'Rujewa', 1740, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1760, 'Lugelele', 1740, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1761, 'Mbeya Urban', 1637, 'district', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1762, 'Sisimba', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1763, 'Isanga', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1764, 'Iganzo', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1765, 'Mwansekwa', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1766, 'Itagano', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1767, 'Itezi', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1768, 'Nsalaga', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1769, 'Igawilo', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1770, 'Iganjo', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1771, 'Uyole', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1772, 'Iduda', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1773, 'Mwasanga', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1774, 'Tembela', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1775, 'Ilomba', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1776, 'Mwakibete', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1777, 'Ilemi', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1778, 'Isyesye', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1779, 'Ruanda', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1780, 'Iyela', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1781, 'Sinde', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1782, 'Maanga', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1783, 'Mbalizi RD', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1784, 'Forest', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1785, 'Mabatini', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1786, 'Nzovwe', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1787, 'Kalobe', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1788, 'Iyunga', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1789, 'Iwambi', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1790, 'Itende', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1791, 'Iziwa', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1792, 'Nsoho', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1793, 'Majengo', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1794, 'Ghana', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1795, 'Nonde', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1796, 'Itiji', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1797, 'Maendeleo', 1761, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1798, 'Songwe', NULL, 'region', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1799, 'Songwe', 1798, 'district', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1800, 'Kanga', 1799, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1801, 'Galula', 1799, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1802, 'Mbuyuni', 1799, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1803, 'Totowe', 1799, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1804, 'Namkukwe', 1799, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1805, 'Mkwajuni', 1799, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1806, 'Mbangala', 1799, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1807, 'Kapalala', 1799, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1808, 'Gua', 1799, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1809, 'Ngwala', 1799, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1810, 'Ifyenkenya', 1799, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1811, 'Magamba', 1799, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1812, 'Saza', 1799, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1813, 'Mwambani', 1799, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1814, 'Ileje', 1798, 'district', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
+(1815, 'Itumba', 1814, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1816, 'Itale', 1814, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1817, 'Ibaba', 1814, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1818, 'Ndola', 1814, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1819, 'Luswisi', 1814, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1820, 'Ngulilo', 1814, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1821, 'Lubanda', 1814, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1822, 'Ngulugulu', 1814, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1823, 'Sange', 1814, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1824, 'Ikinga', 1814, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1825, 'Kafule', 1814, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1826, 'Malangali', 1814, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1827, 'Bupigu', 1814, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1828, 'Isongole', 1814, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1829, 'Chitete', 1814, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1830, 'Mbebe', 1814, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1831, 'Mlale', 1814, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1832, 'Kalembo', 1814, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1833, 'Mbozi', 1798, 'district', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1834, 'Ihanda', 1833, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1835, 'Bara', 1833, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1836, 'Nanyala', 1833, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1837, 'Nambinzo', 1833, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1838, 'Itaka', 1833, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1839, 'Isansa', 1833, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1840, 'Ruanda', 1833, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1841, 'Iyula', 1833, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1842, 'Nyambili', 1833, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1843, 'Mlangali', 1833, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1844, 'Myovizi', 1833, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1845, 'Igamba', 1833, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1846, 'Halungu', 1833, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1847, 'Msia', 1833, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1848, 'Mlowo', 1833, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1849, 'Ipunga', 1833, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1850, 'Isandula', 1833, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1851, 'Vwawa', 1833, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1852, 'Momba', 1798, 'district', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1853, 'Chilulumo', 1852, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1854, 'Kamsamba', 1852, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1855, 'Ivuna', 1852, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1856, 'Mpapa', 1852, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1857, 'Mkulwe', 1852, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1858, 'Chitete', 1852, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1859, 'Msangano', 1852, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1860, 'Chiwezi', 1852, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1861, 'Nkangamo', 1852, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1862, 'Ndalembo', 1852, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1863, 'Kapele', 1852, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1864, 'Nzoka', 1852, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1865, 'Myunga', 1852, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1866, 'Tunduma', 1798, 'district', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1867, 'Tunduma', 1866, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1868, 'Singida', NULL, 'region', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1869, 'Iramba', 1868, 'district', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1870, 'Urughu', 1869, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1871, 'Mtekente', 1869, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1872, 'Mtoa', 1869, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1873, 'Mgongo', 1869, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1874, 'Shelui', 1869, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1875, 'Ntwike', 1869, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1876, 'Tulya', 1869, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1877, 'Kidaru', 1869, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1878, 'Kisiriri', 1869, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1879, 'Kiomboi', 1869, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1880, 'Kinampanda', 1869, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1881, 'Ulemo', 1869, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1882, 'Kyengege', 1869, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1883, 'Ndago', 1869, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1884, 'Mbelekese', 1869, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1885, 'Kaselya', 1869, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1886, 'Ndulungu', 1869, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1887, 'Singida', 1868, 'district', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1888, 'Mudida', 1887, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1889, 'Makuro', 1887, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1890, 'Ikhanoda', 1887, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1891, 'Mwasauya', 1887, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1892, 'Msange', 1887, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1893, 'Maghojoa', 1887, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1894, 'Itaja', 1887, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1895, 'Ngimu', 1887, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1896, 'Mughunga', 1887, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1897, 'Mgori', 1887, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1898, 'Mughamo', 1887, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1899, 'Kinyagigi', 1887, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1900, 'Merya', 1887, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1901, 'Kinyeto', 1887, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1902, 'Ntonge', 1887, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1903, 'Ilongero', 1887, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1904, 'Mrama', 1887, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1905, 'Kijota', 1887, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1906, 'Mtinko', 1887, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1907, 'Ughandi', 1887, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1908, 'Msisi', 1887, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1909, 'Manyoni', 1868, 'district', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1910, 'Manyoni', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1911, 'Solya', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1912, 'Makuru', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1913, 'Chikuyu', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1914, 'Makanda', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1915, 'Kintinku', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1916, 'Mvumi', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1917, 'Majiri', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1918, 'Sasajila', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1919, 'Idodyandole', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1920, 'Chikola', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1921, 'Heka', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1922, 'Nkonko', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1923, 'Sanza', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1924, 'Isseke', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1925, 'Rungwa', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1926, 'Mgandu', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1927, 'Itigi Mjini', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1928, 'Ipande', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1929, 'Sanjaranda', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1930, 'Aghondi', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1931, 'Mkwese', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1932, 'Muhalala', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1933, 'Saranda', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1934, 'Makutupora', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1935, 'Sasilo', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1936, 'Mwamagembe', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1937, 'Mitundu', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1938, 'Kitaraka', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1939, 'Itigi Majengo', 1909, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1940, 'Singida Urban', 1868, 'district', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1941, 'Mtipa', 1940, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1942, 'Mughanga', 1940, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1943, 'Mitunduru', 1940, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1944, 'Majengo', 1940, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1945, 'Umyambwa', 1940, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1946, 'Mungu maji', 1940, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1947, 'Unyamikumbi', 1940, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1948, 'Mtamaa', 1940, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1949, 'Kindai', 1940, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1950, 'Ipembe', 1940, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1951, 'Utemini', 1940, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1952, 'Mwankoko', 1940, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1953, 'Mandewa', 1940, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1954, 'Minga', 1940, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1955, 'Misuna', 1940, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1956, 'Uhamaka', 1940, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1957, 'Ikungi', 1868, 'district', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1958, 'Puma', 1957, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1959, 'Kituntu', 1957, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1960, 'Mungaa', 1957, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1961, 'Siuyu', 1957, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1962, 'Kikio', 1957, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1963, 'Lighwa', 1957, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1964, 'Misughaa', 1957, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1965, 'Ntuntu', 1957, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1966, 'Dung\'unyi', 1957, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1967, 'Mang\'onyi', 1957, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1968, 'Mkiwa', 1957, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1969, 'Issuna', 1957, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1970, 'Unyahati', 1957, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1971, 'Ikungi', 1957, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1972, 'Iglansoni', 1957, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1973, 'Iseke', 1957, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1974, 'Ihanja', 1957, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1975, 'Minyughe', 1957, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1976, 'Muhintiri', 1957, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1977, 'Iyumbu', 1957, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1978, 'Mgungira', 1957, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1979, 'Mwaru', 1957, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1980, 'Ighombwe', 1957, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1981, 'Mtunduru', 1957, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1982, 'Sepuka', 1957, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1983, 'Irisya', 1957, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1984, 'Mkalama', 1868, 'district', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1985, 'Mpambala', 1984, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1986, 'Mwangeza', 1984, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1987, 'Mwanga', 1984, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1988, 'Nkinto', 1984, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1989, 'Ibaga', 1984, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1990, 'Gumanga', 1984, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1991, 'Msingi', 1984, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1992, 'Nduguti', 1984, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1993, 'Ilunda', 1984, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1994, 'Kinyangiri', 1984, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1995, 'Iguguno', 1984, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1996, 'Miganga', 1984, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1997, 'Matongo', 1984, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1998, 'Kikhonda', 1984, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(1999, 'Tabora', NULL, 'region', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2000, 'Nzega', 1999, 'district', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2001, 'Puge', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2002, 'Nkiniziwa', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2003, 'Budushi', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2004, 'Mwakashanhala', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2005, 'Tongi', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2006, 'Mizibaziba', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2007, 'Milambo Itobo', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2008, 'Magengati', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2009, 'Ndala', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2010, 'Nzega Mjini', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2011, 'Wela', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2012, 'Mbogwe', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2013, 'Miguwa', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2014, 'Itilo', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2015, 'Muhugi', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2016, 'Utwigu', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2017, 'Ijanija', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2018, 'Nzegandogo', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2019, 'Lusu', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2020, 'Nata', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2021, 'Isanzu', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2022, 'Itobo', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2023, 'Mwangoye', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2024, 'Sigili', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2025, 'Mwamala', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2026, 'Igusule', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2027, 'Shigamba', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2028, 'Kasela', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2029, 'Karitu', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2030, 'Bukene', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2031, 'Mogwa', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2032, 'Mambali', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2033, 'Kahamanhalanga', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2034, 'Uduka', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2035, 'Semembela', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2036, 'Isagenhe', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2037, 'Ikindwa', 2000, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2038, 'Igunga', 1999, 'district', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2039, 'Igunga', 2038, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2040, 'Itumba', 2038, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2041, 'Bukoko', 2038, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2042, 'Isakamaliwa', 2038, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2043, 'Nyandekwa', 2038, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2044, 'Nanga', 2038, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2045, 'Nguvumoja', 2038, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2046, 'Mbutu', 2038, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2047, 'Kining\'inila', 2038, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2048, 'Igurubi', 2038, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2049, 'Mwamashimba', 2038, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2050, 'Kinungu', 2038, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2051, 'Ntobo', 2038, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2052, 'Itunduru', 2038, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2053, 'Mwamashiga', 2038, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2054, 'Choma', 2038, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2055, 'Mwashiku', 2038, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2056, 'Ziba', 2038, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2057, 'Ndembezi', 2038, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2058, 'Nkinga', 2038, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2059, 'Ngulu', 2038, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2060, 'Simbo', 2038, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2061, 'Igowero', 2038, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2062, 'Mwisi', 2038, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2063, 'Chabutwa', 2038, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2064, 'Sungwizi', 2038, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2065, 'Uyui', 1999, 'district', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2066, 'Lutende', 2065, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2067, 'Kizengi', 2065, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2068, 'Goweko', 2065, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2069, 'Igalula', 2065, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2070, 'Ilolanguru', 2065, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2071, 'Mabama', 2065, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2072, 'Ndono', 2065, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2073, 'Ufuluma', 2065, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2074, 'Usagari', 2065, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2075, 'Ibiri', 2065, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2076, 'Bukumbi', 2065, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2077, 'Ikongolo', 2065, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2078, 'Upuge', 2065, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2079, 'Magiri', 2065, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2080, 'Isikizya', 2065, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2081, 'Shitage', 2065, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2082, 'Loya', 2065, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2083, 'Miswaki', 2065, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2084, 'Tura', 2065, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2085, 'Nsololo', 2065, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2086, 'Kigwa', 2065, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2087, 'Miyenze', 2065, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2088, 'Nsimbo', 2065, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2089, 'Ibelamilundi', 2065, 'ward', NULL, NULL, '2026-05-20 12:15:41', '2026-05-20 12:15:41'),
+(2090, 'Urambo', 1999, 'district', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2091, 'Kapilula', 2090, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2092, 'Urambo', 2090, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2093, 'Vumilia', 2090, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2094, 'Muungano', 2090, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2095, 'Songambele', 2090, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2096, 'Uyogo', 2090, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2097, 'Kiloleni', 2090, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2098, 'Ussoke', 2090, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2099, 'Uyumbu', 2090, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2100, 'Ugalla', 2090, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2101, 'Usisya', 2090, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2102, 'Utundu', 2090, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2103, 'Kasisi', 2090, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2104, 'Imalamakoye', 2090, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2105, 'Nsenda', 2090, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2106, 'Ukondamoyo', 2090, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2107, 'Sikonge', 1999, 'district', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2108, 'Tutuo', 2107, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2109, 'Chabutwa', 2107, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2110, 'Kaloleli', 2107, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2111, 'Kipanga', 2107, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2112, 'Sikonge', 2107, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2113, 'Kitunda', 2107, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2114, 'Kiloli', 2107, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2115, 'Kipili', 2107, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2116, 'Pangale', 2107, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2117, 'Ipole', 2107, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2118, 'Ngoywa', 2107, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2119, 'Kisanga', 2107, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2120, 'Misheni', 2107, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2121, 'Mole', 2107, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2122, 'Mpombwe', 2107, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2123, 'Usunga', 2107, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2124, 'Igigwa', 2107, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2125, 'Tabora Urban', 1999, 'district', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2126, 'Kanyenye', 2125, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2127, 'Gongoni', 2125, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2128, 'Mbugani', 2125, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2129, 'Chemchem', 2125, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2130, 'Tambukareli', 2125, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2131, 'Kiloleni', 2125, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2132, 'Mtendeni', 2125, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2133, 'Isevya', 2125, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2134, 'Ipuli', 2125, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2135, 'Cheyo', 2125, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2136, 'Kitete', 2125, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2137, 'Ng`ambo', 2125, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2138, 'Malolo', 2125, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2139, 'Kakola', 2125, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2140, 'Uyui', 2125, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2141, 'Itonjanda', 2125, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2142, 'Ndevelwa', 2125, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2143, 'Itetemia', 2125, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2144, 'Tumbi', 2125, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2145, 'Kalunde', 2125, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2146, 'Misha', 2125, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2147, 'Kabila', 2125, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2148, 'Ikomwa', 2125, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2149, 'Ifucha', 2125, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2150, 'Ntalikwa', 2125, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2151, 'Kaliua', 1999, 'district', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2152, 'Ukumbi Siganga', 2151, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2153, 'Zugimlole', 2151, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2154, 'Ushokola', 2151, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2155, 'Ugunga', 2151, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2156, 'Kaliua', 2151, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2157, 'Usinge', 2151, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2158, 'Igagala', 2151, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2159, 'Kamsekwa', 2151, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2160, 'Kazaroho', 2151, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2161, 'Igwisi', 2151, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2162, 'Uyowa', 2151, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2163, 'Silambo', 2151, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2164, 'Kashishi', 2151, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2165, 'Sasu', 2151, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2166, 'Seleli', 2151, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2167, 'Ichemba', 2151, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2168, 'Mwongozo', 2151, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2169, 'Kanoge', 2151, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2170, 'Kanindo', 2151, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2171, 'Milambo', 2151, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2172, 'Igombe Mkulu', 2151, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2173, 'Rukwa', NULL, 'region', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2174, 'Kalambo', 2173, 'district', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2175, 'Kasanga', 2174, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2176, 'Mkowe', 2174, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2177, 'Msanzi', 2174, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2178, 'Matai', 2174, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2179, 'Sopa', 2174, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2180, 'Mwazye', 2174, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2181, 'Katazi', 2174, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2182, 'Mwimbi', 2174, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2183, 'Mabwekenya', 2174, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2184, 'Mwembenkoswe', 2174, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2185, 'Legeza Mwendo', 2174, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2186, 'Ulumi', 2174, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2187, 'Mnamba', 2174, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2188, 'Katete', 2174, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2189, 'Kisumba', 2174, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2190, 'Mkali', 2174, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2191, 'Kilesha', 2174, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2192, 'Sumbawanga', 2173, 'district', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2193, 'Mfinga', 2192, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2194, 'Laela', 2192, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2195, 'Muze', 2192, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2196, 'Mtowisa', 2192, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2197, 'Milepa', 2192, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2198, 'Sandulula', 2192, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2199, 'Kaengesa', 2192, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2200, 'Mpui', 2192, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2201, 'Msanda Muungano', 2192, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2202, 'Ilemba', 2192, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2203, 'Kipeta', 2192, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2204, 'Kaoze', 2192, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2205, 'Miangalua', 2192, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2206, 'Kalambanzite', 2192, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2207, 'Lusaka', 2192, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2208, 'Nkasi', 2173, 'district', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2209, 'Korongwe', 2208, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2210, 'Mtenga', 2208, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2211, 'Mkwamba', 2208, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2212, 'Chala', 2208, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2213, 'Kipande', 2208, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2214, 'Isale', 2208, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2215, 'Kate', 2208, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2216, 'Sintali', 2208, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2217, 'Kala', 2208, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2218, 'Wampembe', 2208, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2219, 'Ninde', 2208, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2220, 'Kirando', 2208, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2221, 'Kabwe', 2208, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2222, 'Kipili', 2208, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2223, 'Nkandasi', 2208, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2224, 'Namanyere', 2208, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2225, 'Nkomolo', 2208, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2226, 'Sumbawanga Urban', 2173, 'district', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2227, 'Malangali', 2226, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2228, 'Mazwi', 2226, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2229, 'Izia', 2226, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2230, 'Katandala', 2226, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2231, 'Old Sumbawanga', 2226, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2232, 'Kizwite', 2226, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2233, 'Ntendo', 2226, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2234, 'Senga', 2226, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2235, 'Mollo', 2226, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2236, 'Pito', 2226, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2237, 'Milanzi', 2226, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2238, 'Matanga', 2226, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2239, 'Kasense', 2226, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2240, 'Majengo', 2226, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2241, 'Chanji', 2226, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2242, 'Kigoma', NULL, 'region', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2243, 'Kibondo', 2242, 'district', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2244, 'Misezero', 2243, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2245, 'Bitare', 2243, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2246, 'Kibondo', 2243, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2247, 'Murungu', 2243, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2248, 'Busagara', 2243, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2249, 'Rugongwe', 2243, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2250, 'Busunzu', 2243, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42');
+INSERT INTO `locations` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitude`, `created_at`, `updated_at`) VALUES
+(2251, 'Kumsenga', 2243, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2252, 'Kizazi', 2243, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2253, 'Mabamba', 2243, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2254, 'Bunyambo', 2243, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2255, 'Itaba', 2243, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2256, 'Kitahana', 2243, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2257, 'Kasulu', 2242, 'district', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2258, 'Kitanga', 2257, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2259, 'Heru Shingo', 2257, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2260, 'Nyamidaho', 2257, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2261, 'Kitagata', 2257, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2262, 'Nyachenda', 2257, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2263, 'Buhoro', 2257, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2264, 'Nyamnyusi', 2257, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2265, 'Nyakitonto', 2257, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2266, 'Kagerankanda', 2257, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2267, 'Kurugongo', 2257, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2268, 'Rungwe Mpya', 2257, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2269, 'Asante Nyerere', 2257, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2270, 'Titye', 2257, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2271, 'Shunguliba', 2257, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2272, 'Muzye', 2257, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2273, 'Bugaga', 2257, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2274, 'Kigembe', 2257, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2275, 'Rusesa', 2257, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2276, 'Kwaga', 2257, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2277, 'Kigoma', 2242, 'district', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2278, 'Kagunga', 2277, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2279, 'Mkigo', 2277, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2280, 'Mwamgongo', 2277, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2281, 'Kalinzi', 2277, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2282, 'Bitale', 2277, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2283, 'Mkongoro', 2277, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2284, 'Mahembe', 2277, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2285, 'Matendo', 2277, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2286, 'Mungonya', 2277, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2287, 'Kagongo', 2277, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2288, 'Mwandiga', 2277, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2289, 'Kigoma  Urban', 2242, 'district', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2290, 'Gungu', 2289, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2291, 'Kibirizi', 2289, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2292, 'Buhanda', 2289, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2293, 'Businde', 2289, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2294, 'Machinjioni', 2289, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2295, 'Kagera', 2289, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2296, 'Kasimbu', 2289, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2297, 'Rubuga', 2289, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2298, 'Kasingirima', 2289, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2299, 'Majengo', 2289, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2300, 'Kitongoni', 2289, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2301, 'Kipampa', 2289, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2302, 'Rusimbi', 2289, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2303, 'Buzebazeba', 2289, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2304, 'Mwanga Kusini', 2289, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2305, 'Kigoma', 2289, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2306, 'Bangwe', 2289, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2307, 'Mwanga Kaskazini', 2289, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2308, 'Katubuka', 2289, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2309, 'Uvinza', 2242, 'district', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2310, 'Kalya', 2309, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2311, 'Buhingu', 2309, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2312, 'Igalula', 2309, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2313, 'Sigunga', 2309, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2314, 'Sunuka', 2309, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2315, 'Ilagala', 2309, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2316, 'Simbo', 2309, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2317, 'Kandaga', 2309, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2318, 'Kazuramimba', 2309, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2319, 'Uvinza', 2309, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2320, 'Mganza', 2309, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2321, 'Mtego wa Noti', 2309, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2322, 'Nguruka', 2309, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2323, 'Itebula', 2309, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2324, 'Buhigwe', 2242, 'district', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2325, 'Nyamugali', 2324, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2326, 'Biharu', 2324, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2327, 'Muyama', 2324, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2328, 'Kajana', 2324, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2329, 'Mugera', 2324, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2330, 'Kilelema', 2324, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2331, 'Munyegera', 2324, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2332, 'Buhigwe', 2324, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2333, 'Kibande', 2324, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2334, 'Janda', 2324, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2335, 'Munzeze', 2324, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2336, 'Rusaba', 2324, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2337, 'Muhinda', 2324, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2338, 'Munanila', 2324, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2339, 'Mwayaya', 2324, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2340, 'Kakonko', 2242, 'district', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2341, 'Nyabibuye', 2340, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2342, 'Nyamtukuza', 2340, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2343, 'Muhange', 2340, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2344, 'Kasunga', 2340, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2345, 'Kakonko', 2340, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2346, 'Kiziguzigu', 2340, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2347, 'Rugenge', 2340, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2348, 'Kasanda', 2340, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2349, 'Gwamumpu', 2340, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2350, 'Katanga', 2340, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2351, 'Mugunzu', 2340, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2352, 'Kasulu Township Authority', 2242, 'district', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2353, 'Muganza', 2352, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2354, 'Kigondo', 2352, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2355, 'Msambara', 2352, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2356, 'Ruhita', 2352, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2357, 'Nyumbigwa', 2352, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2358, 'Murufiti', 2352, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2359, 'Nyansha', 2352, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2360, 'Kasulu Mjini', 2352, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2361, 'Muhunga', 2352, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2362, 'Shinyanga', NULL, 'region', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2363, 'Shinyanga Urban', 2362, 'district', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2364, 'Mwamalili', 2363, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2365, 'Kolandoto', 2363, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2366, 'Ngokolo', 2363, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2367, 'Ibadakuli', 2363, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2368, 'Shinyanga Mjini', 2363, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2369, 'Chamaguha', 2363, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2370, 'Ibinzamata', 2363, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2371, 'Kitangili', 2363, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2372, 'Kizumbi', 2363, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2373, 'Mwawaza', 2363, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2374, 'Ndala', 2363, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2375, 'Kambarage', 2363, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2376, 'Chibe', 2363, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2377, 'Lubaga', 2363, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2378, 'Ndembezi', 2363, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2379, 'Masekelo', 2363, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2380, 'Old Shinyanga', 2363, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2381, 'Kishapu', 2362, 'district', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2382, 'Bunambiyu', 2381, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2383, 'Bubiki', 2381, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2384, 'Songwa', 2381, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2385, 'Seke Bugoro', 2381, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2386, 'Mondo', 2381, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2387, 'Mwadui Lohumbo', 2381, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2388, 'Uchunga', 2381, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2389, 'Kishapu', 2381, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2390, 'Mwakipoya', 2381, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2391, 'Shagihilu', 2381, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2392, 'Somagedi', 2381, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2393, 'Mwamalasa', 2381, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2394, 'Masanga', 2381, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2395, 'Lagana', 2381, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2396, 'Mwamashele', 2381, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2397, 'Ngofila', 2381, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2398, 'Kiloleli', 2381, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2399, 'Ukenyenge', 2381, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2400, 'Talaga', 2381, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2401, 'Itilima', 2381, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2402, 'Shinyanga', 2362, 'district', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2403, 'Imesela', 2402, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2404, 'Usule', 2402, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2405, 'Ilola', 2402, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2406, 'Didia', 2402, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2407, 'Itwangi', 2402, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2408, 'Tinde', 2402, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2409, 'Mwakitolyoo', 2402, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2410, 'Salawe', 2402, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2411, 'Solwa', 2402, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2412, 'Iselamagazi', 2402, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2413, 'Lyabukande', 2402, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2414, 'Mwantini', 2402, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2415, 'Pandagichiza', 2402, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2416, 'Mwamala', 2402, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2417, 'Samuye', 2402, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2418, 'Usanda', 2402, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2419, 'Puni', 2402, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2420, 'Nyida', 2402, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2421, 'Nsalala', 2402, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2422, 'Bukene', 2402, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2423, 'Masengwa', 2402, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2424, 'Mwenge', 2402, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2425, 'Lyabusalu', 2402, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2426, 'Mwalukwa', 2402, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2427, 'Nyamalogo', 2402, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2428, 'Lyamidati', 2402, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2429, 'Kahama', 2362, 'district', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2430, 'Bulyanhulu', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2431, 'Bugarama', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2432, 'Lunguya', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2433, 'Shilela', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2434, 'Segese', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2435, 'Mega', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2436, 'Chela', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2437, 'Busangi', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2438, 'Ntobo', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2439, 'Ngaya', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2440, 'Bulige', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2441, 'Kashishi', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2442, 'Mwanase', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2443, 'Mwalugulu', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2444, 'Jana', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2445, 'Isaka', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2446, 'Chona', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2447, 'Chambo', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2448, 'Kisuke', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2449, 'Mapamba', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2450, 'Bukomela', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2451, 'Ukune', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2452, 'Igunda', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2453, 'Kinamapula', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2454, 'Igwamanoni', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2455, 'Mpunze', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2456, 'Sabasabini', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2457, 'Idahina', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2458, 'Bulungwa', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2459, 'Nyankende', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2460, 'Ulewe', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2461, 'Ushetu', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2462, 'Uyogo', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2463, 'Ulowa', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2464, 'Ubagwe', 2429, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2465, 'Kahama Township Authority', 2362, 'district', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2466, 'Ngogwa', 2465, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2467, 'Wendele', 2465, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2468, 'Kinaga', 2465, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2469, 'Isagehe', 2465, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2470, 'Mondo', 2465, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2471, 'Kagongwa', 2465, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2472, 'Nyahanga', 2465, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2473, 'Malunga', 2465, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2474, 'Mhongolo', 2465, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2475, 'Mwendakulima', 2465, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2476, 'Zongomera', 2465, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2477, 'Mhungula', 2465, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2478, 'Nyihogo', 2465, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2479, 'Nyasubi', 2465, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2480, 'Kahama Mjini', 2465, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2481, 'Majengo', 2465, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2482, 'Busoka', 2465, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2483, 'Kilago', 2465, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2484, 'Iyenze', 2465, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2485, 'Nyandekwa', 2465, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2486, 'Kagera', NULL, 'region', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2487, 'Karagwe', 2486, 'district', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2488, 'Igurwa', 2487, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2489, 'Kanoni', 2487, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2490, 'Kihanga', 2487, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2491, 'Kituntu', 2487, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2492, 'Chanika', 2487, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2493, 'Kayanga', 2487, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2494, 'Bugene', 2487, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2495, 'Ndama', 2487, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2496, 'Rugera', 2487, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2497, 'Ihembe', 2487, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2498, 'Nyaishozi', 2487, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2499, 'Rugu', 2487, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2500, 'Nyakasimbi', 2487, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2501, 'Nyakakika', 2487, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2502, 'Nyakabanga', 2487, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2503, 'Bweranyange', 2487, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2504, 'Kibondo', 2487, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2505, 'Nyabiyonza', 2487, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2506, 'Kiruruma', 2487, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2507, 'Nyakahanga', 2487, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2508, 'Ihanda', 2487, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2509, 'Chonyonyo', 2487, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2510, 'Bukoba', 2486, 'district', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2511, 'Rubafu', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2512, 'Kishanje', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2513, 'Kaagya', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2514, 'Buhendangabo', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2515, 'Nyakato', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2516, 'Katoma', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2517, 'Karabagaine', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2518, 'Bujugo', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2519, 'Maruku', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2520, 'Kanyangereko', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2521, 'Katerero', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2522, 'Kemondo', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2523, 'Nyakibimbili', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2524, 'Ibwera', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2525, 'Mikoni', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2526, 'Butelankuzi', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2527, 'Rubale', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2528, 'Rukoma', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2529, 'Kikomero', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2530, 'Kibirizi', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2531, 'Izimbya', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2532, 'Butulage', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2533, 'Ruhunga', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2534, 'Mugajwale', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2535, 'Kyamulaile', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2536, 'Katoro', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2537, 'Kaibanja', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2538, 'Kasharu', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2539, 'Kishogo', 2510, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2540, 'Muleba', 2486, 'district', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2541, 'Muhutwe', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2542, 'Mayondwe', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2543, 'Goziba', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2544, 'Kerebe', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2545, 'Bumbire', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2546, 'Ikuza', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2547, 'Izigo', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2548, 'Katoke', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2549, 'Kagoma', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2550, 'Kikuku', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2551, 'Bureza', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2552, 'Muleba', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2553, 'Ikondo', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2554, 'Buhangaza', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2555, 'Mazinga', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2556, 'Magata (Karutanga)', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2557, 'Gwanseli', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2558, 'Kibanga', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2559, 'Kasharunga', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2560, 'Rulanda', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2561, 'Kimwani', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2562, 'Nyakabango', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2563, 'Kyebitembe', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2564, 'Karambi', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2565, 'Mubunda', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2566, 'Bisheke', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2567, 'Burungura', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2568, 'Biirabo', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2569, 'Mushabago', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2570, 'Nyakatanga', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2571, 'Ngenge', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2572, 'Rutoro', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2573, 'Kabirizi', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2574, 'Nshamba', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2575, 'Kashasha', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2576, 'Ijumbi', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2577, 'Kishanda', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2578, 'Buganguzi', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2579, 'Ibuga', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2580, 'Bulyakashaju', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2581, 'Kamachumu', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2582, 'Ruhanga', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2583, 'Mafumbo', 2540, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2584, 'Biharamulo', 2486, 'district', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2585, 'Nyakahura', 2584, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2586, 'Ruziba', 2584, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2587, 'Biharamulo Mjini', 2584, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2588, 'Bisibo', 2584, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2589, 'Nyarubungo', 2584, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2590, 'Nyamahanga', 2584, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2591, 'Runazi', 2584, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2592, 'Kabindi', 2584, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2593, 'Nyamigogo', 2584, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2594, 'Nyabusozi', 2584, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2595, 'Nemba', 2584, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2596, 'Lusahunga', 2584, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2597, 'Kaniha', 2584, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2598, 'Nyantakara', 2584, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2599, 'Kalenge', 2584, 'ward', NULL, NULL, '2026-05-20 12:15:43', '2026-05-20 12:15:43'),
+(2600, 'Ngara', 2486, 'district', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2601, 'Rusumo', 2600, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2602, 'Nyakisasa', 2600, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2603, 'Rulenge', 2600, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2604, 'Keza', 2600, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2605, 'Murusagamba', 2600, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2606, 'Muganza', 2600, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2607, 'Bugarama', 2600, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2608, 'Bukiriro', 2600, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2609, 'Kabanga', 2600, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2610, 'Mabawe', 2600, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2611, 'Kanazi', 2600, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2612, 'Mugoma', 2600, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2613, 'Kirushya', 2600, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2614, 'Ntobeye', 2600, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2615, 'Nyamiyaga', 2600, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2616, 'Ngara Mjini', 2600, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2617, 'Kibimba', 2600, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2618, 'Mbuba', 2600, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2619, 'Murukulazo', 2600, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2620, 'Kasulo', 2600, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2621, 'Bukoba Urban', 2486, 'district', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2622, 'Hamugembe', 2621, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2623, 'Nshambya', 2621, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2624, 'Buhemba', 2621, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2625, 'Kahororo', 2621, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2626, 'Kashai', 2621, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2627, 'Miembeni', 2621, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2628, 'Bilele', 2621, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2629, 'Bakoba', 2621, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2630, 'Ijuganyondo', 2621, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2631, 'Kitendaguro', 2621, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2632, 'Kibeta', 2621, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2633, 'Kagondo', 2621, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2634, 'Nyanga', 2621, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2635, 'Rwamishenye', 2621, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2636, 'Missenyi', 2486, 'district', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2637, 'Kakunyu', 2636, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2638, 'Nsunga', 2636, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2639, 'Mutukula', 2636, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2640, 'Kassambya', 2636, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2641, 'Minziro', 2636, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2642, 'Ruzinga', 2636, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2643, 'Kashenye', 2636, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2644, 'Kanyigo', 2636, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2645, 'Ishunju', 2636, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2646, 'Buyango', 2636, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2647, 'Bwanjai', 2636, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2648, 'Ishozi', 2636, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2649, 'Gera', 2636, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2650, 'Bugandika', 2636, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2651, 'Kitobo', 2636, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2652, 'Bugorora', 2636, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2653, 'Kyaka', 2636, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2654, 'Mushasha', 2636, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2655, 'Kilimilil', 2636, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2656, 'Mabale', 2636, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2657, 'Kyerwa', 2486, 'district', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2658, 'Isingiro', 2657, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2659, 'Kaisho', 2657, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2660, 'Rutunguru', 2657, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2661, 'Kibingo', 2657, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2662, 'Murongo', 2657, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2663, 'Bugomora', 2657, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2664, 'Kibale', 2657, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2665, 'Mabira', 2657, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2666, 'Businde', 2657, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2667, 'Kamuli', 2657, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2668, 'Nyakatuntu', 2657, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2669, 'Kimuli', 2657, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2670, 'Kikukuru', 2657, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2671, 'Rwabwere', 2657, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2672, 'Nkwenda', 2657, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2673, 'Rukuraijo', 2657, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2674, 'Songambele', 2657, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2675, 'Kyerwa', 2657, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2676, 'Mwanza', NULL, 'region', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2677, 'Ukerewe', 2676, 'district', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2678, 'Nansio', 2677, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2679, 'Kagera', 2677, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2680, 'Nakatunguru', 2677, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2681, 'Kakerege', 2677, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2682, 'Bukongo', 2677, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2683, 'Nkilizya', 2677, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2684, 'Bukanda', 2677, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2685, 'Mukituntu', 2677, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2686, 'Igala', 2677, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2687, 'Bwiro', 2677, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2688, 'Muriti', 2677, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2689, 'Ilangala', 2677, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2690, 'Namilembe', 2677, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2691, 'Nduruma', 2677, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2692, 'Murutunguru', 2677, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2693, 'Kagunguli', 2677, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2694, 'Bukindo', 2677, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2695, 'Namagondo', 2677, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2696, 'Ngoma', 2677, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2697, 'Bwisya', 2677, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2698, 'Bukungu', 2677, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2699, 'Nyamanga', 2677, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2700, 'Bukiro', 2677, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2701, 'Irugwa', 2677, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2702, 'Magu', 2676, 'district', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2703, 'Kisesa', 2702, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2704, 'Bujashi', 2702, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2705, 'Lutale', 2702, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2706, 'Kongolo', 2702, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2707, 'Nyanguge', 2702, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2708, 'Kitongo Sim', 2702, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2709, 'Mwamanga', 2702, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2710, 'Kahangara', 2702, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2711, 'Nyigogo', 2702, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2712, 'Mwamabanza', 2702, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2713, 'Sukuma', 2702, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2714, 'Lubugu', 2702, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2715, 'Ng\'haya', 2702, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2716, 'Nkungulu', 2702, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2717, 'Jinjimili', 2702, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2718, 'Shishani', 2702, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2719, 'Magu Mjini', 2702, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2720, 'Bukandwe', 2702, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2721, 'Nyamagana', 2676, 'district', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2722, 'Mkuyuni', 2721, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2723, 'Igogo', 2721, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2724, 'Pamba', 2721, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2725, 'Nyamagana', 2721, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2726, 'Mirongo', 2721, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2727, 'Isamilo', 2721, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2728, 'Mbugani', 2721, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2729, 'Mahina', 2721, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2730, 'Igoma', 2721, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2731, 'Buhongwa', 2721, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2732, 'Mkolani', 2721, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2733, 'Butimba', 2721, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2734, 'Kwimba', 2676, 'district', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2735, 'Walla', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2736, 'Bungulwa', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2737, 'Sumve', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2738, 'Mantare', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2739, 'Ngulla', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2740, 'Mwabomba', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2741, 'Mwagi', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2742, 'Iseni', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2743, 'Nyambiti', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2744, 'Maligisu', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2745, 'Mwandu', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2746, 'Malya', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2747, 'Lyoma', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2748, 'Mwang\'halanga', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2749, 'Nyamilama', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2750, 'Mwakilambiti', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2751, 'Hungumalwa', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2752, 'Mwamala', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2753, 'Kikubiji', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2754, 'Mhande', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2755, 'Bupamwa', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2756, 'Fukalo', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2757, 'Ng\'hundi', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2758, 'Igongwa', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2759, 'Ngudu', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2760, 'Bugando', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2761, 'Nkalalo', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2762, 'Mwankulwe', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2763, 'Ilula', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2764, 'Shilembo', 2734, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2765, 'Sengerema', 2676, 'district', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2766, 'Ibisabageni', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2767, 'Nyamazugo', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2768, 'Chifumfu', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2769, 'Katunguru', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2770, 'Kasungamile', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2771, 'Nyamatongo', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2772, 'Tabaruka', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2773, 'Busisi', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2774, 'Buyagu', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2775, 'Igalula', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2776, 'Kagunga', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2777, 'Sima', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2778, 'Nyakasunga', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2779, 'Kalebezo', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2780, 'Nyehunge', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2781, 'Kafunzo', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2782, 'Bupandwa', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2783, 'Katwe', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2784, 'Maisome', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2785, 'Kazunzu', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2786, 'Lugata', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2787, 'Nyakaliro', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2788, 'Nyakasasa', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2789, 'Buzilasoga', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2790, 'Nyanzenda', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2791, 'Bulyaheke', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2792, 'Irenza', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2793, 'Kasenyi', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2794, 'Mwambului', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2795, 'Nyatukala', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2796, 'Nyampulukano', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2797, 'Nyampande', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2798, 'Kishinda', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2799, 'Igulumuki', 2765, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2800, 'Ilemela', 2676, 'district', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2801, 'Buswelu', 2800, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2802, 'Nyakato', 2800, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2803, 'Nyamanoro', 2800, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2804, 'Kirumba', 2800, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2805, 'Kitangiri', 2800, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44');
+INSERT INTO `locations` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitude`, `created_at`, `updated_at`) VALUES
+(2806, 'Pasiansi', 2800, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2807, 'Ilemela', 2800, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2808, 'Bugogwa', 2800, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2809, 'Sangabuye', 2800, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2810, 'Misungwi', 2676, 'district', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2811, 'Bulemeji', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2812, 'Idetemya', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2813, 'Usagara', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2814, 'Ukiriguru', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2815, 'Kanyelele', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2816, 'Koromije', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2817, 'Igokelo', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2818, 'Mwaniko', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2819, 'Misungwi', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2820, 'Masasi', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2821, 'Kijima', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2822, 'Shilalo', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2823, 'Buhingo', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2824, 'Busongo', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2825, 'Nhundulu', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2826, 'Lubili', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2827, 'Ilujamate', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2828, 'Mbarika', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2829, 'Sumbugu', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2830, 'Kasololo', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2831, 'Ilalambogo', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2832, 'Isesa', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2833, 'Gulumungu', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2834, 'Mabuki', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2835, 'Mondo', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2836, 'Mamaye', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2837, 'Fella', 2810, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2838, 'Mara', NULL, 'region', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2839, 'Tarime', 2838, 'district', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2840, 'Susuni', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2841, 'Mwema', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2842, 'Sirari', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2843, 'Pemba', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2844, 'Nyakonga', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2845, 'Nyarero', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2846, 'Nyamwaga', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2847, 'Muriba', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2848, 'Nyanungu', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2849, 'Gorong\'a', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2850, 'Nyarokoba', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2851, 'Kemambo', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2852, 'Kibasuka', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2853, 'Binagi', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2854, 'Turwa', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2855, 'Bomani', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2856, 'Nyandoto', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2857, 'Matongo', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2858, 'Manga', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2859, 'Bumera', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2860, 'Komaswa', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2861, 'Kiore', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2862, 'Sabasaba', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2863, 'Nyamisangura', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2864, 'Kentare', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2865, 'Nyamaranga', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2866, 'Mbogi', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2867, 'Genyange', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2868, 'Nyansicha', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2869, 'Itiryo', 2839, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2870, 'Serengeti', 2838, 'district', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2871, 'Kenyamonta', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2872, 'Busawe', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2873, 'Kisaka', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2874, 'Kebanchabancha', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2875, 'Ring\'wani', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2876, 'Rung\'abure', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2877, 'Machochwe', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2878, 'Kisangura', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2879, 'Mugumu', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2880, 'Ikoma', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2881, 'Natta', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2882, 'Issenye', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2883, 'Rigicha', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2884, 'Nyambureti', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2885, 'Nyamoko', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2886, 'Manchira', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2887, 'Kyambahi', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2888, 'Nyamatare', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2889, 'Majimoto', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2890, 'Magange', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2891, 'Nyansurura', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2892, 'Mosongo', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2893, 'Sedeco', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2894, 'Mbalibali', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2895, 'Stendi Kuu', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2896, 'Geitasamo', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2897, 'Morotonga', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2898, 'Uwanja wa Ndege', 2870, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2899, 'Musoma', 2838, 'district', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2900, 'Bukumi', 2899, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2901, 'Makojo', 2899, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2902, 'Bwasi', 2899, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2903, 'Bulinga', 2899, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2904, 'Bukima', 2899, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2905, 'Murangi', 2899, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2906, 'Bugwema', 2899, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2907, 'Nyamrandirira', 2899, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2908, 'Nyambono', 2899, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2909, 'Suguti', 2899, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2910, 'Tegeruka', 2899, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2911, 'Kiriba', 2899, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2912, 'Busambara', 2899, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2913, 'Mugango', 2899, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2914, 'Bunda', 2838, 'district', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2915, 'Nyamuswa', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2916, 'Salama', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2917, 'Mihingo', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2918, 'Mugeta', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2919, 'Hunyari', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2920, 'Mcharo', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2921, 'Sazira', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2922, 'Kunzugu', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2923, 'Bunda Mjini', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2924, 'Guta', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2925, 'Butimba', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2926, 'Neruma', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2927, 'Kibara', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2928, 'Nansimo', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2929, 'Kisorya', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2930, 'Igundu', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2931, 'Iramba', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2932, 'Namhula', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2933, 'Wariku', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2934, 'Kabasa', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2935, 'Nampindi', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2936, 'Chitengule', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2937, 'Kasuguti', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2938, 'Balili', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2939, 'Bunda Stoo', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2940, 'Nyasura', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2941, 'Nyamang\'uta', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2942, 'Ketare', 2914, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2943, 'Rorya', 2838, 'district', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2944, 'Kigunga', 2943, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2945, 'Kirogo', 2943, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2946, 'Nyamtinga', 2943, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2947, 'Nyamagaro', 2943, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2948, 'Nyahongo', 2943, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2949, 'Mkoma', 2943, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2950, 'Tai', 2943, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2951, 'Bukura', 2943, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2952, 'Roche', 2943, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2953, 'Kitembe', 2943, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2954, 'Mirare', 2943, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2955, 'Goribe', 2943, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2956, 'Ikoma', 2943, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2957, 'Koryo', 2943, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2958, 'Bukwe', 2943, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2959, 'Nyathorogo', 2943, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2960, 'Rabour', 2943, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2961, 'Kisumwa', 2943, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2962, 'Komuge', 2943, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2963, 'Nyamunga', 2943, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2964, 'Kyang\'ombe', 2943, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2965, 'Butiam', 2838, 'district', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2966, 'Bwiregi', 2965, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2967, 'Buswahili', 2965, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2968, 'Nyamimange', 2965, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2969, 'Sirorisimba', 2965, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2970, 'Buhemba', 2965, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2971, 'Mirwa', 2965, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2972, 'Muriaza', 2965, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2973, 'Butiama', 2965, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2974, 'Masaba', 2965, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2975, 'Kyanyari', 2965, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2976, 'Kukirango', 2965, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2977, 'Buruma', 2965, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2978, 'Nyakatende', 2965, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2979, 'Etaro', 2965, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2980, 'Nyegina', 2965, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2981, 'Nyankanga', 2965, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2982, 'Bisumwa', 2965, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2983, 'Bukabwa', 2965, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2984, 'Butuguri', 2965, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2985, 'Busegwe', 2965, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2986, 'Musoma Urban', 2838, 'district', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2987, 'Mukendo', 2986, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2988, 'Mwigobero', 2986, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2989, 'Iringo', 2986, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2990, 'Kitaji', 2986, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2991, 'Nyasho', 2986, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2992, 'Bweri', 2986, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2993, 'Nyakato', 2986, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2994, 'Kigera', 2986, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2995, 'Kamunyonge', 2986, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2996, 'Nyamatare', 2986, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2997, 'Mwisenge', 2986, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2998, 'Buhare', 2986, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(2999, 'Makoko', 2986, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3000, 'Manyara', NULL, 'region', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3001, 'Babati', 3000, 'district', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3002, 'Magara', 3001, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3003, 'Nkaiti', 3001, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3004, 'Mwada', 3001, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3005, 'Mamire', 3001, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3006, 'Galapo', 3001, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3007, 'Qashi', 3001, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3008, 'Ayasanda', 3001, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3009, 'Gidas', 3001, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3010, 'Duru', 3001, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3011, 'Riroda', 3001, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3012, 'Arri', 3001, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3013, 'Dareda', 3001, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3014, 'Dabil', 3001, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3015, 'Ufana', 3001, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3016, 'Bashneti', 3001, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3017, 'Madunga', 3001, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3018, 'Kiru', 3001, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3019, 'Magugu', 3001, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3020, 'Endokise', 3001, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3021, 'Boay', 3001, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3022, 'Nar', 3001, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3023, 'Hanang', 3000, 'district', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3024, 'Balagidalalu', 3023, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3025, 'Gehandu', 3023, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3026, 'Laghanga', 3023, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3027, 'Getanuwas', 3023, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3028, 'Hirbadaw', 3023, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3029, 'Bassodesh', 3023, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3030, 'Bassotu', 3023, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3031, 'Gendabi', 3023, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3032, 'Mogitu', 3023, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3033, 'Giting', 3023, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3034, 'Masakta', 3023, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3035, 'Masqaroda', 3023, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3036, 'Endasak', 3023, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3037, 'Gidahababieg', 3023, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3038, 'Maskron', 3023, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3039, 'Hidet', 3023, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3040, 'Simbay', 3023, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3041, 'Sirop', 3023, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3042, 'Gisambalang', 3023, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3043, 'Nangwa', 3023, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3044, 'Katesh', 3023, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3045, 'Ganana', 3023, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3046, 'Dirma', 3023, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3047, 'Lalaji', 3023, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3048, 'Endasiwold', 3023, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3049, 'Mbulu', 3000, 'district', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3050, 'Daudi', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3051, 'Bargish', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3052, 'Gehandu', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3053, 'Kainam', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3054, 'Murray', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3055, 'Ayamaami', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3056, 'Uhuru', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3057, 'Tlawi', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3058, 'Bashay', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3059, 'Dongobesh', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3060, 'Tumati', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3061, 'Maretadu', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3062, 'Maghang', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3063, 'Haydom', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3064, 'Yaeda Chini', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3065, 'Masieda', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3066, 'Marang', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3067, 'Gunyoda', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3068, 'Nahasey', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3069, 'Endamilay', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3070, 'Yaeda Ampa', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3071, 'Masqaroda', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3072, 'Nambisi', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3073, 'Dinamu', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3074, 'Ayamohe', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3075, 'Sanu Baray', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3076, 'Imboru', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3077, 'Endagikot', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3078, 'Geterer', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3079, 'Hayderer', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3080, 'Eshkesh', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3081, 'Gidihim', 3049, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3082, 'Simanjiro', 3000, 'district', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3083, 'Orkesmet', 3082, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3084, 'Loiborsiret', 3082, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3085, 'Emboreet', 3082, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3086, 'Terrat', 3082, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3087, 'Oljoro  No. 5', 3082, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3088, 'Shambarai', 3082, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3089, 'Mererani', 3082, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3090, 'Msitu wa Tembo', 3082, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3091, 'Ngorika', 3082, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3092, 'Liborsoit', 3082, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3093, 'Ruvu Remiti', 3082, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3094, 'Komolo', 3082, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3095, 'Naisinyai', 3082, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3096, 'Endiantu', 3082, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3097, 'Endonyongijape', 3082, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3098, 'Kitwai', 3082, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3099, 'Naberera', 3082, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3100, 'Kiteto', 3000, 'district', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3101, 'Kibaya', 3100, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3102, 'Partimbo', 3100, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3103, 'Makame', 3100, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3104, 'Ndedo', 3100, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3105, 'Kijungu', 3100, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3106, 'Lengatei', 3100, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3107, 'Sunya', 3100, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3108, 'Dongo', 3100, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3109, 'Songambele', 3100, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3110, 'Dosidosi', 3100, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3111, 'Engusero', 3100, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3112, 'Matui', 3100, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3113, 'Bwagamoyo', 3100, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3114, 'Loolera', 3100, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3115, 'Magungu', 3100, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3116, 'Namelock', 3100, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3117, 'Njoro', 3100, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3118, 'Olboroti', 3100, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3119, 'Chapakazi', 3100, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3120, 'Babati Urban', 3000, 'district', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3121, 'Babati', 3120, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3122, 'Mutuka', 3120, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3123, 'Nangara', 3120, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3124, 'Singe', 3120, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3125, 'Bonga', 3120, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3126, 'Bagara', 3120, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3127, 'Sigino', 3120, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3128, 'Maisaka', 3120, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3129, 'Njombe', NULL, 'region', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3130, 'Njombe Urban', 3129, 'district', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3131, 'Njombe Mjini', 3130, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3132, 'Mjimwema', 3130, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3133, 'Ramadhani', 3130, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3134, 'Yakobi', 3130, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3135, 'Kifanya', 3130, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3136, 'Ihanga', 3130, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3137, 'Iwungilo', 3130, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3138, 'Luponde', 3130, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3139, 'Matola', 3130, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3140, 'Makowo', 3130, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3141, 'Lugenge', 3130, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3142, 'Uwemba', 3130, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3143, 'Utalingolo', 3130, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3144, 'Wanging\'ombe', 3129, 'district', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3145, 'Saja', 3144, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3146, 'Kijombe', 3144, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3147, 'Wanging\'ombe', 3144, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3148, 'Ilembula', 3144, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3149, 'Uhambule', 3144, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3150, 'Usuka', 3144, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3151, 'Igwachanya', 3144, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3152, 'Mdandu', 3144, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3153, 'Igima', 3144, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3154, 'Imalinyi', 3144, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3155, 'Ulembwe', 3144, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3156, 'Makoga', 3144, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3157, 'Kipengere', 3144, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3158, 'Igosi', 3144, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3159, 'Wangama', 3144, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3160, 'Kidugala', 3144, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3161, 'Luduga', 3144, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3162, 'Makete', 3129, 'district', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3163, 'Lupalilo', 3162, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3164, 'Mang\'oto', 3162, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3165, 'Iwawa', 3162, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3166, 'Lupila', 3162, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3167, 'Ukwama', 3162, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3168, 'Bulongwa', 3162, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3169, 'Kipagalo', 3162, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3170, 'Iniho', 3162, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3171, 'Ipelele', 3162, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3172, 'Kigulu', 3162, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3173, 'Matamba', 3162, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3174, 'Mlondwe', 3162, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3175, 'Kitulo', 3162, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3176, 'Ikuwo', 3162, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3177, 'Mfumbi', 3162, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3178, 'Ipepo', 3162, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3179, 'Mbalatse', 3162, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3180, 'Tandala', 3162, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3181, 'Luwumbu', 3162, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3182, 'Isapulano', 3162, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3183, 'Kigala', 3162, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3184, 'Itundu', 3162, 'ward', NULL, NULL, '2026-05-20 12:15:45', '2026-05-20 12:15:45'),
+(3185, 'Njombe', 3129, 'district', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3186, 'Mtwango', 3185, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3187, 'Igongolo', 3185, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3188, 'Kichiwa', 3185, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3189, 'Ninga', 3185, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3190, 'Ikuna', 3185, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3191, 'Kidegembye', 3185, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3192, 'Matembwe', 3185, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3193, 'Lupembe', 3185, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3194, 'Ikondo', 3185, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3195, 'Mfriga', 3185, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3196, 'Idamba', 3185, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3197, 'Ludewa', 3129, 'district', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3198, 'Lumbila', 3197, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3199, 'Kilondo', 3197, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3200, 'Mawengi', 3197, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3201, 'Lupanga', 3197, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3202, 'Mlangali', 3197, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3203, 'Milo', 3197, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3204, 'Lugarawa', 3197, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3205, 'Madope', 3197, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3206, 'Madilu', 3197, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3207, 'Mundindi', 3197, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3208, 'Mavanga', 3197, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3209, 'Ibumi', 3197, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3210, 'Nkomang\'ombe', 3197, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3211, 'Luilo', 3197, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3212, 'Masasi', 3197, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3213, 'Manda', 3197, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3214, 'Iwela', 3197, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3215, 'Lupingu', 3197, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3216, 'Ludewa', 3197, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3217, 'Ludende', 3197, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3218, 'Luana', 3197, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3219, 'Makonde', 3197, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3220, 'Mkongobaki', 3197, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3221, 'Lifuma', 3197, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3222, 'Ruhuhu', 3197, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3223, 'Makambako Township Authority', 3129, 'district', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3224, 'Ubena', 3223, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3225, 'Mjimwema', 3223, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3226, 'Mlowa', 3223, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3227, 'Lyamkena', 3223, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3228, 'Mwembetogwa', 3223, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3229, 'Mahongole', 3223, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3230, 'Kitandililo', 3223, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3231, 'Utengule', 3223, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3232, 'Katavi', NULL, 'region', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3233, 'Mpanda Urban', 3232, 'district', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3234, 'Kakese', 3233, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3235, 'Misunkumilo', 3233, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3236, 'Shanwe', 3233, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3237, 'Makanyagio', 3233, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3238, 'Kashaulili', 3233, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3239, 'Mpanda Hotel', 3233, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3240, 'Kawajense', 3233, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3241, 'Nsemulwa', 3233, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3242, 'Ilembo', 3233, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3243, 'Mpanda', 3232, 'district', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3244, 'Mishamo', 3243, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3245, 'Mpanda Ndogo', 3243, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3246, 'Mwese', 3243, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3247, 'Katuma', 3243, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3248, 'Kabungu', 3243, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3249, 'Sibwesa', 3243, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3250, 'Ikola', 3243, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3251, 'Karema', 3243, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3252, 'Kapalamsenga', 3243, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3253, 'Mlele', 3232, 'district', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3254, 'Kasokola', 3253, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3255, 'Ugala', 3253, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3256, 'Litapunga', 3253, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3257, 'Mtapenda', 3253, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3258, 'Inyonga', 3253, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3259, 'Ilunde', 3253, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3260, 'Ilela', 3253, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3261, 'Utende', 3253, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3262, 'Mamba', 3253, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3263, 'Mbede', 3253, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3264, 'Urwira', 3253, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3265, 'Nsimbo', 3253, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3266, 'Magamba', 3253, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3267, 'Sitalike', 3253, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3268, 'Usevya', 3253, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3269, 'Kibaoni', 3253, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3270, 'Machimboni', 3253, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3271, 'Kapalala', 3253, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3272, 'Itenka', 3253, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3273, 'Ikuba', 3253, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3274, 'Mwamapuli', 3253, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3275, 'Majimoto', 3253, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3276, 'Kasansa', 3253, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3277, 'Nsenkwa', 3253, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3278, 'Simiyu', NULL, 'region', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3279, 'Bariadi', 3278, 'district', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3280, 'Nkindwabiye', 3279, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3281, 'Mwaubinge', 3279, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3282, 'Nkololo', 3279, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3283, 'Mwaumatondo', 3279, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3284, 'Madobana', 3279, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3285, 'Nyangokolwa', 3279, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3286, 'Somanda', 3279, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3287, 'Bunamhala', 3279, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3288, 'Sakwe', 3279, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3289, 'Ngulyati', 3279, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3290, 'Mhango', 3279, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3291, 'Kilalo', 3279, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3292, 'Kasoli', 3279, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3293, 'Gambosi', 3279, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3294, 'Guduwi', 3279, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3295, 'Ikungulyabashashi', 3279, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3296, 'Nyakabindi', 3279, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3297, 'Dutwa', 3279, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3298, 'Sapiwi', 3279, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3299, 'Matongo', 3279, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3300, 'Gilya', 3279, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3301, 'Isanga', 3279, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3302, 'Bariadi', 3279, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3303, 'Malambo', 3279, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3304, 'Sima', 3279, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3305, 'Itilima', 3278, 'district', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3306, 'Bumera', 3305, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3307, 'Ikindiro', 3305, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3308, 'Mwamtani', 3305, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3309, 'Sagata', 3305, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3310, 'Mwaswale', 3305, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3311, 'Nkuyu', 3305, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3312, 'Mhunze', 3305, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3313, 'Migato', 3305, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3314, 'Chinamili', 3305, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3315, 'Ndolelezi', 3305, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3316, 'Lagangabilili', 3305, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3317, 'Budalabujiga', 3305, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3318, 'Nkoma', 3305, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3319, 'Mwalushu', 3305, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3320, 'Mwamapalala', 3305, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3321, 'Nyamalapa', 3305, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3322, 'Lugulu', 3305, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3323, 'Nhobora', 3305, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3324, 'Zagayu', 3305, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3325, 'Kinang\'weli', 3305, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3326, 'Mbita', 3305, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3327, 'Sawida', 3305, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3328, 'Meatu', 3278, 'district', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3329, 'Mwanhuzi', 3328, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3330, 'Nkoma', 3328, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3331, 'Kimali', 3328, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3332, 'Mwamishali', 3328, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3333, 'Itinje', 3328, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3334, 'Kisesa', 3328, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3335, 'Mwandoya', 3328, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3336, 'Lingeka', 3328, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3337, 'Sakasaka', 3328, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3338, 'Imalaseko', 3328, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3339, 'Mwabuzo', 3328, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3340, 'Mwamalole', 3328, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3341, 'Mwanjolo', 3328, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3342, 'Mwabuma', 3328, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3343, 'Mwabusalu', 3328, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3344, 'Lubiga', 3328, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3345, 'Mwamanongu', 3328, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3346, 'Nghoboko', 3328, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3347, 'Bukundi', 3328, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3348, 'Mwasengela', 3328, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3349, 'Mwamanimba', 3328, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3350, 'Tindabuligi', 3328, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3351, 'Mwakisandu', 3328, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3352, 'Mwangundo', 3328, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3353, 'Mwanyahina', 3328, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3354, 'Maswa', 3278, 'district', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3355, 'Ng\'wigwa', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3356, 'Nguliguli', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3357, 'Ipililo', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3358, 'Senani', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3359, 'Mwamanenge', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3360, 'Sukuma', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3361, 'Mpindo', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3362, 'Dakama', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46');
+INSERT INTO `locations` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitude`, `created_at`, `updated_at`) VALUES
+(3363, 'Lalago', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3364, 'Budekwa', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3365, 'Busilili', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3366, 'Sengwa', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3367, 'Masela', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3368, 'Isanga', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3369, 'Zanzui', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3370, 'Mwamashimba', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3371, 'Buchambi', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3372, 'Kadoto', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3373, 'Shishiyu', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3374, 'Nyabubinza', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3375, 'Mwang\'honoli', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3376, 'Kulimi', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3377, 'Malampaka', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3378, 'Badi', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3379, 'Nyalikungu', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3380, 'Binza', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3381, 'Busega', 3278, 'district', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3382, 'Shigala', 3381, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3383, 'Badugu', 3381, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3384, 'Nyaluhande', 3381, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3385, 'Kiloleli', 3381, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3386, 'Mwamanyili', 3381, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3387, 'Kabita', 3381, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3388, 'Kalemela', 3381, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3389, 'Lamadi', 3381, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3390, 'Lutubiga', 3381, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3391, 'Mkula', 3381, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3392, 'Ngasamo', 3381, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3393, 'Malili', 3381, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3394, 'Igalukilo', 3381, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3395, 'Geita', NULL, 'region', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3396, 'Geita', 3395, 'district', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3397, 'Kagu', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3398, 'Bugulula', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3399, 'Senga', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3400, 'Kakubilo', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3401, 'Nkome', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3402, 'Katoma', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3403, 'Nzera', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3404, 'Lwezera', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3405, 'Kamhanga', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3406, 'Bugalama', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3407, 'Lubanga', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3408, 'Isulwabutunde', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3409, 'Kasamwa', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3410, 'Bung\'wangoko', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3411, 'Bulela', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3412, 'Ihanamilo', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3413, 'Nyanguku', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3414, 'Kamena', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3415, 'Nyamalimbe', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3416, 'Bujula', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3417, 'Bukoli', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3418, 'Butobela', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3419, 'Nyarugusu', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3420, 'Nyakamwaga', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3421, 'Lwamgasa', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3422, 'Kaseme', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3423, 'Busanda', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3424, 'Katoro', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3425, 'Nyamigota', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3426, 'Nyakagomba', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3427, 'Nyachiluluma', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3428, 'Bukondo', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3429, 'Chigunga', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3430, 'Mtakuja', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3431, 'Kalangalala', 3396, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3432, 'Nyang\'hwale', 3395, 'district', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3433, 'Shabaka', 3432, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3434, 'Busolwa', 3432, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3435, 'Kakura', 3432, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3436, 'Nyugwa', 3432, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3437, 'Bukwimba', 3432, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3438, 'Kafita', 3432, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3439, 'Kharumwa', 3432, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3440, 'Izunya', 3432, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3441, 'Mwingiro', 3432, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3442, 'Nyabulanda', 3432, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3443, 'Nyang\'hwale', 3432, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3444, 'Nyijundu', 3432, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3445, 'Mbogwe', 3395, 'district', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3446, 'Nanda', 3445, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3447, 'Ikobe', 3445, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3448, 'Lulembela', 3445, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3449, 'Ikunguigazi', 3445, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3450, 'Isebya', 3445, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3451, 'Ilolangulu', 3445, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3452, 'Mbogwe', 3445, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3453, 'Mgemo', 3445, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3454, 'Ushirika', 3445, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3455, 'Nyasato', 3445, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3456, 'Lugunga', 3445, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3457, 'Nyakafulu', 3445, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3458, 'Bukandwe', 3445, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3459, 'Ng\'homolwa', 3445, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3460, 'Masumbwe', 3445, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3461, 'Iponya', 3445, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3462, 'Bukombe', 3395, 'district', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3463, 'Runzewe Mashariki', 3462, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3464, 'Runzewe Magharibi', 3462, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3465, 'Namonge', 3462, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3466, 'Uyovu', 3462, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3467, 'Busonzo', 3462, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3468, 'Ng\'anzo', 3462, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3469, 'Butinzya', 3462, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3470, 'Ushirombo', 3462, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3471, 'Lyambamgongo', 3462, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3472, 'Bukombe', 3462, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3473, 'Bugelenga', 3462, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3474, 'Iyogelo', 3462, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3475, 'Igulwa', 3462, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3476, 'Chato', 3395, 'district', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3477, 'Muganza', 3476, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3478, 'Bwongera', 3476, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3479, 'Kigongo', 3476, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3480, 'Nyamirembe', 3476, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3481, 'Ichwankima', 3476, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3482, 'Kachwamba', 3476, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3483, 'Kasenga', 3476, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3484, 'Ilemela', 3476, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3485, 'Chato', 3476, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3486, 'Muungano', 3476, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3487, 'Bwina', 3476, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3488, 'Katende', 3476, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3489, 'Ilyamchele', 3476, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3490, 'Bukome', 3476, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3491, 'Buziku', 3476, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3492, 'Nyarutembo', 3476, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3493, 'Makurugusi', 3476, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3494, 'Buseresere', 3476, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3495, 'Butengorumasa', 3476, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3496, 'Iparamasa', 3476, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3497, 'Bwanga', 3476, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3498, 'Bwera', 3476, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3499, 'Kaskazini Unguja', NULL, 'region', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3500, 'Kaskazini A', 3499, 'district', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3501, 'Mkokotoni', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3502, 'Mto wa Pwani', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3503, 'Pale', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3504, 'Kivunge', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3505, 'Tumbatu Gomani', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3506, 'Jongowe', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3507, 'Mkwajuni', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3508, 'Kibeni', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3509, 'Muwange', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3510, 'Pitanazako', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3511, 'Potowa', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3512, 'Fukuchani', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3513, 'Kidoti', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3514, 'Tazari', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3515, 'Kigunda', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3516, 'Nungwi', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3517, 'Matemwe', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3518, 'Kijini', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3519, 'Pwani Mchangani', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3520, 'Gamba', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3521, 'Moga', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3522, 'Chaani Masingini', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3523, 'Mcheza Shauri', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3524, 'Chaani Kubwa', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3525, 'Kikobweni', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3526, 'Bandamaji', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3527, 'Kinyasini', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3528, 'Kandwi', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3529, 'Chutama', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3530, 'Kisongoni', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3531, 'Kilindi', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3532, 'Kilimani', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3533, 'Uvivini', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3534, 'Kidombo', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3535, 'Bwereu', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3536, 'Kigomani', 3500, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3537, 'Kaskazini B', 3499, 'district', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3538, 'Misufini', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3539, 'Makoba', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3540, 'Mangapwani', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3541, 'Fujoni', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3542, 'Kiomba Mvua', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3543, 'Donge  Mchangani', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3544, 'Mkadini', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3545, 'Zingwe Zingwe', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3546, 'Kitope', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3547, 'Mahonda', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3548, 'Mnyimbi', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3549, 'Donge Mtambile', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3550, 'Kinduni', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3551, 'Donge Karange', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3552, 'Donge Mbiji', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3553, 'Donge Kipange', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3554, 'Donge Vijibweni', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3555, 'Upenja', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3556, 'Kiwengwa', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3557, 'Pangeni', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3558, 'Kilombero', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3559, 'Mgambo', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3560, 'Muwanda', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3561, 'Matetema', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3562, 'Kidanzini', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3563, 'Mbaleni', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3564, 'Mafufuni', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3565, 'Mkataleni', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3566, 'Njia ya Mtoni', 3537, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3567, 'Kusini Unguja', NULL, 'region', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3568, 'Kati', 3567, 'district', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3569, 'Dunga Bweni', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3570, 'Ubago', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3571, 'Kidimni', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3572, 'Machui', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3573, 'Kiboje Muembeshauri', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3574, 'Miwani', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3575, 'Kiboje Mkwajuni', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3576, 'Ghana', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3577, 'Koani', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3578, 'Mgeni Haji', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3579, 'Uzini', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3580, 'Mitakawani', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3581, 'Tunduni', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3582, 'Bambi', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3583, 'Pagali', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3584, 'Umbuji', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3585, 'Mchangani', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3586, 'Dunga Kiembeni', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3587, 'Ndijani Mseweni', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3588, 'Jendele', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3589, 'Chwaka', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3590, 'Marumbi', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3591, 'Uroa', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3592, 'Pongwe', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3593, 'Jumbi', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3594, 'Tunguu', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3595, 'Binguni', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3596, 'Cheju', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3597, 'Bungi', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3598, 'Unguja Ukuu Kaepwani', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3599, 'Kikungwi', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3600, 'Uzi', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3601, 'Ng\'ambwa', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3602, 'Charawe', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3603, 'Ukongoroni', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3604, 'Michamvi', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3605, 'Mpapa', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3606, 'Unguja Ukuu Kaebona', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3607, 'Ndijani Muembe Punda', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3608, 'Tindini', 3568, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3609, 'Kusini', 3567, 'district', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3610, 'Nganani', 3609, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3611, 'Kijini', 3609, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3612, 'Mzuri', 3609, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3613, 'Kajengwa', 3609, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3614, 'Jambiani Kikadini', 3609, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3615, 'Mtende', 3609, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3616, 'Kibuteni', 3609, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3617, 'Kizimkazi Dimbani', 3609, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3618, 'Kizimkazi Mkunguni', 3609, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3619, 'Muyuni A', 3609, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3620, 'Muyuni B', 3609, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3621, 'Muyuni C', 3609, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3622, 'Pete', 3609, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3623, 'Muungoni', 3609, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3624, 'Paje', 3609, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3625, 'Jambiani Kibigija', 3609, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3626, 'Bwejuu', 3609, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3627, 'Kitogani', 3609, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3628, 'Kiongoni', 3609, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3629, 'Tasani', 3609, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3630, 'Dongwe', 3609, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3631, 'Mjini Magharibi', NULL, 'region', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3632, 'Magharibi', 3631, 'district', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3633, 'Mwera', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3634, 'Mtoni', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3635, 'Bububu', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3636, 'Chuini', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3637, 'Kama', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3638, 'Mfenesini', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3639, 'Mwakaje', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3640, 'Fuoni Kibondeni', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3641, 'Kianga', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3642, 'Dole', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3643, 'Kizimbani', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3644, 'Mbuzini', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3645, 'Bumbwisudi', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3646, 'Maungani', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3647, 'Shakani', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3648, 'Kiembesamaki', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3649, 'Chukwani', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3650, 'Fumba', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3651, 'Bweleo', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3652, 'Dimani', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3653, 'Kombeni', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3654, 'Mwanakwerekwe', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3655, 'Mtopepo', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3656, 'Magogoni', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3657, 'Mtoni Kidatu', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3658, 'Mwanyanya', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3659, 'Fuoni Kijito Upele', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3660, 'Tomondo', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3661, 'Welezo', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3662, 'Mtufaani', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3663, 'Sharifumsa', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3664, 'Kibweni', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3665, 'Kihinani', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3666, 'Mombasa', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3667, 'Kisauni', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3668, 'Melinne', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3669, 'Pangawe', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3670, 'Kinuni', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3671, 'Nyamanzi', 3632, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3672, 'Mjini', 3631, 'district', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3673, 'Shangani', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3674, 'Mkunazini', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3675, 'Kiponda', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3676, 'Malindi', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3677, 'Mchangani', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3678, 'Mlandege', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3679, 'Mwembeladu', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3680, 'Gulioni', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3681, 'Makadara', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3682, 'Shaurimoyo', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3683, 'Mwembe Makumbi', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3684, 'Chumbuni', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3685, 'Kwamtipura', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3686, 'Kilimahewa Juu', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3687, 'Amani', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3688, 'Nyerere', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3689, 'Sebleni', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3690, 'Magomeni', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3691, 'Mpendae', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3692, 'Urusi', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3693, 'Kilimani', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3694, 'Miembeni', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3695, 'Kikwajuni Juu', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3696, 'Kikwajuni Bondeni', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3697, 'Kisima Majongoo', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3698, 'Vikokotoni', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3699, 'Muembetanga', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3700, 'Muembeshauri', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3701, 'Rahaleo', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3702, 'Kwaalimsha', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3703, 'Mikunguni', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3704, 'Mkele', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3705, 'Muungano', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3706, 'Sogea', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3707, 'Jang\'ombe', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3708, 'Kidongo Chekundu', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3709, 'Matarumbeta', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3710, 'Kwahani', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3711, 'Kwaalinatu', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3712, 'Karakana', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3713, 'Kilimahewa Bondeni', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3714, 'Kwa Wazee', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3715, 'Migombani', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3716, 'Meya', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3717, 'Kisiwandui', 3672, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3718, 'Kaskazini Pemba', NULL, 'region', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3719, 'Wete', 3718, 'district', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3720, 'Kipangani', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3721, 'Mtambwe Kaskazini', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3722, 'Fundo', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3723, 'Mchanga Mdogo', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3724, 'Kambini', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3725, 'Kojani', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3726, 'Ole', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3727, 'Kangagani', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3728, 'Kiuyu Minungwini', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3729, 'Piki', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3730, 'Kisiwani', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3731, 'Gando', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3732, 'Ukunjwi', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3733, 'Pandani', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3734, 'Shengejuu', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3735, 'Bopwe', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3736, 'Utaani', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3737, 'Mtambwe Kusini', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3738, 'Selem', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3739, 'Kinyikani', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3740, 'Chwale', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3741, 'Maziwani', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3742, 'Mpambani', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3743, 'Mjini Ole', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3744, 'Kiuyu Kigongoni', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3745, 'Mzambarauni Takao', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3746, 'Junguni', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3747, 'Kiungoni', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3748, 'Pembeni', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3749, 'Kizimbani', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3750, 'Limbani', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3751, 'Jadida', 3719, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3752, 'Micheweni', 3718, 'district', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3753, 'Micheweni', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3754, 'Msuka Mashariki', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3755, 'Kinowe', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3756, 'Tumbe Mashariki', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3757, 'Mgogoni', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3758, 'Shumba Viamboni', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3759, 'Finya', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3760, 'Konde', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3761, 'Wingwi Mapofu', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3762, 'Kiuyu Mbuyuni', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3763, 'Makangale', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3764, 'Wingwi Njuguni', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3765, 'Shumba Mjini', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3766, 'Majenzi', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3767, 'Mjini Wingwi', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3768, 'Msuka Magharibi', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3769, 'Chimba', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3770, 'Tumbe Magharibi', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3771, 'Sizini', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3772, 'Kinyasini', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3773, 'Mihogoni', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3774, 'Kifundi', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3775, 'Maziwa Ng\'ombe', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3776, 'Tondooni', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3777, 'Mtemani', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3778, 'Wingwi Mjananza', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3779, 'Mlindo', 3752, 'ward', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3780, 'Kusini Pemba', NULL, 'region', NULL, NULL, '2026-05-20 12:15:47', '2026-05-20 12:15:47'),
+(3781, 'Chake Chake', 3780, 'district', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3782, 'Chanjaani', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3783, 'Wawi', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3784, 'Pujini', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3785, 'Ziwani', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3786, 'Ndagoni', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3787, 'Kwale', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3788, 'Vitongoji', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3789, 'Ng\'ambwa', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3790, 'Shungi', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3791, 'Chonga', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3792, 'Mgelema', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3793, 'Kilindi', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3794, 'Tibirinzi', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3795, 'Chachani', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3796, 'Wara', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3797, 'Mvumoni', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3798, 'Matale', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3799, 'Wesha', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3800, 'Uwandani', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3801, 'Madungu', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3802, 'Mgogoni', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3803, 'Dodo', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3804, 'Mbuzini', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3805, 'Michungwani', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3806, 'Kibokoni', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3807, 'Kichungwani', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3808, 'Msingini', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3809, 'Mkoroshoni', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3810, 'Mfikiwa', 3781, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3811, 'Mkoani', 3780, 'district', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3812, 'Ng\'ombeni', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3813, 'Makombeni', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3814, 'Makoongwe', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3815, 'Shidi', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3816, 'Mkanyageni', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3817, 'Michenzani', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3818, 'Chokocho', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3819, 'Kisiwa Panza', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3820, 'Kangani', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3821, 'Kengeja', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3822, 'Muambe', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3823, 'Kiwani', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3824, 'Mtambile', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3825, 'Mizingani', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3826, 'Ngwachani', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3827, 'Chambani', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3828, 'Wambaa', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3829, 'Mbuguani', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3830, 'Uweleni', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3831, 'Mtangani', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3832, 'Ukutini', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3833, 'Chumbageni', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3834, 'Mbuyuni', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3835, 'Stahabu', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3836, 'Kuukuu', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3837, 'Mjimbini', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3838, 'Shamiani', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3839, 'Jombwe', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3840, 'Kendwa', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3841, 'Minazini', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3842, 'Mgagadu', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3843, 'Mkungu', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48'),
+(3844, 'Changaweni', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48');
+
+--
+-- Triggers `locations`
+--
+DELIMITER $$
+CREATE TRIGGER `trg_locations_before_insert` BEFORE INSERT ON `locations` FOR EACH ROW BEGIN
+    IF NEW.type = 'region' AND NEW.parent_id IS NOT NULL THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Region cannot have a parent_id';
+    END IF;
+
+    IF NEW.type IN ('district', 'ward') AND NEW.parent_id IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'District and ward must have a parent_id';
+    END IF;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `trg_locations_before_update` BEFORE UPDATE ON `locations` FOR EACH ROW BEGIN
+    IF NEW.type = 'region' AND NEW.parent_id IS NOT NULL THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Region cannot have a parent_id';
+    END IF;
+
+    IF NEW.type IN ('district', 'ward') AND NEW.parent_id IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'District and ward must have a parent_id';
+    END IF;
+END
+$$
+DELIMITER ;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `locations`
+--
+ALTER TABLE `locations`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_locations_parent` (`parent_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `locations`
+--
+ALTER TABLE `locations`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3845;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `locations`
+--
+ALTER TABLE `locations`
+  ADD CONSTRAINT `fk_locations_parent` FOREIGN KEY (`parent_id`) REFERENCES `locations` (`id`) ON DELETE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
