@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 20, 2026 at 02:27 PM
+-- Generation Time: May 20, 2026 at 03:14 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -24,10 +24,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `locations`
+-- Table structure for table `administrative_areas`
 --
 
-CREATE TABLE `locations` (
+CREATE TABLE `administrative_areas` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `parent_id` bigint(20) UNSIGNED DEFAULT NULL,
@@ -39,10 +39,10 @@ CREATE TABLE `locations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `locations`
+-- Dumping data for table `administrative_areas`
 --
 
-INSERT INTO `locations` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitude`, `created_at`, `updated_at`) VALUES
+INSERT INTO `administrative_areas` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitude`, `created_at`, `updated_at`) VALUES
 (1, 'Dodoma', NULL, 'region', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:24:18'),
 (2, 'Kondoa', 1, 'district', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
 (3, 'Bumbuta', 2, 'ward', NULL, NULL, '2026-05-20 12:15:34', '2026-05-20 12:15:34'),
@@ -611,9 +611,9 @@ INSERT INTO `locations` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitu
 (566, 'Mbaramo', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
 (567, 'Majengo', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
 (568, 'Masuguru', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
-(569, 'Tingeni', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
-(570, 'Kilulu', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36');
-INSERT INTO `locations` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitude`, `created_at`, `updated_at`) VALUES
+(569, 'Tingeni', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36');
+INSERT INTO `administrative_areas` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitude`, `created_at`, `updated_at`) VALUES
+(570, 'Kilulu', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
 (571, 'Mkuzi', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
 (572, 'Mtindiro', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
 (573, 'Kwafungo', 557, 'ward', NULL, NULL, '2026-05-20 12:15:36', '2026-05-20 12:15:36'),
@@ -1178,9 +1178,9 @@ INSERT INTO `locations` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitu
 (1132, 'Mandwanga', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
 (1133, 'Mnara', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
 (1134, 'Chiponda', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
-(1135, 'Pangatena', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
-(1136, 'Longa', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37');
-INSERT INTO `locations` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitude`, `created_at`, `updated_at`) VALUES
+(1135, 'Pangatena', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37');
+INSERT INTO `administrative_areas` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitude`, `created_at`, `updated_at`) VALUES
+(1136, 'Longa', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
 (1137, 'Rutamba', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
 (1138, 'Milola', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
 (1139, 'Kiwawa', 1114, 'ward', NULL, NULL, '2026-05-20 12:15:37', '2026-05-20 12:15:37'),
@@ -1733,9 +1733,9 @@ INSERT INTO `locations` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitu
 (1686, 'Ndobo', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
 (1687, 'Kajunjumele', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
 (1688, 'Bujonde', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
-(1689, 'Ikolo', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
-(1690, 'Katumbasongwe', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40');
-INSERT INTO `locations` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitude`, `created_at`, `updated_at`) VALUES
+(1689, 'Ikolo', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40');
+INSERT INTO `administrative_areas` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitude`, `created_at`, `updated_at`) VALUES
+(1690, 'Katumbasongwe', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
 (1691, 'Ngana', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
 (1692, 'Busale', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
 (1693, 'Ipande', 1681, 'ward', NULL, NULL, '2026-05-20 12:15:40', '2026-05-20 12:15:40'),
@@ -2293,10 +2293,10 @@ INSERT INTO `locations` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitu
 (2245, 'Bitare', 2243, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
 (2246, 'Kibondo', 2243, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
 (2247, 'Murungu', 2243, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
-(2248, 'Busagara', 2243, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
+(2248, 'Busagara', 2243, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42');
+INSERT INTO `administrative_areas` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitude`, `created_at`, `updated_at`) VALUES
 (2249, 'Rugongwe', 2243, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
-(2250, 'Busunzu', 2243, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42');
-INSERT INTO `locations` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitude`, `created_at`, `updated_at`) VALUES
+(2250, 'Busunzu', 2243, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
 (2251, 'Kumsenga', 2243, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
 (2252, 'Kizazi', 2243, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
 (2253, 'Mabamba', 2243, 'ward', NULL, NULL, '2026-05-20 12:15:42', '2026-05-20 12:15:42'),
@@ -2849,10 +2849,10 @@ INSERT INTO `locations` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitu
 (2800, 'Ilemela', 2676, 'district', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
 (2801, 'Buswelu', 2800, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
 (2802, 'Nyakato', 2800, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
-(2803, 'Nyamanoro', 2800, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
+(2803, 'Nyamanoro', 2800, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44');
+INSERT INTO `administrative_areas` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitude`, `created_at`, `updated_at`) VALUES
 (2804, 'Kirumba', 2800, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
-(2805, 'Kitangiri', 2800, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44');
-INSERT INTO `locations` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitude`, `created_at`, `updated_at`) VALUES
+(2805, 'Kitangiri', 2800, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
 (2806, 'Pasiansi', 2800, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
 (2807, 'Ilemela', 2800, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
 (2808, 'Bugogwa', 2800, 'ward', NULL, NULL, '2026-05-20 12:15:44', '2026-05-20 12:15:44'),
@@ -3406,11 +3406,11 @@ INSERT INTO `locations` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitu
 (3356, 'Nguliguli', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
 (3357, 'Ipililo', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
 (3358, 'Senani', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
-(3359, 'Mwamanenge', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
+(3359, 'Mwamanenge', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46');
+INSERT INTO `administrative_areas` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitude`, `created_at`, `updated_at`) VALUES
 (3360, 'Sukuma', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
 (3361, 'Mpindo', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
-(3362, 'Dakama', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46');
-INSERT INTO `locations` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitude`, `created_at`, `updated_at`) VALUES
+(3362, 'Dakama', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
 (3363, 'Lalago', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
 (3364, 'Budekwa', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
 (3365, 'Busilili', 3354, 'ward', NULL, NULL, '2026-05-20 12:15:46', '2026-05-20 12:15:46'),
@@ -3895,10 +3895,10 @@ INSERT INTO `locations` (`id`, `name`, `parent_id`, `type`, `latitude`, `longitu
 (3844, 'Changaweni', 3811, 'ward', NULL, NULL, '2026-05-20 12:15:48', '2026-05-20 12:15:48');
 
 --
--- Triggers `locations`
+-- Triggers `administrative_areas`
 --
 DELIMITER $$
-CREATE TRIGGER `trg_locations_before_insert` BEFORE INSERT ON `locations` FOR EACH ROW BEGIN
+CREATE TRIGGER `trg_administrative_areas_before_insert` BEFORE INSERT ON `administrative_areas` FOR EACH ROW BEGIN
     IF NEW.type = 'region' AND NEW.parent_id IS NOT NULL THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Region cannot have a parent_id';
@@ -3912,7 +3912,7 @@ END
 $$
 DELIMITER ;
 DELIMITER $$
-CREATE TRIGGER `trg_locations_before_update` BEFORE UPDATE ON `locations` FOR EACH ROW BEGIN
+CREATE TRIGGER `trg_administrative_areas_before_update` BEFORE UPDATE ON `administrative_areas` FOR EACH ROW BEGIN
     IF NEW.type = 'region' AND NEW.parent_id IS NOT NULL THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Region cannot have a parent_id';
@@ -3931,9 +3931,9 @@ DELIMITER ;
 --
 
 --
--- Indexes for table `locations`
+-- Indexes for table `administrative_areas`
 --
-ALTER TABLE `locations`
+ALTER TABLE `administrative_areas`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_locations_parent` (`parent_id`);
 
@@ -3942,9 +3942,9 @@ ALTER TABLE `locations`
 --
 
 --
--- AUTO_INCREMENT for table `locations`
+-- AUTO_INCREMENT for table `administrative_areas`
 --
-ALTER TABLE `locations`
+ALTER TABLE `administrative_areas`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3845;
 
 --
@@ -3952,10 +3952,10 @@ ALTER TABLE `locations`
 --
 
 --
--- Constraints for table `locations`
+-- Constraints for table `administrative_areas`
 --
-ALTER TABLE `locations`
-  ADD CONSTRAINT `fk_locations_parent` FOREIGN KEY (`parent_id`) REFERENCES `locations` (`id`) ON DELETE CASCADE;
+ALTER TABLE `administrative_areas`
+  ADD CONSTRAINT `fk_administrative_areas_parent` FOREIGN KEY (`parent_id`) REFERENCES `administrative_areas` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
